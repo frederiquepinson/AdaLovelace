@@ -20,17 +20,17 @@ Ce n'est pas un cours d'électronique : nous passons donc sous silence un grand 
 
 L'Arduino est une carte construite autour d'un microcontrôleur qui peut être programmé pour analyser et produire des signaux électriques de manière à effectuer des tâches très diverses comme la domotique (le contrôle des appareils domestiques - éclairage, chauffage…), le pilotage d'un robot, de l'informatique embarquée, etc.
 
-On peut étendre les capacités de l'arduino en y branchant des composants  par exemple: des capteurs (de température, de son, de distance, etc.) ou encore des leds, des moteurs, etc. 
+On peut étendre les capacités de l'Arduino en y branchant des composants, par exemple : des capteurs (de température, de son, de distance, etc.) ou encore des leds, des moteurs, etc. 
 
-Chaque composant a besoin d'être alimenté : branché sur une source de tension (5V, 3,3V) et une masse (GND) pour fonctionner. Pour renvoyer des informations (si c'est un capteur) ou en recevoir (par ex un servo-moteur), il faut aussi le brancher sur une (ou plusieurs) broche(s) de l'arduino. Cela lui permet de communiquer avec ce dernier.
+Chaque composant a besoin d'être alimenté : branché sur une source de tension (5V ou 3.3V) et une masse (GND) pour fonctionner. Pour renvoyer des informations (si c'est un capteur) ou en recevoir (par ex un servo-moteur), il faut aussi le brancher sur une (ou plusieurs) broche(s) de l'Arduino. Cela lui permet de communiquer avec ce dernier.
 
-Ci-dessous une photo d'un arduino Nano:
+Ci-dessous une photo d'un Arduino Nano:
 
 ![arduino](https://ae01.alicdn.com/kf/HTB11nPYOpXXXXbOapXXq6xXFXXXN/225552329/HTB11nPYOpXXXXbOapXXq6xXFXXXN.jpg?size=144900&height=1000&width=1000&hash=f5fd08d9de92dc32c720726cd0ea707a)
 
-Le plus simple est d'utiliser un "shield" (bouclier) permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. Branchez l'Arduino sur le bouclier en faisant en sorte que le pour USB de l'Arduino soit du même côté que la grosse prise noire du bouclier.
+Le plus simple est d'utiliser un "shield" (bouclier) permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. Branchez l'Arduino sur le bouclier en faisant en sorte que le port USB de l'Arduino soit du même côté que la grosse prise noire du bouclier.
 
-Ci-dessous une photo d'un shield d'arduino Nano:
+Ci-dessous une photo d'un shield d'Arduino Nano:
 
 ![arduino](https://ae01.alicdn.com/kf/HTB1EhFHb2NNTKJjSspeq6ySwpXaU.jpg)
 
@@ -48,18 +48,17 @@ Ci-dessous une photo d'un ESP32 et de son shield:
 
 ---
 
-Si vous voulez apprendre à créer un projet à partir de zéro avec un ESP 32 avec des capteurs, 
-aller au document [Initialisation d'un projet](./documentation/VotrePremierProjet.md).
+Si vous voulez apprendre à créer un projet à partir de zéro avec un ESP32 et des capteurs, allez au document [Initialisation d'un projet](./documentation/VotrePremierProjet.md).
 
 Sinon ouvrez le projet `MonSuperProjet` dans Visual Studio Code.
-Afin de le faire fonctionner, il faut indiquer au projet sur quelle prise usb est branché la carte. 
+Afin de le faire fonctionner, il faut indiquer au projet sur quelle prise USB est branchée la carte. 
 
-Dans Visual Studio Code, cliquez sur la petite maison en bas à gauche, puis allez dans l'onglet devices pour le connaitre.
+Dans Visual Studio Code, cliquez sur la petite maison en bas à gauche, puis allez dans l'onglet devices pour la connaître.
 
 ![petite maison](./documentation/assets/PIOHome.jpg)
 ![port](./documentation/assets/PIOHome-devices.jpg)
 
-Ensuite, dans le fichier platformio.ini à la racine de votre projet, remplacez les champs `upload_port` et `monitor_port` par le port où est branché votre carte.
+Ensuite, dans le fichier `platformio.ini` à la racine de votre projet, remplacez les champs `upload_port` et `monitor_port` par le port où est branchée votre carte.
 ![platformio.ini](./documentation/assets/initFile.jpg)
 
 Maintenant que la carte est correctement branchée, vous pouvez commencer à programmer dans le fichier `main.cpp` dans le dossier `src`
@@ -67,24 +66,24 @@ Maintenant que la carte est correctement branchée, vous pouvez commencer à pro
 
 
 # Jouons avec un feu tricolore !
-Pour commencer à s'amuser avec l'ESP32, prenons une Del (par la suite nous utiliserons le feu tricolore).
+Pour commencer à s'amuser avec l'ESP32, prenons une DEL (par la suite nous utiliserons le feu tricolore).
 
 ## On commence par apprendre à allumer la lumière...
 
 La DEL (ou LED en anglais) est un composant simple s'allumant quand elle reçoit du courant. Nous allons commencer par brancher une DEL sur notre Arduino. Pour cela prenez 2 fils.
 
-Les DEL ont des tensions précises de fonctionnement (entre 2.2V et 3V selon leur couleur) mais les broches de l'Arduino fournissent du +5V, il faut donc réduire l'alimentation des DEL en utilisant une résistance. Pour gagner du temps nous allons brancher directement nos DEL. Cela va réduire leur durée de vie mais dans le cadre de ce TP ça ne sera pas gếnant.
+Les DEL ont des tensions précises de fonctionnement (entre 2.2V et 3V selon leur couleur) mais les broches de l'Arduino fournissent du +5V, il faut donc réduire l'alimentation des DEL en utilisant une résistance. Pour gagner du temps nous allons brancher directement nos DEL. Cela va réduire leur durée de vie mais dans le cadre de ce TP ça ne sera pas gênant.
 
 
 * Branchez un fil entre la patte courte de la DEL et la broche G du port D5 de l'ESP32
 * Branchez un fil entre la patte longue de la DEL et la broche S du port D5 de l'ESP32
 
 
-Téléversez le programme suivant sur l'ESP32, cliquez sur l'icone en forme  de tête de Fourmi (menu PlatformIO à gauche de l'IDE), puis sur 'Upload and Monitor'. 
+Téléversez le programme suivant sur l'ESP32, cliquez sur l'icône en forme de tête de fourmi (menu PlatformIO à gauche de l'IDE), puis sur 'Upload and Monitor'. 
 
 La DEL devrait clignoter !
 
-Jouez avec la valeur inscrite dans les fonctions *delay* pour la faire clignoter plus ou moins vite.
+Jouez avec la valeur inscrite dans les fonctions `delay` pour la faire clignoter plus ou moins vite.
 
 ```C
 #include <Arduino.h>
@@ -147,6 +146,7 @@ void loop() {
 
 
 Tous les programmes Arduino doivent respecter cette structure :
+
 ```C
 #include <Arduino.h> // ici, on déclare l'utilisation de la librairie Arduino
 
@@ -164,14 +164,11 @@ void setup() {
 void loop() {
 
     // Cette fonction sera appelée continuellement après le setup
-
-    // Pour déboguer la liaison série est pratique :
+    // Pour déboguer, la liaison série est pratique :
 
     Serial.println("Test");
 
-    // La fonction "delay(X)" permet de mettre en pause
-
-    // le programme pendant X ms
+    // La fonction "delay(X)" permet de mettre en pause le programme pendant X ms
 
     delay(200);
 
@@ -185,7 +182,7 @@ Voici la liste des composants Arduino avec lesquels vous pourrez construire votr
 
 ## Mesurer une distance avec des ultrasons
 
-On peut utiliser un capteur ultrason (HR-SR04) pour mesurer une distance. On envoie des ondes sonores (inaudibles) vers un obstacle et on mesure le temps qui s'écoule avant de les recapter. A partir de la mesure de ce temps écoulé on peut, grâce à la connaissance de la vitesse du son dans l'air, estimer la distance entre le capteur et l'objet devant lui.
+On peut utiliser un capteur ultrason (HR-SR04) pour mesurer une distance. On envoie des ondes sonores (inaudibles) vers un obstacle et on mesure le temps qui s'écoule avant de les recapter. À partir de la mesure de ce temps écoulé on peut, grâce à la connaissance de la vitesse du son dans l'air, estimer la distance entre le capteur et l'objet devant lui.
 
 En théorie, le capteur peut capter les obstacles sur un angle de 15° environ et permet de faire des mesures de distance entre 2 centimètres et 4 mètres avec une précision de 3 millimètres.
 
@@ -198,6 +195,7 @@ Détachez un groupe de 4 fils :
 * Branchez un fil entre la broche **VCC** du capteur et la broche **V** du port D32
 
 Téléversez le code suivant :
+
 ```C
 #include <Arduino.h>
 
@@ -237,7 +235,6 @@ Travail complémentaire : faire un radar de recul. Selon la distance de l'obstac
 
 ## Utiliser un bouton
 
-
 On va utiliser ici un bouton un peu particulier :
 
 ![bouton led](https://ae01.alicdn.com/kf/HTB1EpxhdRfM8KJjSZFhq6ARyFXad/Bouton-d-arcade-5-couleurs-lumi-re-LED-lampe-60-MM-45-MM-grand-rond-Arcade.jpg)
@@ -246,13 +243,11 @@ Ce bouton intègre une DEL en plus d'un contact on/off. N'hésitez pas à démon
 
 Pour commencer on ne va utiliser que le bouton.
 
-![vue éclatée](https://ae01.alicdn.com/kf/HTB1iuZ_j4HI8KJjy1zbq6yxdpXaS/Bouton-d-arcade-5-couleurs-lumi-re-LED-lampe-60-MM-45-MM-grand-rond-Arcade.jpg)
-
 Récupérer les 2 fils issus de la partie centrale du bouton (le bloc rouge et noir sur la photo précédente) :
-* Branchez le fil de la partie coudée sur la broche **G** du port 34
-* Branchez l'autre fil sur la broche ***S*** du port 34
+* Branchez le fil de la partie - la broche **V** du port 34
+* Branchez l'autre fil sur la broche **S** du port 34
 
-Téléversez le programme suivant et ouvrez le moniteur série :
+Téléversez le programme suivant et regardez le terminal (en bas de votre écran) :
     
 ```C
 #include <Arduino.h>
@@ -265,23 +260,23 @@ void setup() {
 
 void loop() {
   if (digitalRead(BUTTON_CLICK)) {
-    Serial.println("bouton appuye");
+    Serial.println("bouton appuyé");
 
   } else {
-    Serial.println("bouton relache");
+    Serial.println("bouton relaché");
   }
   delay(400);
 }
 ```
 
-
-Quand vous appuyez sur le bouton, vous devez voir apparaître sur le moniteur série l'état du bouton (appuyé ou relaché).
+Quand vous appuyez sur le bouton, vous devez voir apparaître sur le terminal l'état du bouton (appuyé ou relaché).
 
 Vous remarquerez ici que l'on déclare le "port" en "INPUT_PULLUP", cela veut dire que l'Arduino va connecter une de ses résistances internes entre la broche V du port (reliée au 5V) et sa broche d'entrée S.
 
 On va maintenant utiliser la DEL intégrée. Débranchez la DEL précédemment branchée sur le port 5 (et le feu tricolore). Branchez ensuite le fil venant du côté noir du bouton sur la broche **G** du port 21 puis le fil venant du côté rouge du bouton sur la broche **S** du port 21 
 
-Téléverser le programme suivant :
+Téléversez le programme suivant :
+
 ```C
 #include <Arduino.h>
 
@@ -302,7 +297,7 @@ void loop() {
   }
 }
 ```
-Quand vous appuyerez sur le bouton la DEL devrait s'allumer.
+Quand vous appuierez sur le bouton, la DEL devrait s'allumer.
     
 
 ---
@@ -318,7 +313,8 @@ Détachez un groupe de 3 fils. On va brancher les fils du côté "A" :
 * Branchez un fil entre la broche OUT (à gauche) du potentiomètre et la broche ***S*** du port D34
 * Branchez un fil entre la broche du milieu du potentiomètre et la broche ***G*** du port D34
 * Branchez un fil entre la broche de droite du potentiomètre et la broche ***V*** du port D34
-Téléversez le programme suivant et vérifiez que les valeurs s'affichent bien sur le moniteur série :
+
+Téléversez le programme suivant et vérifiez que les valeurs s'affichent bien sur le terminal :
     
 ```C
 #include <Arduino.h>
@@ -341,8 +337,7 @@ void loop() {
 }
 ```
 
-
-Proposition d'exercice : Faire varier le temps de clignotement d'une DEL avec le potentiomètre.
+Travail complémentaire : Faire varier le temps de clignotement d'une DEL avec le potentiomètre.
 
 ---
 
@@ -358,6 +353,7 @@ Branchez directement la prise du servomoteur sur le port D23 de l'Arduino en fai
 * le fil orange sur la broche ***S*** du port D23
 
 Téléversez le programme suivant : 
+
 ```C
 #include <Arduino.h>
 #include <Servo.h>
@@ -388,7 +384,7 @@ void loop() {
 }
 ```
 
-La ligne *#include &lt;Servo.h&gt;* charge la bibliothèque permettant de piloter facilement un servomoteur. Cette bibliothèque est fournie dans votre fichier de configuration.
+La ligne `#include <Servo.h>` charge la bibliothèque permettant de piloter facilement un servomoteur. Cette bibliothèque est fournie dans votre fichier de configuration.
 
 Ajoutez un des morceaux de plastique sur l'axe du servomoteur afin de bien visualiser les mouvements.
 
@@ -451,6 +447,7 @@ Détachez un groupe de 4 fils :
 * Branchez un fil entre la broche ***VCC*** de l'écran et la broche ***5V*** de votre rampe I²C
 
 Téléversez le programme suivant :
+
 ```C
 #include <Arduino.h>
 #include <LiquidCrystal_I2C.h>
@@ -483,8 +480,6 @@ void loop() {
 }
 ```
 
-
-
 Vérifiez le contraste de l'écran : ce dernier doit s'allumer au démarrage. Si vous ne voyez rien, pas de panique c'est peut-être tout simplement parce que le contraste est mal réglé. Pour changer ce paramètre il suffit de tourner le petit potentiomètre derrière l'écran avec un tournevis cruciforme jusqu'à obtenir un bon contraste entre l'affichage des caractères et le fond de l'écran.
 
 
@@ -506,17 +501,19 @@ Détachez un groupe de 4 fils :
 
 
 Téléversez le programme suivant :
+
 ```C
 #include <Arduino.h>
 #include <DHT.h>
 
 #define DHT_PIN 18
-#define DHT_TYPE DHT11
+#define DHT_TYPE DHT22 //DHT11 si capteur bleu
 
 DHT dht(DHT_PIN, DHT_TYPE);
 
 void setup() {
   Serial.begin(115200);
+  dht.begin();
 }
 
 void loop() {
@@ -531,7 +528,7 @@ void loop() {
 }
 ```
 
-Proposition d'exercice : afficher sur l'écran LCD la température (sur la première ligne) et l'humidité (sur la deuxième ligne).
+Travail complémentaire : afficher sur l'écran LCD la température (sur la première ligne) et l'humidité (sur la deuxième ligne).
 
 ---
 
@@ -548,7 +545,8 @@ Détachez un groupe de 4 fils :
 * Brancher un fil entre la broche **GND** de l'afficheur et la broche **G** du port D27
 * Brancher un fil entre la broche **5V** de l'afficheur et la broche **V** du port D27
 
-Téléverser le programme suivant :
+Téléversez le programme suivant :
+
 ```C
 #include <Arduino.h>
 #include <TM1637Display.h>
@@ -660,7 +658,7 @@ void loop() {
       rtc.adjust(strToDateTime(heure));
     }
   }
-  // attente de 1s pour ne pas afficher trop d'informations dans le moniteur série
+  // attente de 1s pour ne pas afficher trop d'informations dans le terminal
   delay(1000);
 }
 ```
@@ -675,7 +673,7 @@ Nous allons utiliser un module DFPLayer afin de lire des MP3 depuis une carte mi
 
 ![dfplayer](https://ae01.alicdn.com/kf/HTB1O54OFuySBuNjy1zdq6xPxFXaT/A14-10-pi-ces-SAMIORE-ROBOT-Mini-lecteur-MP3-Module-TF-carte-U-disque-Mini-lecteur.jpg)
 
-Les chansons doivent être placées dans un répertoire nommé *mp3* sur la carte micro-SD et doivent être renommées afin quelles commencent par quatre chiffres (indiquant l'ordre de lecture). Les chansons suivantes ont été installées sur votre carte micro-SD :
+Les chansons doivent être placées dans un répertoire nommé `mp3` sur la carte micro-SD et doivent être renommées afin qu'elles commencent par quatre chiffres (indiquant l'ordre de lecture). Les chansons suivantes ont été installées sur votre carte micro-SD :
     
 Chanson 0001 : 
 * Titre:  Broke Inside My Mind (feat Ellie Griffiths)
@@ -715,7 +713,7 @@ Chanson 0005 :
 
 Insérez la carte micro-SD dans le module.
     
-Une nouvelle fois, il va falloir ajouter une bibliothèque pour gérer ce composant. Pour cela dans l'IDE Arduino allez dans le menu "Croquis/Inclure une bibliothèque/Gérer les bibliothèques" puis cherchez et installez la bibliothèque suivante : **DFRobotDFPlayerMini** by DFRobot
+Une nouvelle fois, une bibliothèque a été rajoutée dans votre fichier de configuration.
 
 
 ![dfplayer2](https://raw.githubusercontent.com/DFRobot/DFRobotMediaWikiImage/master/Image/miniplayer_pin_map.png)
@@ -723,7 +721,7 @@ Une nouvelle fois, il va falloir ajouter une bibliothèque pour gérer ce compos
 
 **Attention** : Aidez-vous du schéma ci-dessus pour faire les branchements. Faites toutefois attention, les broches de connexions sont en dessous du module si vous le mettez dans même position que sur le schéma.
 
-Récupérez le cable avec la résistance intégrée et branchez le entre la broche **S** du port 11 et la broche **RX** du module.
+Récupérez le cable avec la résistance intégrée et branchez le entre la broche **S** du port **11** et la broche **RX** du module.
 
 Détachez un groupe de 3 fils :
 * Branchez un fil entre la broche **S** du port RX2 et la broche **TX** du module
@@ -735,15 +733,15 @@ Pour les enceintes, détachez un groupe de 2 fils  :
 * Branchez un fil entre une des broche côté enceinte et la broche **SPK_1** du module
 * Branchez un fil entre l'autre broche côté enceinte et la broche **SPK_2** du module
 
-Téléverser le programme suivant :
+Téléversez le programme suivant :
 
 ```C
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
 
-#define DFPLAYER_RX 16 // RX2//33
-#define DFPLAYER_TX 17 // TX2//34
+#define DFPLAYER_RX 16 // RX2
+#define DFPLAYER_TX 17 // TX2
 
 SoftwareSerial dfplayer(DFPLAYER_RX, DFPLAYER_TX); // RX, TX
 DFRobotDFPlayerMini mp3;
@@ -891,13 +889,12 @@ void loop()
 }
 ```
 
-Vous pouvez contrôler la lecture avec les commandes suivantes depuis le moniteur série :
-* lecture : lance la première chanson
-* pause : met en pause/relance la chanson courante
-* suivante : passe à la chanson suivante
-* precedente : revient à la chanson précédente
-* volume=XX : règle le volume à la valeur XX (pouvant aller de 0 à 30)
-* stop : arrête le module
+Vous pouvez contrôler la lecture avec les commandes suivantes depuis le terminal :
+* [1-3] Sélectionner le fichier mp3 a lancer
+* [s] stop
+* [p] play/pause
+* [+ or -] baisser/augmenter le volume
+* [< or >] piste précédente/suivante
 
 
 ---
@@ -910,7 +907,6 @@ Vous pouvez utiliser la matrice à DEL (8*8) pour afficher des messages ou des i
 ![neopixel](https://ae01.alicdn.com/kf/HTB1c6WwmSMmBKNjSZTEq6ysKpXaG/10-pi-ces-WS2812-LED-5050-RVB-8x8-64-LED-Matrice.jpg)
 
 Une nouvelle fois, une bibliothèque a été ajoutée à votre projet.
-
 
 Détachez un groupe de 3 fils  :
 * Branchez un fil entre la broche **DIN** de la matrice et la broche **S** du port D13
@@ -1011,7 +1007,8 @@ Commencez par brancher le capteur à l'ESP32, prenez 3 fils :
 * Branchez la broche **V** du capteur sur la broche **V** du port 15
 * Branchez la broche **G** du capteur sur la broche **G** du port 15
 
-Téléverser le code suivant :
+Téléversez le code suivant :
+
 ```C
 #include <Arduino.h>
 
@@ -1032,7 +1029,6 @@ void loop() {
 
 ## Utiliser un capteur de luminosité (LDR)
 
-
 On peut mesurer la luminosité ambiante grâce à une [photorésistance](https://fr.wikipedia.org/wiki/Photor%C3%A9sistance) (*Light Dependent Resistor*, *LDR* ou *photoresistor* en anglais). 
 
 ![LDR](https://ae01.alicdn.com/kf/HTB1Xe3lIFXXXXcOaXXXq6xXFXXXR/20-pcs-lot-GL5516-5516-r-sistance-d-pendante-de-la-lumi-re-LDR-5-MM.jpg)
@@ -1043,7 +1039,8 @@ On ne va pas détailler ici le pré-cablage que l'on a fait avec la photorésita
 * Branchez le fil venant de la patte restante de la photorésistance sur la broche **G** du port 34
 * Branchez le fil venant de la patte restante de la résistance sur la broche **V** du port 34
 
-Téléverser le code suivant :
+Téléversez le code suivant :
+
 ```C
 #include <Arduino.h>
 
@@ -1062,7 +1059,7 @@ void loop() {
 }
 ```
     
-Vous devriez voir dans la console développeur la valeur de la luminosité, recouvrez ou éclairez la photorésistance pour voir cette valeur changer.
+Vous devriez voir dans le terminal la valeur de la luminosité, recouvrez ou éclairez la photorésistance pour voir cette valeur changer.
 
 En combinant ce code avec celui de l'afficheur 4*7 segments, on peut faire un programme qui change l'éclairage de l'afficheur selon la luminosité :
 
@@ -1092,8 +1089,6 @@ void loop() {
 ---
 
 ## DEL RVB
-
-Vous n'aurez normalement pas besoin de ce composant pour votre projet, mais voici tout de même sa documentation si vous voulez l'utiliser plus tard.
 
 Une DEL RVB (Rouge, Vert, Bleu ou RGB en anglais pour Red, Green, Blue) permet de choisir la couleur de la lumière. Chaque composante de la lumière (rouge, verte et bleue) peut prendre une valeur de 0 à 255. 
 
@@ -1143,8 +1138,7 @@ Un moteur pas-à-pas permet de gérer des rotations précises ([documentation](h
 
 Une nouvelle fois, une bibliothèque a été ajoutée à votre projet.
 
-
-Branchez le cable du moteur pas-à-pas sur la carte de contrôle. Détachez un groupe de 4 fils pour les broches ***IN*** et un groupe de 2 fils pour les broches ***-*** et ***+***): 
+Branchez le câble du moteur pas-à-pas sur la carte de contrôle. Détachez un groupe de 4 fils pour les broches ***IN*** et un groupe de 2 fils pour les broches ***-*** et ***+***: 
 * Branchez un fil entre la broche ***IN1*** du contrôleur et la broche ***S*** du port ***D19*** de l'Arduino
 * Branchez un fil entre la broche ***IN2*** du contrôleur et la broche ***S*** du port ***D26*** de l'Arduino
 * Branchez un fil entre la broche ***IN3*** du contrôleur et la broche ***S*** du port ***D25*** de l'Arduino
@@ -1223,790 +1217,18 @@ void loop() {
 
 ---
 
-# Créer un serveur web avec l'ESP32
-
-Il est possible de créer un serveur web avec l'ESP32 pour rendre les capteurs controllables depuis un site web ou bien une application mobile.
-
-[TODO] lien vers les slides
-
-Pour faire ceci, le code de création du serveur vous est forumit dans `/lib/wifiTools.cpp`, vous n'avez pas besoin d'y toucher. Pour l'utiliser et créer votre serveur web, exécutez le code suivant dans le fichier `main.cpp`.
-
-```cpp
-#include <Arduino.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <WiFi.h>
-#include <WebServer.h>
-#include "../lib/wifiTools.cpp"
-
-void setup()
-{
-  // Code exécuté une seule fois au démarrage
-  Serial.begin(115200);
-  initWifi("codingRoom1", "abcd123456789");
-  Serial.print("Connectez vous a : ");
-  Serial.println(getIpAdresse());
-}
-
-void loop()
-{
-  // Code effectué en boucle
-  refreshWifi();
-}
-```
-
-Si vous copiez-collez l'adresse où vous connecter dans un navigateur, vous devriez voir une page s'afficher avec **Projet Ada Lovelace** dessus. 
-
-Si vous souhaitez maintenant créer des interfaces comme présenté dans les diapos présentées précédemment avec des `GET` et `POST`, il vous faudra procéder comme suit : 
-
-Les opérations se font en appelant la fonction server.on importé de `wifiTools`
-
-exemple : 
-
-```cpp
-server.on('/chemin', fonctionAexecuter)
-```
-
-Par exemple, si on souhaite récuérerla température, on peut mettre le code de récupération de la température dans une fonction et l'appeler de la manière suivante dans le fichier `main.cpp`
-
-```cpp
-#include <Arduino.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <WiFi.h>
-#include <WebServer.h>
-#include <DHT.h>
-#include "../lib/wifiTools.cpp"
-
-#define DHT_PIN 18
-#define DHT_TYPE DHT11
-
-DHT dht(DHT_PIN, DHT_TYPE);
-
-void recupererTemperature()
-{
-  if (isnan(dht.readTemperature()) == 0)
-  {
-    
-    float temp = dht.readTemperature();
-    char *temperature;
-    sprintf(temperature, "%f°C", temp);
-    Serial.println(temperature);
-    server.send(200, "text/plain", temperature);
-  }
-  else
-  {
-    Serial.println("Erreur de lecture de la température");
-    server.send(200, "text/plain", "Erreur de lecture de la température");
-  }
-}
-
-void setup()
-{
-  // Code exécuté une seule fois au démarrage
-  Serial.begin(115200);
-  if (initWifi("Livebox-Libon", "LibonadeForEver"))
-  {
-    Serial.print("Connectez vous a : ");
-    Serial.println(getIpAdresse());
-  }
-
-  server.on("/temperature", recupererTemperature);
-}
-
-void loop()
-{
-  // Code effectué en boucle
-  refreshWifi();
-}
-```
-
-On peut aussi faire tourner la tête du suer codeur à l'aide d'un servoMoteur, il nous suffit d'utiliser le code suivant dans le fichier `main.cpp`.
-
-```cpp
-#include <Arduino.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <WiFi.h>
-#include <WebServer.h>
-#include <Servo.h>
-#include "../lib/wifiTools.cpp"
-
-#define SERVO 23
-
-Servo myservo;
-int localPositionServoMoteur;
-
-void tournerDroite()
-{
-  Serial.println("Je tourne l tête à droite");
-  localPositionServoMoteur -= 45;
-  myservo.write(localPositionServoMoteur);
-  server.send(302, "text/plain", "");
-}
-
-void tournerGauche()
-{
-  Serial.println("Je tourne la tête à gauche");
-  localPositionServoMoteur += 45;
-  myservo.write(localPositionServoMoteur);
-  server.send(302, "text/plain", "");
-}
-
-void setup()
-{
-  // Code exécuté une seule fois au démarrage
-  Serial.begin(115200);
-  if (initWifi("Livebox-Libon", "LibonadeForEver"))
-  {
-    Serial.print("Connectez vous a : ");
-    Serial.println(getIpAdresse());
-  }
-
-  myservo.attach(SERVO);
-  localPositionServoMoteur = 0;
-  myservo.write(localPositionServoMoteur);
-  server.on("/tournerDroite", tournerDroite);
-  server.on("/tournerGauche", tournerGauche);
-}
-
-void loop()
-{
-  // Code effectué en boucle
-  refreshWifi();
-}
-```
-
-[TODO: A partir de là, relire et ajuster en fonction des composants dispos]
-
 
 # Construire votre projet 
 
-[TODO:Copier sur chaque iMac le prijet vide]
+Maintenant que vous avez appris à utiliser chacun des capteurs, vous allez pouvoir continuer à utiliser le projet `MonSuperProjet`. Nous vous recommandons de créer le code de chacque capteur dans un fichier propre à celui-ci et d'appeler les fonctions dans `main.cpp`, ceci rendra votre code plus clair. Vous trouverez un exemple d'architecture de code dans le projet `CodeDeReference`.
 
-Maintenant que vous avez appris à utiliser chacun des capteurs, vous allez pouvoir utiliser le projet `MonSuperProjet`, chaque capteur y a son code déjà écrit dans le dossier `lib`. Vous pourrez donc utiliser seulement ceux qui vous intéressent.
-
-Maintenant, c'est à vous de choisir ce que vous voulez faire comme projet avec le matériel précédemment présenté :
-* Un lecteur MP3 pilotable à distance
-* Une station météo connectée
-* Un radio-reveil connecté
-
-Ou encore un mix de tout ça.
-
-Pour commencer on va utiliser le moniteur série pour contrôler et récupérer les informations. En faisant cela vous aurez créé une [Interface de programmation](https://fr.wikipedia.org/wiki/Interface_de_programmation) (ou API en anglais)
-
-Voici pour chaque projet certaines choses à ne pas oublier :
-
-### Un lecteur MP3 pilotable à distance
-
-Comme dans l'exemple du module MP3 vous allez définir une liste de commande à taper pour contrôler le lecteur.
-
-Programme Arduino :
-* gérer le module MP3
-* pouvoir régler le volume avec le potentiomètre
-* pouvoir passer à la chanson suivante/précédente avec l'encodeur rotatif
-* pouvoir mettre en pause/lecture la chanson courante avec le bouton de l'encodeur rotatif (ou le gros bouton)
-
-Données à remonter sur le moniteur série toutes les X secondes :
-* volume courant
-* état du lecteur (pause ou lecture)
-
-Commandes à distance :
-* pause/lecture
-* chanson suivante
-* chanson précédente
-* régler le volume
-
-
-### Une station météo connectée
-
-Programme Arduino :
-* récupérer les données de température/humidité/pression atmosphérique
-* analyser ces données pour définir la méteo : beau temps/nuaugeux/pluvieux/nuit
-* afficher la méteo sur la matrice de DEL ou sur l'écran
-
-Données à remonter sur le moniteur série toutes les X secondes :
-* température
-* taux d'humidité
-* pression atmosphérique
-
-Commandes à distance :
-* Eteindre/Allumer le(s) écran(s)
-
-
-### Un radio-reveil connecté
-
-
-Programme Arduino :
-* gérer l'horloge
-* stocker l'heure du réveil
-* quand l'heure du réveil arrive, faire du son (buzzer ou lecteur MP3) et allumer la DEL du bouton
-* quand l'alarme est active et qu'on appuie sur le bouton, on arrête l'alarme
-    
-Données à remonter sur le moniteur série toutes les X secondes :
-* heure et date courante
-* heure du reveil
-* état du réveil (actif ou inactif)
-
-Commandes à distance :
-* Régler la date et l'heure
-* Activer/désactiver le reveil
-* Régler l'heure du réveil
- 
-
----
-## Préparer la communication entre l'Arduino et le Wemos
-
-Maintenant que vous avez définit l'interface de programmation de votre projet via le moniteur série, on va pouvoir passer à l'étape suivante.
-
-Pour que votre projet soit "connecté" il faut pouvoir communiquer avec lui (et de préférence sans fil). Ici on a le choix dans les protocoles : LoRa, bluetooth, Z-Wave, ZigBee, Wifi ...
-
-Dans cette session on va utiliser le Wifi via une carte WeMos D1 R1. Cette carte contient un [ESP8266](https://fr.wikipedia.org/wiki/ESP8266) qui permet de gérer facilement une connexion Wifi. Ce type de carte contient aussi assez de mémoire et de puissance de calcul pour héberger un mini [serveur Web](https://fr.wikipedia.org/wiki/Serveur_web).
-
-On va continuer à utiliser l'IDE Arduino pour programmer le Wemos, mais il va falloir installer tout l'environnement (cette partie est déjà réalisée sur les ordinateurs fournis) :
-* Allez dans "Fichier/Préférences" et placez l’URL https://arduino.esp8266.com/stable/package_esp8266com_index.json dans « URL de gestionnaire de cartes supplémentaires
-* Allez dans "Outils/Type de carte/Gestionnaire de carte", rechercher « esp8266 » et installer la dernière version proposée.
-* Branchez le Wemos sur votre ordinateur avec le cable USB
-* Sélectionnez le nouveau port dans "Outils/ports"
-* Sélectionnez "WeMos D1 R1" dans "Outils/Type de carte"
-* Ouvrez le moniteur série et vérifiez que la vitesse de communication est bien toujours égale à *9600 baud* (menu en bas à droite de la fenêtre).
-
-Modifiez les déclarations de STASSID et STAPSK selon les paramètres de votre box et téléversez le programme suivant :
-```C
-#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-#include <ESP8266WebServer.h>
-#include <SoftwareSerial.h>
-
-#ifndef STASSID
-#define STASSID "NomReseauWifi"
-#define STAPSK  "MotDePasse"
-#endif
-
-const char* ssid     = STASSID;
-const char* password = STAPSK;
-
-ESP8266WiFiMulti WiFiMulti;
-ESP8266WebServer server(80);
-
-void handleRoot() {
-  server.send(200, "text/html", "<h1>Bienvenue</h1>");
-}
-
-void setup() {
-  Serial.begin(9600);
-
-  // On essaye de se connecter au réseau Wifi
-  WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP(ssid, password);
-
-  Serial.println();
-  Serial.println();
-  Serial.print("Wait for WiFi... ");
-  while (WiFiMulti.run() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-
-  server.on("/", handleRoot);
-  server.begin();
-
-  delay(500);
-}
-
-void loop() {
-  server.handleClient();
-}
-```
-
-Ouvrez le moniteur série, vous devriez voir apparaître les lignes suivantes :
-```
-WiFi connected
-IP address:
-192.168.1.XX
-```
-
-Notez cette dernière adresse (192.168.1.XX ou XX doit être un nombre de 0 à 255) et copiez-la dans un navigateur Web sur votre PC. Vous devriez voir apparaître le mot "Bienvenue". Vous pouvez essayer la même manipulation depuis votre téléphone portable s'il est connecté au même réseau Wifi.
-
-Modifiez le code précédent pour afficher une autre phrase.
- 
-Pour le moment notre petit serveur Web ne sait gérer que les requêtes appelant la page racine ("/"). On va faire en sorte qu'il puisse répondre à l'interrogation de la page "/IP" :
-    
-```C
-#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-#include <ESP8266WebServer.h>
-#include <SoftwareSerial.h>
-
-
-#ifndef STASSID
-#define STASSID "NomReseauWifi"
-#define STAPSK  "MotDePasse"
-#endif
-
-const char* ssid     = STASSID;
-const char* password = STAPSK;
-
-ESP8266WiFiMulti WiFiMulti;
-ESP8266WebServer server(80);
-
-void handleRoot() {
-  server.send(200, "text/html", "<h1>Bienvenue</h1>");
-}
-
-void displayIP() {
-  String ip = WiFi.localIP().toString();
-  server.send(200, "text/html", ip);
-}
-
-void setup() {
-  Serial.begin(9600);
-
-  // On essaye de se connecter au réseau Wifi
-  WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP(ssid, password);
-
-  Serial.println();
-  Serial.println();
-  Serial.print("Wait for WiFi... ");
-  while (WiFiMulti.run() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-
-  server.on("/", handleRoot);
-  server.on("/IP", displayIP);
-
-  server.begin();
-
-  delay(500);
-}
-
-void loop() {
-  server.handleClient();
-}
-```
-Retournez sur votre navigateur et tapez l'URL http://192.168.1.XX/IP vous devriez voir apparaître l'adresse IP de votre WeMos.
-
-Modifiez le code précédent pour afficher d'autres pages.
-
-On va maintenant utiliser le moniteur série pour modifier une variable que l'on affichera sur le serveur Web :
-```C
-#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-#include <ESP8266WebServer.h>
-#include <SoftwareSerial.h>
-
-
-#ifndef STASSID
-#define STASSID "NomReseauWifi"
-#define STAPSK  "MotDePasse"
-#endif
-
-const char* ssid     = STASSID;
-const char* password = STAPSK;
-
-ESP8266WiFiMulti WiFiMulti;
-ESP8266WebServer server(80);
-
-void setup() {
-  Serial.begin(9600);
-
-  // On essaye de se connecter au réseau Wifi
-  WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP(ssid, password);
-
-  Serial.println();
-  Serial.println();
-  Serial.print("Wait for WiFi... ");
-  while (WiFiMulti.run() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-
-  server.on("/", handleRoot);
-  server.on("/IP", displayIP);
-  server.on("/temperature", displayTemp);
-  
-  server.begin();
-
-  delay(500);
-}
-
-String getKey(String str) {
-  return str.substring(0, str.indexOf('='));
-}
-
-String getValue(String str) {
-  return str.substring(str.indexOf('=') + 1);
-}
-
-String temp="22";
-void handleRoot() {
-  server.send(200, "text/html", "<h1>Bienvenue</h1>");
-}
-
-void displayIP() {
-  String ip = WiFi.localIP().toString();
-  server.send(200, "text/html", ip);
-}
-
-void displayTemp() {
-  server.send(200, "text/html", temp);
-}
-
-void loop() {
-  server.handleClient();
-  
-  while (Serial.available() > 0) {
-    String line = Serial.readStringUntil('\n');// read the incoming data as string
-    line.trim();
-    if (getKey(line) == "temperature") {
-      temp=getValue(line);
-    }
-  }
-  
-}
-```
-
-Ici quand on tape dans le moniteur série "temperature=XX" on devrait voir la valeur de la page /temperature changer.
-
-On va maintenant voir comment on peut changer une variable du WeMos depuis l'appel d'une page du serveur Web. Pour cela on va utiliser la propriété des URL qui permet de passer des paramètres au serveur Web.
-
-Il faut pour cela ajouter à la fin de notre URL ?XXX=YYY, ou XXX correspond au nom de notre variable et YYY à sa valeur.
-
-Dans nos projets on ne gérera pas plus d'un paramètre, dans le code ci-dessous on ne fait donc pas attention au nom du paramètre :
-
-```C
-#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-#include <ESP8266WebServer.h>
-#include <SoftwareSerial.h>
-
-
-#ifndef STASSID
-#define STASSID "NomReseauWifi"
-#define STAPSK  "MotDePasse"
-#endif
-
-const char* ssid     = STASSID;
-const char* password = STAPSK;
-
-ESP8266WiFiMulti WiFiMulti;
-ESP8266WebServer server(80);
-
-void setup() {
-  Serial.begin(9600);
-
-  // On essaye de se connecter au réseau Wifi
-  WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP(ssid, password);
-
-  Serial.println();
-  Serial.println();
-  Serial.print("Wait for WiFi... ");
-  while (WiFiMulti.run() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-
-  server.on("/", handleRoot);
-  server.on("/IP", displayIP);
-  server.on("/temperature", displayTemp);
-  server.on("/mp3/volume", setMP3Volume);
-  
-  
-  server.begin();
-
-  delay(500);
-}
-
-String getKey(String str) {
-  return str.substring(0, str.indexOf('='));
-}
-
-String getValue(String str) {
-  return str.substring(str.indexOf('=') + 1);
-}
-
-String temp="22";
-int volume=10;
-
-void handleRoot() {
-  server.send(200, "text/html", "<h1>Bienvenue</h1>");
-}
-
-void displayIP() {
-  String ip = WiFi.localIP().toString();
-  server.send(200, "text/html", "IP="+ip);
-}
-
-void setMP3Volume() {
-  // On récupére la première valeur passée en paramètre de la page
-  // ex ?volume=22 ... normalement on devrait vérifier que le server.argName(0) vaut bien "volume"
-  // Mais comme on n'aura qu'un seul paramètre sur nos projets on ignore cette phase.
-  String volumeStr = server.arg(0);
-  if (volumeStr != "") {
-    volume = volumeStr.toInt();
-    Serial.print("volume=");
-    Serial.println(volume);
-  }
-  server.send(200, "text/html", "volume="+String(volume));
-}
-
-void displayTemp() {
-  server.send(200, "text/html", "temperature="+temp);
-}
-
-void loop() {
-  server.handleClient();
-  
-  while (Serial.available() > 0) {
-    String line = Serial.readStringUntil('\n');// read the incoming data as string
-    line.trim();
-    if (getKey(line) == "temperature") {
-      temp=getValue(line);
-    }
-  }
-  
-}
-```
-
-Si vous allez sur la page /mp3/volume vous devriez voir la valeur actuelle du volume (par défaut égale à 10). Si vous allez sur la page /mp3/volume?volume=20 vous devriez voir apparaître la nouvelle valeur. Un nouvel appel à /mp3/volume vous confirmera que vous avez bien changé la valeur de la variable "volume" dans votre programme.
-
----
-
-## Connecter le Wemos sur l'Arduino
-
-Grâce aux étapes précédentes nous sommes maintenant en mesure de faire en sorte que notre WeMos puisse récupérer et envoyer des informations sur l'Arduino.
-
-Pour cela on va connecter le WeMos afin qu'il puisse utiliser les interfaces de programmation que vous avez définies sur l'Arduino via le moniteur série.
-
-On va donc connecter 2 broches du WeMos sur le port série de l'Arduino. Pour cela on va devoir utiliser un convertisseur de niveau. En effet le WeMos utilise une tension de 3.3V pour communiquer alors que l'Arduino utilise une tension de 5V.
-
-![level](https://ae01.alicdn.com/kf/HTB1z3ifLpXXXXa5XXXXq6xXFXXXq/Convertisseur-de-niveau-logique-haute-vitesse-bidirectionnelle-3-3-V-5-V-4-Chanels.jpg)
-
-Repérez sur le *shield* arduino la ligne de broches **RX TX 5V GND** (au dessus de la ligne I2C) et détachez un groupe de 4 fils :
-* Branchez un fil entre la broche **5V** du convertisseur sur la broche **5V** sur l'Arduino
-* Branchez un fil entre la broche **GND** (sous la broche **5V**) du convertisseur sur la broche **GND** sur l'Arduino
-* Branchez un fil entre la broche **A4** du convertisseur sur la broche **TX** sur l'Arduino
-* Branchez un fil entre la broche **A3** du convertisseur sur la broche **RX** sur l'Arduino
-
-Détachez un groupe de 2 fils :
-* Branchez un fil entre la broche **3.3V** du convertisseur sur une des broches **3V3** de l'Arduino
-* Branchez un fil entre la broche **GND** (sous la broche **3.3V**) du convertisseur sur une des broches **GND** (sous la broche **3V3** précédemment connectée) de l'Arduino.
-
-Détachez un groupe de 2 fils de la même couleurs que ceux brancher sur les broches **A4** et **A3** du convertisseur :
-* Branchez le fil de la même couleur que celui partant de **A4** entre la broche **B4** du convertisseur sur la broche **D6** du WeMos
-* Branchez un fil de la même couleur que celui partant de **A3** entre la broche **B3** du convertisseur sur la broche **D5** du WeMos
-
-Détachez un groupe de 2 fils :
-* Branchez un fil entre la broche **V** du port **0** de l'Arduino sur la broche **5V** du WeMos
-* Branchez un fil entre la broche **G** du port **0** de l'Arduino sur la broche **G** du WeMos
-
-Téléversez le programme suivant :
-    
-```C
-#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-#include <ESP8266WebServer.h>
-#include <SoftwareSerial.h>
-
-#ifndef STASSID
-#define STASSID "NomReseauWifi"
-#define STAPSK  "MotDePasse"
-#endif
-
-#define RX D6
-#define TX D5
-SoftwareSerial arduino(RX, TX);
-ESP8266WiFiMulti WiFiMulti;
-ESP8266WebServer server(80);
-
-const char* ssid     = STASSID;
-const char* password = STAPSK;
-
-void setup() {
-  Serial.begin(9600);
-  arduino.begin(9600);
-
-  // On essaye de se connecter au réseau Wifi
-  WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP(ssid, password);
-
-  Serial.println();
-  Serial.println();
-  Serial.print("Wait for WiFi... ");
-  while (WiFiMulti.run() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-
-  server.on("/", handleRoot);
-  server.on("/IP", displayIP);
-  server.on("/temperature", displayTemp);
-  server.on("/mp3/volume", setMP3Volume);
-  server.on("/mp3/play", playMP3);
-  server.on("/mp3/pause", pauseMP3);
-  server.on("/mp3/next", nextMP3);
-  server.on("/mp3/previous", previousMP3);
-  server.on("/image", setImage);
-
-  server.begin();
-
-  delay(500);
-}
-
-String getKey(String str) {
-  return str.substring(0, str.indexOf('='));
-}
-
-String getValue(String str) {
-  return str.substring(str.indexOf('=') + 1);
-}
-
-
-int temperature = 0;
-int volume = 10;
-
-void handleRoot() {
-  // Sur la page d'accueil on ajoute des liens (HTML) pour contrôler notre Arduino
-  server.send(200, "text/html", "<h1>Bienvenue</h1>"
-              "<hr>"
-              "<a href='/mp3/play'>MP3 : lancer</a><br>"
-              "<a href='/mp3/pause'>MP3 : pause</a><br>"
-              "<a href='/mp3/next'>MP3 : chanson suivante</a><br>"
-              "<a href='/mp3/previous'>MP3 : chanson precedente</a><br>"
-              "<a href='/mp3/volume'>MP3 : recuperer volume</a><br>"
-              "<a href='/mp3/volume?volume=25'>MP3 : mettre volume a 25</a><br>"
-              "<a href='/mp3/volume?volume=10'>MP3 : mettre volume a 10</a><br>"
-              "<hr>"
-              "<a href='/image?image='>image : aucune</a><br>"              
-              "<a href='/image?image=coeur'>image : coeur</a><br>"
-              "<a href='/image?image=smiley'>image : smiley</a><br>"              
-              "<a href='/image?image=pluie'>image : pluie</a><br>"
-              "<a href='/image?image=soleil'>image : soleil</a><br>"
-              "<a href='/image?image=nuage'>image : nuage</a><br>"
-              "<a href='/image?image=nuit'>image : nuit</a><br>"
-              "<hr>"              
-              "<a href='/temperature'>Recuperer temperature</a><br>"
-             );
-}
-
-void displayIP() {
-  String ip = WiFi.localIP().toString();
-  server.send(200, "text/html", "IP=" + ip);
-}
-
-void setImage() {
-  String image = server.arg(0);
-  arduino.print("image=");
-  arduino.println(image);
-  server.send(200, "text/html", "image="+image);  
-}
-
-void setMP3Volume() {
-  // On récupère la première valeur passée en paramètre de la page
-  // ex ?volume=22 ... normalement on devrait vérifier que le server.argName(0) vaut bien "volume"
-  // Mais comme on n'aura qu'un seul paramètre sur nos projets on ignore cette phase.
-  String volumeStr = server.arg(0);
-  if (volumeStr != "") {
-    volume = volumeStr.toInt();
-    arduino.print("volume=");
-    arduino.println(volume);
-  }
-  server.send(200, "text/html", "volume=" + String(volume));
-}
-
-void playMP3() {
-  arduino.println("lecture");
-  server.send(200, "text/html", "mp3=lecture");
-}
-
-void pauseMP3() {
-  arduino.println("pause");
-  server.send(200, "text/html", "mp3=pause");
-}
-
-void nextMP3() {
-  arduino.println("suivante");
-  server.send(200, "text/html", "mp3=suivante");
-}
-
-void previousMP3() {
-  arduino.println("precedente");
-  server.send(200, "text/html", "mp3=precedente");
-}
-
-
-void displayTemp() {
-  server.send(200, "text/html", "temperature=" + String(temperature));
-}
-
-void loop() {
-  // Ici on peut récupérer les lignes venant de l'Arduino
-  while (arduino.available()) {
-    String line = arduino.readStringUntil('\n');
-    line.trim();
-    Serial.print("received:<");
-    Serial.print(line);
-    Serial.println(">");
-    if (getKey(line) == "temp") {
-      temperature = getValue(line).toInt();
-    } else if (getKey(line) == "volume") {
-      volume = getValue(line).toInt();
-    }
-  }
-  // Si on écrit des lignes dans le moniteur série on les envoie sur l'Arduino
-  while (Serial.available() > 0) {
-    arduino.write(Serial.read());
-  }
-  server.handleClient();
-
-}
-
-```
-
-Vous devriez voir apparaître des lignes venant de votre Arduino dans le moniteur série. Toutes les lignes écrites dans le moniteur série seront envoyées vers l'Arduino. Faites quelques essais pour vérifier que vous pouvez bien piloter votre Arduino depuis le WeMos.
-
-**Remarques importantes** :
-* Vous pouvez brancher l'Arduino et le WeMos sur le même PC. Pensez juste à changer le port et le type de carte avant de téléverser vos programmes.
-* Si vous voulez changer votre programme Arduino quand ce dernier est connecté au WeMos vous aurez des problèmes durant le téléversement. En effet le fait que le WeMos soit connecté sur les ports RX et TX de l'Arduino perturbe le téléversement. Il faut donc débrancher les cables reliant les ports RX/TX de l'Arduino et D5/D6 du WeMos. Le plus simple est donc de débrancher 2 fils au niveau du convertisseur de niveau (broches A4/A3 ou B3/B4). Le fait de choisir des couleurs identiques pour ces fils vous permettra de les rebrancher facilement quand votre programme Arduino sera finalisé. 
-* Rappel : Attention à ne pas mettre trop de luminosité sur la matrice de DEL. Si trop de courant passe par l'Arduino ce dernier peut "cramer". Quand on veut mettre la luminosité à fond il faut alimenter la matrice via une alimentation externe.
-
----
-
-## Décrire les interfaces Web
-
-A vous maintenant de mettre en place les pages Web qui vont permettre de piloter votre projet.
-
+Maintenant, c'est à vous de choisir ce que vous voulez faire comme projet avec le matériel précédemment présenté. Votre mission, si vous l'acceptez, est de **créer un objet connecté fun pour les ados**.
 
 ---
 
 ## La suite
 
-
-Vous allez maintenant utiliser AppInventor afin de contrôler votre projet depuis une application mobile.
+Vous allez maintenant utiliser AppInventor afin de contrôler votre projet depuis une application mobile. Pour faire communiquer votre application mobile avec l'ESP32, vous vous référerez à la fiche [Créer un serveur web](./documentation/CreerUnServeurWeb.md)
 
 
 
