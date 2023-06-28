@@ -1,6 +1,7 @@
 # Initiation à la programmation Arduino et ESP32
 
 
+[TOC]
  
 ---
 
@@ -86,6 +87,7 @@ Jouez avec la valeur inscrite dans les fonctions `delay` pour la faire clignoter
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 
 #define LED1 5
 
@@ -113,6 +115,7 @@ Prenez le feu tricolore présent dans votre kit. Détachez un groupe de 4 fils :
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 
 #define GREEN_PIN 5
 #define YELLOW_PIN 4
@@ -197,6 +200,7 @@ Téléversez le code suivant :
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 
 #define trigPin 32
 #define echoPin 33
@@ -250,6 +254,8 @@ Téléversez le programme suivant et regardez le terminal (en bas de votre écra
     
 ```C
 #include <Arduino.h>
+#include <Wire.h>
+
 #define BUTTON_CLICK 34
 
 void setup() {
@@ -278,6 +284,7 @@ Téléversez le programme suivant :
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 
 #define BUTTON_LED 21
 #define BUTTON_CLICK 34
@@ -317,6 +324,7 @@ Téléversez le programme suivant et vérifiez que les valeurs s'affichent bien 
     
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 
 #define POTAR 34
 
@@ -355,6 +363,7 @@ Téléversez le programme suivant :
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 #include <Servo.h>
 
 #define SERVO 23
@@ -391,6 +400,7 @@ Travail complémentaire : Faire tourner le servomoteur à partir de la valeur d'
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 #include "Servo.h"
 #define SERVO 23
 #define POTAR 34
@@ -425,7 +435,7 @@ Il va nous permettre ici de brancher plusieurs composants supportant la norme I�
 Pour brancher votre bus :
 * le fil GND sur la broche GND à droite de la carte
 * le fil VCC sur la broche VCC à droite de la carte
-* le fil SVA sur la broche D21
+* le fil SDA sur la broche D21
 * le fil SCL sur la broche D22
 
 
@@ -449,6 +459,8 @@ Téléversez le programme suivant :
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
+
 #include <LiquidCrystal_I2C.h>
 #define i2cDisplayPort 0x3F
 LiquidCrystal_I2C lcd(i2cDisplayPort,16,2);
@@ -503,6 +515,7 @@ Téléversez le programme suivant :
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 #include <DHT.h>
 
 #define DHT_PIN 18
@@ -548,7 +561,9 @@ Téléversez le programme suivant :
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 #include <TM1637Display.h>
+
 #define TM1637_CLK 26
 #define TM1637_DIO 27
 
@@ -579,6 +594,8 @@ En combinant ce code avec celui de l'horloge interne on peut afficher l'heure co
 #include <Wire.h>
 #include <RTClib.h>
 #include <TM1637Display.h>
+#include <Wire.h>
+
 #define TM1637_CLK 12
 #define TM1637_DIO 13
 
@@ -738,6 +755,7 @@ Téléversez le programme suivant :
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
+#include <Wire.h>
 
 #define DFPLAYER_RX 16 // RX2
 #define DFPLAYER_TX 17 // TX2
@@ -1010,6 +1028,7 @@ Téléversez le code suivant :
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 
 #define PIN_DETECT_MOUV 15
 
@@ -1042,6 +1061,7 @@ Téléversez le code suivant :
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 
 #define LDR 34
 
@@ -1101,6 +1121,7 @@ Il faut brancher les broches R,G et B de la DEL sur des ports PWM de l'Arduino (
 
 ```C
 #include <Arduino.h>
+#include <Wire.h>
 
 #define RED 2
 #define BLUE 5
@@ -1151,6 +1172,8 @@ Branchez le câble du moteur pas-à-pas sur la carte de contrôle. Détachez un 
 ```C
 #include <Arduino.h>
 #include <AccelStepper.h>
+#include <Wire.h>
+
 #define motorPin1  19
 #define motorPin2  26
 #define motorPin3  25
@@ -1179,10 +1202,13 @@ Dans le code précédent à chaque appel à la fonction ***runToNewPosition*** l
 ```C
 #include <Arduino.h>
 #include <AccelStepper.h>
+#include <Wire.h>
+
 #define motorPin1  19
 #define motorPin2  26
 #define motorPin3  25
 #define motorPin4  12
+
 AccelStepper stepper(
     AccelStepper::HALF4WIRE,
     motorPin1, motorPin3,
