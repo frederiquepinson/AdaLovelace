@@ -816,7 +816,41 @@ void loop() {
 }
 ```
 
+---
 
+## Détecter un son
+
+Le détecteur de som permet d'obtenir le niveau de son proche du capteur.
+![détecteur de son](https://arduino-france.site/wp-content/uploads/2021/05/son.jpg)
+
+Pour le connecter, détacher un lot de 3 fils:
+* Branchez la broche **VCC** du capteur sur la broche **V** du pin D34
+* Branchez la broche **GND** du capteur sur la broche **G** du pin D34
+* Branchez la broche **OUT** du capteur sur la broche **S** du pin D34
+
+Téléversez le code suivant sur la carte, tapez dans vos mains et observez le terminal. 
+```cpp
+#include <Arduino.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
+#include <Wire.h>
+
+#define SOUND_DETECTOR 34
+
+void setup(){
+  Serial.begin(115200);
+  pinMode( SOUND_DETECTOR, INPUT);  
+}
+
+void loop(){
+  int val_analog = analogRead(SOUND_DETECTOR);
+
+  if(val_analog > 0) {
+	Serial.print(val_analog);
+	Serial.println("\tClap !");
+  }
+}
+```
 
 ---
 
