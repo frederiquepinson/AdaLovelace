@@ -20,11 +20,11 @@ On peut étendre les capacités de l'Arduino en y branchant des composants, par 
 
 Chaque composant a besoin d'être alimenté : branché sur une source de tension (5V ou 3.3V) et une masse (GND) pour fonctionner. Pour renvoyer des informations (si c'est un capteur) ou en recevoir (par ex un servo-moteur), il faut aussi le brancher sur une (ou plusieurs) broche(s) de l'Arduino. Cela lui permet de communiquer avec ce dernier.
 
-Le plus simple est d'utiliser un "shield" (bouclier), permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. L'ESP32 est déjà branché sur ce support, en faisant en sorte que le port USB de la carte soit du même côté que la grosse prise noire du bouclier. 
+Pour cet atelier, nous allons utiliser une carte ESP32, qui est un Arduino qui fait aussi wifi.
 
-Pour cet atelier, nous allons utiliser une carte ESP32, qui fonctionne de la même manière que la carte arduino présentée ci-dessus.
+Pour brancher beaucoup de composants à la fois, le plus simple est d'utiliser un support, permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. L'ESP32 est déjà branché sur ce support.
 
-Ci-dessous une photo d'un ESP32 et de son shield:
+Ci-dessous une photo d'un ESP32 et de son support :
 
 ![esp32](https://ae01.alicdn.com/kf/Scfc6c936aeff4a88b459059ae75d01e4e/Carte-de-d-veloppement-ESP32-TYPE-C-USB-CH340C-WiFi-Bluetooth-ultra-faible-puissance-touristes-Core.jpg_640x640.jpg)
 
