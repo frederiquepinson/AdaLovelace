@@ -20,9 +20,9 @@ On peut étendre les capacités de l'Arduino en y branchant des composants, par 
 
 Chaque composant a besoin d'être alimenté : branché sur une source de tension (5V ou 3.3V) et une masse (GND) pour fonctionner. Pour renvoyer des informations (si c'est un capteur) ou en recevoir (par ex un servo-moteur), il faut aussi le brancher sur une (ou plusieurs) broche(s) de l'Arduino. Cela lui permet de communiquer avec ce dernier.
 
-Pour cet atelier, nous allons utiliser une carte ESP32, qui est une carte de type Arduino qui peut se connecter à un réseau wifi.
+Pour cet atelier, nous allons utiliser une carte ESP32, qui est une carte de type Arduino, et qui peut se connecter à un réseau wifi.
 
-Pour brancher beaucoup de composants à la fois, le plus simple est d'utiliser un support, permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. L'ESP32 est déjà branché sur ce support.
+Pour brancher beaucoup de composants à la fois, le plus simple est d'utiliser un support, permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. L'ESP32 est déjà mis sur ce support et branché sur votre ordinateur.
 
 Ci-dessous une photo d'un ESP32 et de son support :
 
@@ -34,7 +34,7 @@ Ci-dessous une photo d'un ESP32 et de son support :
 
 ## Maintenant, un peu de programmation !
 
-Ouvrez le dossier `stage_ada` en haut à gauche sur le bureau du Mac, puis double-cliquez sur le fichier `.workspace` pour ouvrir votre éditeur Visual Studio Code préconfiguré.
+Ouvrez le dossier `stage_ada` en haut à gauche sur le bureau du ordinateur, puis double-cliquez sur le fichier `.workspace` pour ouvrir votre éditeur Visual Studio Code préconfiguré.
 
 Cette documentation contient des exemples de programmes pour chaque capteur présent dans votre bac. Si vous cherchez un capteur précis, consultez le sommaire : cliquez sur l'icône à gauche du nom "README.md" pour choisir la partie qui vous intéresse.
 
