@@ -1,10 +1,6 @@
 # Initiation à la programmation Arduino et ESP32
-
-
-[TOC]
  
 ---
-
 
 ## Avant de commencer
 
@@ -550,13 +546,12 @@ Ce capteur un peu similaire au précédent permet d'obtenire des informations co
 
 ![BME280](https://ae01.alicdn.com/kf/H27728a1f54904ad38bd28f9e6ab87a40X/Capteur-num-rique-de-temp-rature-et-d-humidit-capteur-de-pression-barom-trique-module-de.jpg_Q90.jpg_.webp)
 
-Pour utiliser ce capteur, on va venir détacher un groupe de 4 fils et branchez les comme suit sur la rampe I²C (En bas a droite de votre shield).
+Pour utiliser ce capteur, détachez un groupe de 4 fils pour les brancher sur la rampe I²C (en bas à droite de votre shield).
 
-Détachez un groupe de 4 fils :
-* Branchez un fil entre la broche ***SCL*** de l'écran et la broche ***SCL*** (D22) de votre rampe I²C
-* Branchez un fil entre la broche ***SDA*** de l'écran et la broche ***SDA*** (D21) de votre rampe I²C
-* Branchez un fil entre la broche ***GND*** de l'écran et la broche ***GND*** de votre rampe I²C
-* Branchez un fil entre la broche ***VCC*** de l'écran et la broche ***5V*** de votre rampe I²C
+* Branchez un fil entre la broche **SCL** de l'écran et la broche **SCL** (D22) de votre rampe I²C
+* Branchez un fil entre la broche **SDA** de l'écran et la broche **SDA** (D21) de votre rampe I²C
+* Branchez un fil entre la broche **GND** de l'écran et la broche **GND** de votre rampe I²C
+* Branchez un fil entre la broche **VCC** de l'écran et la broche **VCC** de votre rampe I²C
 
 ```cpp
 #include <Arduino.h>
