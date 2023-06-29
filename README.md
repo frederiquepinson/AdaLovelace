@@ -544,7 +544,7 @@ Travail complémentaire : afficher sur l'écran LCD la température (sur la prem
 
 ---
 
-## Récupérer la qualité de l'air (I²C)
+## Mesurer la qualité de l'air (I²C)
 
 On va maintenant se servir d'un capteur CJMCU-811 pour avoir des informations sur la qualité de l'air dans la salle, notamment le taux de CO2 et la présence de composés organiques volatiles (TVOC).
 
