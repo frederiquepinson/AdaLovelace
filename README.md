@@ -10,10 +10,6 @@ Nous avons déjà téléchargé l'environnement de développement (IDE) Platform
 
 Ce n'est pas un cours d'électronique : nous passons donc sous silence un grand nombre de termes afin de pouvoir programmer rapidement un objet fonctionnel.
 
-Si ce n'est pas déjà fait, commencez par ouvrir le dossier `stage_ada` en haut à gauche sur le bureau du Mac, puis double-cliquez sur le fichier `.workspace` pour ouvrir votre éditeur Visual Studio Code configuré.
-
-La documentation que vous lisez ici contient des codes pour l'ensemble des capteurs disponibles dans vos bacs. Si vous devez aller à un endroit précis, le site sur lequel est la documentation propose un sommaire : vous pouvez cliquer sur l'icône à gauche du nom "README.md" pour choisir la partie qui vous intéresse.
-
 ---
 
 ## Présentation de l'Arduino et de l'ESP32
@@ -38,18 +34,11 @@ Ci-dessous une photo d'un ESP32 et de son shield:
 
 ## Configuration du projet
 
-Pour programmer l'ESP32, il suffit de le brancher en utilisant le port USB-C sur la carte (non pas sur le shield) sur un des ports USB de votre ordinateur.  
+Si ce n'est pas déjà fait, commencez par ouvrir le dossier `stage_ada` en haut à gauche sur le bureau du Mac, puis double-cliquez sur le fichier `.workspace` pour ouvrir votre éditeur Visual Studio Code configuré.
+
+Cette documentation contient des mini-programmes pour chaque capteur présent dans votre bac. Si vous devez aller à un endroit précis, le site sur lequel est la documentation propose un sommaire : vous pouvez cliquer sur l'icône à gauche du nom "README.md" pour choisir la partie qui vous intéresse.
 
 Le projet `MonSuperProjet` dans lequel vous pouvez copier le code de la documentation est ouvert dans Visual Studio Code.
-Afin de le faire fonctionner, il faut indiquer au projet sur quelle prise USB est branchée la carte. 
-
-Dans Visual Studio Code, cliquez sur la petite maison en bas à gauche, puis allez dans l'onglet devices pour la connaître.
-
-![petite maison](./documentation/assets/PIOHome.jpg)
-![port](./documentation/assets/PIOHome-devices.jpg)
-
-Ensuite, dans le fichier `platformio.ini` à la racine de votre projet, remplacez les champs `upload_port` et `monitor_port` par le port où est branchée votre carte.
-![platformio.ini](./documentation/assets/initFile.jpg)
 
 Maintenant que la carte est correctement branchée, vous pouvez commencer à programmer dans le fichier `main.cpp` dans le dossier `src`. Vous trouverez tous les codes dans cette documentation, vous aurez juste à les copier-coller et les coller à la place du contenu du `main.cpp`.
 ![main](./documentation/assets/mainCPP.jpg) 
