@@ -449,7 +449,7 @@ Détachez un groupe de 4 fils :
 * Branchez un fil entre la broche **SCL** de l'écran et la broche **SCL** (D22) de votre rampe I²C
 * Branchez un fil entre la broche **SDA** de l'écran et la broche **SDA** (D21) de votre rampe I²C
 * Branchez un fil entre la broche **GND** de l'écran et la broche **GND** de votre rampe I²C
-* Branchez un fil entre la broche **VCC** de l'écran et la broche **5V** de votre rampe I²C
+* Branchez un fil entre la broche **VCC** de l'écran et la broche **VCC** de votre rampe I²C
 
 Téléversez le programme suivant :
 
@@ -542,7 +542,7 @@ Travail complémentaire : afficher sur l'écran LCD la température (sur la prem
 
 ## Récupérer la pression atmosphérique, l'altitude et la température
 
-Ce capteur un peu similaire au précédent permet d'obtenire des informations concernant la pression atmosphérique, l'altitude et la température.
+Ce capteur un peu similaire au précédent permet d'obtenir des informations concernant la pression atmosphérique, l'altitude et la température.
 
 ![BME280](https://ae01.alicdn.com/kf/H27728a1f54904ad38bd28f9e6ab87a40X/Capteur-num-rique-de-temp-rature-et-d-humidit-capteur-de-pression-barom-trique-module-de.jpg_Q90.jpg_.webp)
 
