@@ -12,7 +12,7 @@ Ce n'est pas un cours d'électronique : nous passons donc sous silence un grand 
 
 ---
 
-## Présentation de l'Arduino et de l'ESP32
+## Présentation de l'ESP32
 
 L'Arduino est une carte construite autour d'un microcontrôleur qui peut être programmé pour analyser et produire des signaux électriques de manière à effectuer des tâches très diverses comme la domotique (le contrôle des appareils domestiques - éclairage, chauffage…), le pilotage d'un robot, de l'informatique embarquée, etc.
 
@@ -32,7 +32,7 @@ Ci-dessous une photo d'un ESP32 et de son support :
 
 ---
 
-## Configuration du projet
+## Ouverture du projet
 
 Si ce n'est pas déjà fait, commencez par ouvrir le dossier `stage_ada` en haut à gauche sur le bureau du Mac, puis double-cliquez sur le fichier `.workspace` pour ouvrir votre éditeur Visual Studio Code configuré.
 
@@ -41,6 +41,7 @@ Cette documentation contient des mini-programmes pour chaque capteur présent da
 Le projet `MonSuperProjet` dans lequel vous pouvez copier le code de la documentation est ouvert dans Visual Studio Code.
 
 Maintenant que la carte est correctement branchée, vous pouvez commencer à programmer dans le fichier `main.cpp` dans le dossier `src`. Vous trouverez tous les codes dans cette documentation, vous aurez juste à les copier-coller et les coller à la place du contenu du `main.cpp`.
+
 ![main](./documentation/assets/mainCPP.jpg) 
 
 
