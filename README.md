@@ -1199,55 +1199,51 @@ void loop() {
 
 ---
 
-## Utiliser des leds neopixel
+## Utiliser des LEDs Neopixel
 
-Vous pouvez utiliser des leds neoPixel soit en anneau, soit en baton
+En dehors de la matrice, vous aurez aussi à disposition un afficheur circulaire ainsi qu'une barre de LEDs. Les deux afficheurs fonctionnent avec le même code, la seule différence est le nombre de LEDs qui est à changer dans la variable `NUMPIXELS`.
 
-cf photos 
+![Neopixel rond](https://www.kiwi-electronics.com/image/cache/catalog/product/hwix6vhy/ADA-1643_0-1532x1022h.jpg)
 
+![Neopixel barre](https://www.gotronic.fr/ar-stick-neopixel-rgb-8-leds-ada1426-22886.jpg)
 
+Détachez un groupe de 3 fils  :
+* Branchez un fil entre la broche **DIN** de l'afficheur et la broche **S** du port D12
+* Branchez un fil entre la broche **5V** de l'afficheur et la broche **V** du port D12
+* Branchez un fil entre la broche **GND** de l'afficheur et la broche **G** du port D12
 
-```
+Téléversez le code suivant :
+
+```cpp
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
 
+#define PIN 12 // Broche où le Neopixel est branché
 
-// Which pin on the Arduino is connected to the NeoPixels?
-#define PIN        12 
 
-// How many NeoPixels are attached to the Arduino?
-#define NUMPIXELS 8 
+#define NUMPIXELS 8 // Nombre de pixels (8 ou 16 à adapter)
 
-// When setting up the NeoPixel library, we tell it how many pixels,
-// and which pin to use to send signals. Note that for older NeoPixel
-// strips you might need to change the third parameter -- see the
-// strandtest example for more information on possible values.
 Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 
-#define DELAYVAL 500 // Time (in milliseconds) to pause between pixels
+#define DELAYVAL 500 // Pause entre l'allumage des pixels
 
 void setup() {
-  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
+  pixels.begin();
 }
 
 void loop() {
-  pixels.clear(); // Set all pixel colors to 'off'
+  pixels.clear();
 
-  // The first NeoPixel in a strand is #0, second is 1, all the way up
-  // to the count of pixels minus one.
-  for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
+  for(int i=0; i<NUMPIXELS; i++) { // Pour chaque pixel...
+    pixels.setPixelColor(i, pixels.Color(0, 150, 0)); // Ce sont des couleurs RGB, de 0,0,0 à 255,255,255
+    pixels.show(); // On affiche l'éclairage pour le pixel en question
 
-    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
-    // Here we're using a moderately bright green color:
-    pixels.setPixelColor(i, pixels.Color(0, 150, 0));
-
-    pixels.show();   // Send the updated pixel colors to the hardware.
-
-    delay(DELAYVAL); // Pause before next pass through loop
+    delay(DELAYVAL); // Pause avant la prochaine LED
   }
 }
 ```
+
 ---
 
 
