@@ -1,18 +1,22 @@
 # Initiation à la programmation Arduino et ESP32
- 
+
 ---
 
 ## Avant de commencer
 
-Nous allons télécharger l'environnement de développement (IDE) Platform.IO sur Visual Studio Code. S'il n'est pas installé, vous pouvez le télécharger ici : 
+Nous avons déjà téléchargé l'environnement de développement (IDE) Platform.IO sur Visual Studio Code. Pour votre culture personnelle, les outils sont téléchargeables ici :
 - https://code.visualstudio.com/
 - https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide
 
 Ce n'est pas un cours d'électronique : nous passons donc sous silence un grand nombre de termes afin de pouvoir programmer rapidement un objet fonctionnel.
 
+Si ce n'est pas déjà fait, commencez par ouvrir le dossier `stage_ada` en haut à gauche sur le bureau du Mac, puis double-cliquez sur le fichier `.workspace` pour ouvrir votre éditeur Visual Studio Code configuré.
+
+La documentation que vous lisez ici contient des codes pour l'ensemble des capteurs disponibles dans vos bacs. Si vous devez aller à un endroit précis, le site sur lequel est la documentation propose un sommaire : vous pouvez cliquer sur l'icône à gauche du nom "README.md" pour choisir la partie qui vous intéresse.
+
 ---
 
-## Présentation de l'Arduino
+## Présentation de l'Arduino et de l'ESP32
 
 L'Arduino est une carte construite autour d'un microcontrôleur qui peut être programmé pour analyser et produire des signaux électriques de manière à effectuer des tâches très diverses comme la domotique (le contrôle des appareils domestiques - éclairage, chauffage…), le pilotage d'un robot, de l'informatique embarquée, etc.
 
@@ -20,19 +24,7 @@ On peut étendre les capacités de l'Arduino en y branchant des composants, par 
 
 Chaque composant a besoin d'être alimenté : branché sur une source de tension (5V ou 3.3V) et une masse (GND) pour fonctionner. Pour renvoyer des informations (si c'est un capteur) ou en recevoir (par ex un servo-moteur), il faut aussi le brancher sur une (ou plusieurs) broche(s) de l'Arduino. Cela lui permet de communiquer avec ce dernier.
 
-Ci-dessous une photo d'un Arduino Nano:
-
-![arduino](https://ae01.alicdn.com/kf/HTB11nPYOpXXXXbOapXXq6xXFXXXN/225552329/HTB11nPYOpXXXXbOapXXq6xXFXXXN.jpg?size=144900&height=1000&width=1000&hash=f5fd08d9de92dc32c720726cd0ea707a)
-
-Le plus simple est d'utiliser un "shield" (bouclier) permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. Branchez l'Arduino sur le bouclier en faisant en sorte que le port USB de l'Arduino soit du même côté que la grosse prise noire du bouclier.
-
-Ci-dessous une photo d'un shield d'Arduino Nano:
-
-![arduino](https://ae01.alicdn.com/kf/HTB1EhFHb2NNTKJjSspeq6ySwpXaU.jpg)
-
-
-
-## Présentation de l'ESP32
+Le plus simple est d'utiliser un "shield" (bouclier), permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. L'ESP32 est déjà branché sur ce support, en faisant en sorte que le port USB de la carte soit du même côté que la grosse prise noire du bouclier. 
 
 Pour cet atelier, nous allons utiliser une carte ESP32, qui fonctionne de la même manière que la carte arduino présentée ci-dessus.
 
@@ -44,9 +36,11 @@ Ci-dessous une photo d'un ESP32 et de son shield:
 
 ---
 
-Si vous voulez apprendre à créer un projet à partir de zéro avec un ESP32 et des capteurs, allez au document [Initialisation d'un projet](./documentation/VotrePremierProjet.md).
+## Configuration du projet
 
-Sinon ouvrez le projet `MonSuperProjet` dans Visual Studio Code.
+Pour programmer l'ESP32, il suffit de le brancher en utilisant le port USB-C sur la carte (non pas sur le shield) sur un des ports USB de votre ordinateur.  
+
+Le projet `MonSuperProjet` dans lequel vous pouvez copier le code de la documentation est ouvert dans Visual Studio Code.
 Afin de le faire fonctionner, il faut indiquer au projet sur quelle prise USB est branchée la carte. 
 
 Dans Visual Studio Code, cliquez sur la petite maison en bas à gauche, puis allez dans l'onglet devices pour la connaître.
@@ -57,25 +51,26 @@ Dans Visual Studio Code, cliquez sur la petite maison en bas à gauche, puis all
 Ensuite, dans le fichier `platformio.ini` à la racine de votre projet, remplacez les champs `upload_port` et `monitor_port` par le port où est branchée votre carte.
 ![platformio.ini](./documentation/assets/initFile.jpg)
 
-Maintenant que la carte est correctement branchée, vous pouvez commencer à programmer dans le fichier `main.cpp` dans le dossier `src`
+Maintenant que la carte est correctement branchée, vous pouvez commencer à programmer dans le fichier `main.cpp` dans le dossier `src`. Vous trouverez tous les codes dans cette documentation, vous aurez juste à les copier-coller et les coller à la place du contenu du `main.cpp`.
 ![main](./documentation/assets/mainCPP.jpg) 
 
 
-# Jouons avec un feu tricolore !
+## Jouons avec un feu tricolore !
+
 Pour commencer à s'amuser avec l'ESP32, prenons une DEL (par la suite nous utiliserons le feu tricolore).
 
-## On commence par apprendre à allumer la lumière...
+### On commence par apprendre à allumer la lumière...
 
 La DEL (ou LED en anglais) est un composant simple s'allumant quand elle reçoit du courant. Nous allons commencer par brancher une DEL sur notre Arduino. Pour cela prenez 2 fils.
 
-Les DEL ont des tensions précises de fonctionnement (entre 2.2V et 3V selon leur couleur) mais les broches de l'Arduino fournissent du +5V, il faut donc réduire l'alimentation des DEL en utilisant une résistance. Pour gagner du temps nous allons brancher directement nos DEL. Cela va réduire leur durée de vie mais dans le cadre de ce TP ça ne sera pas gênant.
+Les DEL ont des tensions précises de fonctionnement mais les broches de l'Arduino fournissent du +5V, il faut donc réduire l'alimentation des DEL en utilisant une résistance. Les fils sont normalement déjà branchés sur la LED, voici comment les brancher sur la carte maintenant :
 
+* Branchez un fil entre la patte courte de la DEL et la broche **G** du port **D5** de l'ESP32
+* Branchez un fil entre la patte longue de la DEL et la broche **S** du port **D5** de l'ESP32
 
-* Branchez un fil entre la patte courte de la DEL et la broche G du port D5 de l'ESP32
-* Branchez un fil entre la patte longue de la DEL et la broche S du port D5 de l'ESP32
+Pour téléverser le programme suivant, il y a tout en bas de votre fenêtre une flèche vers la droite, cliquez dessus :
 
-
-Téléversez le programme suivant sur l'ESP32, cliquez sur l'icône en forme de tête de fourmi (menu PlatformIO à gauche de l'IDE), puis sur 'Upload and Monitor'. 
+![televerser](documentation/assets/televerser.jpg)
 
 La DEL devrait clignoter !
 
@@ -98,7 +93,7 @@ void loop() {
 }
 ```
 
-## Et maintenant le feu de circulation !
+### Et maintenant le feu de circulation !
 
 Prenez le feu tricolore présent dans votre kit. Détachez un groupe de 4 fils :
 
@@ -140,7 +135,8 @@ void loop() {
 ```
 
 ---
-# Un peu de théorie : Analyse d'un  programme Arduino
+
+## Un peu de théorie : Analyse d'un  programme Arduino
 
 
 Tous les programmes Arduino doivent respecter cette structure :
@@ -160,7 +156,6 @@ void setup() {
 
 
 void loop() {
-
     // Cette fonction sera appelée continuellement après le setup
     // Pour déboguer, la liaison série est pratique :
 
@@ -169,16 +164,15 @@ void loop() {
     // La fonction "delay(X)" permet de mettre en pause le programme pendant X ms
 
     delay(200);
-
 }
 ```
 ---
 
-# Ouvrons la caverne d'AliBaba ...
+## Ouvrons la caverne d'AliBaba ...
 
 Voici la liste des composants Arduino avec lesquels vous pourrez construire votre projet, avec le code exemple à utiliser pour les faire fonctionner.
 
-## Mesurer une distance avec des ultrasons
+### Mesurer une distance avec des ultrasons
 
 On peut utiliser un capteur ultrason (HR-SR04) pour mesurer une distance. On envoie des ondes sonores (inaudibles) vers un obstacle et on mesure le temps qui s'écoule avant de les recapter. À partir de la mesure de ce temps écoulé on peut, grâce à la connaissance de la vitesse du son dans l'air, estimer la distance entre le capteur et l'objet devant lui.
 
@@ -232,7 +226,7 @@ Travail complémentaire : faire un radar de recul. Selon la distance de l'obstac
 
 ---
 
-## Utiliser un bouton
+### Utiliser un bouton
 
 On va utiliser ici un bouton un peu particulier :
 
@@ -247,7 +241,7 @@ Récupérer les 2 fils issus de la partie centrale du bouton (le bloc rouge et n
 * Branchez l'autre fil sur la broche **S** du port 34
 
 Téléversez le programme suivant et regardez le terminal (en bas de votre écran) :
-    
+
 ```C
 #include <Arduino.h>
 #include <Wire.h>
@@ -300,11 +294,11 @@ void loop() {
 }
 ```
 Quand vous appuierez sur le bouton, la DEL devrait s'allumer.
-    
+
 
 ---
 
-## Utiliser un potentiomètre
+### Utiliser un potentiomètre
 
 Ce composant permet d'avoir une valeur analogique comprise entre 0 et 1023 selon la position du curseur.
 
@@ -312,12 +306,12 @@ Ce composant permet d'avoir une valeur analogique comprise entre 0 et 1023 selon
 
 
 Détachez un groupe de 3 fils. On va brancher les fils du côté "A" :
-* Branchez un fil entre la broche OUT (à gauche) du potentiomètre et la broche ***S*** du port D34
-* Branchez un fil entre la broche du milieu du potentiomètre et la broche ***G*** du port D34
-* Branchez un fil entre la broche de droite du potentiomètre et la broche ***V*** du port D34
+* Branchez un fil entre la broche OUT (à gauche) du potentiomètre et la broche **S** du port D34
+* Branchez un fil entre la broche du milieu du potentiomètre et la broche **G** du port D34
+* Branchez un fil entre la broche de droite du potentiomètre et la broche **V** du port D34
 
 Téléversez le programme suivant et vérifiez que les valeurs s'affichent bien sur le terminal :
-    
+
 ```C
 #include <Arduino.h>
 #include <Wire.h>
@@ -344,16 +338,16 @@ Travail complémentaire : Faire varier le temps de clignotement d'une DEL avec l
 
 ---
 
-## Faire tourner un servomoteur
+### Faire tourner un servomoteur
 
 Un servomoteur est un petit moteur pouvant tourner précisément sur 180°.
 
 ![servo](https://www.electronicaembajadores.com/datos/fotos/articulos/grandes/mm/mmsv/mmsv002.jpg)
 
 Branchez directement la prise du servomoteur sur le port D23 de l'Arduino en faisant attention à ce que :
-* le fil marron soit sur la broche ***G*** du port D23, 
-* le fil rouge sur la broche ***V*** du port D23,
-* le fil orange sur la broche ***S*** du port D23
+* le fil marron soit sur la broche **G** du port D23, 
+* le fil rouge sur la broche **V** du port D23,
+* le fil orange sur la broche **S** du port D23
 
 Téléversez le programme suivant : 
 
@@ -422,7 +416,7 @@ void loop() {
 
 ---
 
-## Le Bus I²C
+### Le Bus I²C
 
 Le bus I²C permet de brancher plusieurs composants (esclaves) sur l'Arduino (maître). Vous trouverez plus d'informations sur  [la page Wikipédia sur le sujet](https://fr.wikipedia.org/wiki/I2C).
 
@@ -437,7 +431,7 @@ Pour brancher votre bus :
 
 ---
 
-## Afficher des informations sur un écran LCD I²C
+### Afficher des informations sur un écran LCD I²C
 
 Les écrans LCD permettent d'afficher des informations facilement. La version présentée ici utilise une interface I²C.
 
@@ -489,11 +483,9 @@ void loop() {
 
 Vérifiez le contraste de l'écran : ce dernier doit s'allumer au démarrage. Si vous ne voyez rien, pas de panique c'est peut-être tout simplement parce que le contraste est mal réglé. Pour changer ce paramètre il suffit de tourner le petit potentiomètre derrière l'écran avec un tournevis cruciforme jusqu'à obtenir un bon contraste entre l'affichage des caractères et le fond de l'écran.
 
-
 ---
 
-
-## Récupérer l'humidité et la température (I²C)
+### Récupérer l'humidité et la température (I²C)
 
 On va utiliser un composant I²C DHT11 afin de récupérer des informations sur la température et l'humidité.
 
@@ -502,10 +494,9 @@ Afin de gérer ce composant vous aurez besoin d'une nouvelle bibliothèque, elle
 ![bmc](https://ae01.alicdn.com/kf/Sf37a4d7f3bb24c0da6fbb12684680656c/KY-015-DHT-11-DHT11-Num-rique-Temp-rature-Et-Humidit-Relative-Capteur-Tech-PCB-pour.jpg_Q90.jpg_.webp)
 
 Détachez un groupe de 4 fils :
-* Branchez un fil entre la broche ***+*** du capteur et la broche ***V*** du pin D18
-* Branchez un fil entre la broche ***Out*** du capteur et la broche ***S*** du pin D18
-* Branchez un fil entre la broche ***-*** du capteur et la broche ***GND*** du pin D18
-
+* Branchez un fil entre la broche **+** du capteur et la broche **V** du pin D18
+* Branchez un fil entre la broche **Out** du capteur et la broche **S** du pin D18
+* Branchez un fil entre la broche **-** du capteur et la broche **GND** du pin D18
 
 Téléversez le programme suivant :
 
@@ -540,7 +531,7 @@ Travail complémentaire : afficher sur l'écran LCD la température (sur la prem
 
 ---
 
-## Récupérer la pression atmosphérique, l'altitude et la température
+### Récupérer la pression atmosphérique, l'altitude et la température
 
 Ce capteur un peu similaire au précédent permet d'obtenir des informations concernant la pression atmosphérique, l'altitude et la température.
 
@@ -605,7 +596,7 @@ void loop()
 
 ---
 
-## Mesurer la qualité de l'air (I²C)
+### Mesurer la qualité de l'air (I²C)
 
 On va maintenant se servir d'un capteur CJMCU-811 pour avoir des informations sur la qualité de l'air dans la salle, notamment le taux de CO2 et la présence de composés organiques volatiles (TVOC).
 
@@ -614,11 +605,11 @@ Afin de gérer ce composant vous aurez besoin d'une nouvelle bibliothèque, elle
 ![capteur co2](https://arduino.blaisepascal.fr/wp-content/uploads/2021/09/CCS811.png)
 
 Détachez un groupe de 5 fils :
-* Branchez un fil entre la broche ***WAK*** du capteur et la broche ***GND*** de votre rampe I²C (le bloc de 4*2 pins en bas à droite de votre shield)
-* Branchez un fil entre la broche ***GND*** du capteur et la broche ***GND*** de votre rampe I²C
-* Branchez un fil entre la broche ***VCC*** du capteur et la broche ***VCC*** de votre rampe I²C
-* Branchez un fil entre la broche ***SDA*** du capteur et la broche ***D21*** de votre rampe I²C
-* Branchez un fil entre la broche ***SCL*** du capteur et la broche ***D22*** de votre rampe I²C
+* Branchez un fil entre la broche **WAK** du capteur et la broche **GND** de votre rampe I²C (le bloc de 4*2 pins en bas à droite de votre shield)
+* Branchez un fil entre la broche **GND** du capteur et la broche **GND** de votre rampe I²C
+* Branchez un fil entre la broche **VCC** du capteur et la broche **VCC** de votre rampe I²C
+* Branchez un fil entre la broche **SDA** du capteur et la broche **D21** de votre rampe I²C
+* Branchez un fil entre la broche **SCL** du capteur et la broche **D22** de votre rampe I²C
 
 
 Téléversez le programme suivant :
@@ -681,7 +672,7 @@ void loop()
 
 ---
 
-## Afficher l'heure sur un écran 4*7 segments
+### Afficher l'heure sur un écran 4*7 segments
 
 Un afficheur 4*7 segments permet d'afficher l'heure de façon claire (visible de loin).
 ![tm](https://ae01.alicdn.com/kf/HTB1N13if0fJ8KJjy0Feq6xKEXXaO/4-LED-num-rique-0-56-Tube-d-affichage-d-cimal-7-Segments-TM1637-horloge-Double.jpg)
@@ -816,11 +807,9 @@ void loop() {
 }
 ```
 
-
-
 ---
 
-## Jouer de la musique (MP3)
+### Jouer de la musique (MP3)
 
 Nous allons utiliser un module DFPLayer afin de lire des MP3 depuis une carte micro-SD.
 
@@ -865,7 +854,7 @@ Chanson 0005 :
 
 
 Insérez la carte micro-SD dans le module.
-    
+
 Une nouvelle fois, une bibliothèque a été rajoutée dans votre fichier de configuration.
 
 
@@ -1050,10 +1039,9 @@ Vous pouvez contrôler la lecture avec les commandes suivantes depuis le termina
 * [+ or -] baisser/augmenter le volume
 * [< or >] piste précédente/suivante
 
-
 ---
 
-## Utiliser une matrice à DEL
+### Utiliser une matrice à DEL
 
 Vous pouvez utiliser la matrice à DEL (8*8) pour afficher des messages ou des icônes.
 
@@ -1149,7 +1137,7 @@ void loop() {
 
 ---
 
-## Utiliser des LEDs Neopixel
+### Utiliser des LEDs Neopixel
 
 En dehors de la matrice, vous aurez aussi à disposition un afficheur circulaire ainsi qu'une barre de LEDs. Les deux afficheurs fonctionnent avec le même code, la seule différence est le nombre de LEDs qui est à changer dans la variable `NUMPIXELS`.
 
@@ -1197,7 +1185,7 @@ void loop() {
 ---
 
 
-## Utiliser un capteur de mouvements
+### Utiliser un capteur de mouvements
 
 On peut détecter des mouvements grace au capteur suivant. 
 
@@ -1230,7 +1218,9 @@ void loop() {
 }
 ```
 
-## Utiliser un capteur de luminosité (LDR)
+---
+
+### Utiliser un capteur de luminosité (LDR)
 
 On peut mesurer la luminosité ambiante grâce à une [photorésistance](https://fr.wikipedia.org/wiki/Photor%C3%A9sistance) (*Light Dependent Resistor*, *LDR* ou *photoresistor* en anglais). 
 
@@ -1292,17 +1282,17 @@ void loop() {
 
 ---
 
-## DEL RVB
+### DEL RVB
 
 Une DEL RVB (Rouge, Vert, Bleu ou RGB en anglais pour Red, Green, Blue) permet de choisir la couleur de la lumière. Chaque composante de la lumière (rouge, verte et bleue) peut prendre une valeur de 0 à 255. 
 
 ![rgb led](https://ae01.alicdn.com/kf/HTB1j1U4XhuaVKJjSZFjq6AjmpXar.jpg)
 
 Il faut brancher les broches R,G et B de la DEL sur des ports PWM de l'Arduino (typiquement les ports D2, D4, D5). Détachez un groupe de 4 fils :
-* Branchez un fil entre la broche ***G*** de la DEL sur la broche ***S*** du port D4
-* Branchez un fil entre la broche ***B*** de la DEL sur la broche ***S*** du port D5
-* Branchez un fil entre la broche ***R*** de la DEL sur la broche ***S*** du port D2
-* Branchez un fil entre la broche ***-*** de la DEL sur la broche ***G*** du port D2, D4 ou D5
+* Branchez un fil entre la broche **G** de la DEL sur la broche **S** du port D4
+* Branchez un fil entre la broche **B** de la DEL sur la broche **S** du port D5
+* Branchez un fil entre la broche **R** de la DEL sur la broche **S** du port D2
+* Branchez un fil entre la broche **-** de la DEL sur la broche **G** du port D2, D4 ou D5
 
 ```C
 #include <Arduino.h>
@@ -1331,7 +1321,7 @@ void loop() {
 
 ---
 
-## Moteur pas-à-pas 
+### Moteur pas-à-pas 
 
 Vous n'aurez normalement pas besoin de ce composant pour votre projet, mais voici tout de même sa documentation si vous voulez l'utiliser plus tard.
 
@@ -1343,16 +1333,16 @@ Un moteur pas-à-pas permet de gérer des rotations précises ([documentation](h
 
 Une nouvelle fois, une bibliothèque a été ajoutée à votre projet.
 
-Branchez le câble du moteur pas-à-pas sur la carte de contrôle. Détachez un groupe de 4 fils pour les broches ***IN*** et un groupe de 2 fils pour les broches ***-*** et ***+***: 
-* Branchez un fil entre la broche ***IN1*** du contrôleur et la broche ***S*** du port ***D19*** de l'Arduino
-* Branchez un fil entre la broche ***IN2*** du contrôleur et la broche ***S*** du port ***D26*** de l'Arduino
-* Branchez un fil entre la broche ***IN3*** du contrôleur et la broche ***S*** du port ***D25*** de l'Arduino
-* Branchez un fil entre la broche ***IN4*** du contrôleur et la broche ***S*** du port ***D12*** de l'Arduino
-* Branchez un fil entre la broche ***-*** du contrôleur et la broche ***GND*** (à gauche du shield) de l'Arduino
-* Branchez un fil entre la broche ***+*** du contrôleur et la broche ***5V*** (à gauche du shield) de l'Arduino
+Branchez le câble du moteur pas-à-pas sur la carte de contrôle. Détachez un groupe de 4 fils pour les broches **IN** et un groupe de 2 fils pour les broches **-** et **+**: 
+* Branchez un fil entre la broche **IN1** du contrôleur et la broche **S** du port **D19** de l'Arduino
+* Branchez un fil entre la broche **IN2** du contrôleur et la broche **S** du port **D26** de l'Arduino
+* Branchez un fil entre la broche **IN3** du contrôleur et la broche **S** du port **D25** de l'Arduino
+* Branchez un fil entre la broche **IN4** du contrôleur et la broche **S** du port **D12** de l'Arduino
+* Branchez un fil entre la broche **-** du contrôleur et la broche **GND** (à gauche du shield) de l'Arduino
+* Branchez un fil entre la broche **+** du contrôleur et la broche **5V** (à gauche du shield) de l'Arduino
 
 
-### Mode bloquant
+#### Mode bloquant
 
 ```C
 #include <Arduino.h>
@@ -1380,9 +1370,9 @@ void loop() {
 ```
 
 
-### Mode non-bloquant
+#### Mode non-bloquant
 
-Dans le code précédent à chaque appel à la fonction ***runToNewPosition*** le programme attend la fin de la rotation du moteur pour exécuter la ligne de code suivante. Voici ici un exemple de code permettant de faire tourner le moteur sans bloquer le programme :
+Dans le code précédent à chaque appel à la fonction **runToNewPosition** le programme attend la fin de la rotation du moteur pour exécuter la ligne de code suivante. Voici ici un exemple de code permettant de faire tourner le moteur sans bloquer le programme :
 
 ```C
 #include <Arduino.h>
@@ -1427,8 +1417,7 @@ void loop() {
 
 ---
 
-
-# Construire votre projet 
+## Construire votre projet 
 
 Maintenant que vous avez appris à utiliser chacun des capteurs, vous allez pouvoir continuer à utiliser le projet `MonSuperProjet`. Nous vous recommandons de créer le code de chacque capteur dans un fichier propre à celui-ci et d'appeler les fonctions dans `main.cpp`, ceci rendra votre code plus clair. Vous trouverez un exemple d'architecture de code dans le projet `CodeDeReference`.
 
@@ -1439,6 +1428,8 @@ Maintenant, c'est à vous de choisir ce que vous voulez faire comme projet avec 
 ## La suite
 
 Vous allez maintenant utiliser AppInventor afin de contrôler votre projet depuis une application mobile. Pour faire communiquer votre application mobile avec l'ESP32, vous vous référerez à la fiche [Créer un serveur web](./documentation/CreerUnServeurWeb.md)
+
+Si vous voulez apprendre à créer un projet à partir de zéro avec un ESP32 et des capteurs, allez au document [Initialisation d'un projet](./documentation/VotrePremierProjet.md).
 
 
 
