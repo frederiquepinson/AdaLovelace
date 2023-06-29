@@ -36,11 +36,9 @@ Ci-dessous une photo d'un ESP32 et de son support :
 
 Ouvrez le dossier `stage_ada` en haut à gauche sur le bureau du ordinateur, puis double-cliquez sur le fichier `.workspace` pour ouvrir votre éditeur Visual Studio Code préconfiguré.
 
-Cette documentation contient des exemples de programmes pour chaque capteur présent dans votre bac. Si vous cherchez un capteur précis, consultez le sommaire : cliquez sur l'icône à gauche du nom "README.md" pour choisir la partie qui vous intéresse.
+Visual Studio s'ouvre sur le projet `MonSuperProjet` que vous allez modifier pour utiliser les capteurs.
 
-Le projet `MonSuperProjet` dans lequel vous pouvez copier le code de la documentation est ouvert dans Visual Studio Code.
-
-Vous pouvez commencer à programmer dans le fichier `main.cpp` dans le dossier `src`. Vous trouverez tous les codes dans cette documentation, vous aurez juste à les copier-coller et les coller à la place du contenu du `main.cpp`.
+Vous pouvez commencer à programmer dans le fichier `main.cpp` dans le dossier `src`. Vous trouverez ci-après des exemples de programmes pour chaque capteur présent dans votre bac, et vous aurez juste à les copier puis les coller à la place du contenu du `main.cpp`.
 
 ![main](./documentation/assets/mainCPP.jpg) 
 
