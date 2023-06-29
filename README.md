@@ -1,10 +1,6 @@
 # Initiation à la programmation Arduino et ESP32
-
-
-[TOC]
  
 ---
-
 
 ## Avant de commencer
 
@@ -240,7 +236,7 @@ Travail complémentaire : faire un radar de recul. Selon la distance de l'obstac
 
 On va utiliser ici un bouton un peu particulier :
 
-![bouton led](https://ae01.alicdn.com/kf/HTB1EpxhdRfM8KJjSZFhq6ARyFXad/Bouton-d-arcade-5-couleurs-lumi-re-LED-lampe-60-MM-45-MM-grand-rond-Arcade.jpg)
+![bouton led](https://ae01.alicdn.com/kf/H06cb732ee0ca4c56a8931455be4378dce/5-pi-ces-R16-503-interrupteur-bouton-cl-avec-lumi-re-jog-reset-interrupteur-autobloquant-rond.jpg_Q90.jpg_.webp)
 
 Ce bouton intègre une DEL en plus d'un contact on/off. N'hésitez pas à démonter le bouton pour voir la DEL intégrée.
 
@@ -450,10 +446,10 @@ Ces écrans nécessitent une bibliothèque particulière qui est déjà configur
 ![lcd](https://ae01.alicdn.com/kf/HTB1lQ0qu9BYBeNjy0Feq6znmFXas/10-pcs-SAMIORE-ROBOT-LCD1602-I2C-LCD-1602-module-cran-Bleu-IIC-I2C-pour-LCD1602-Adaptateur.jpg_640x640.jpg)
 
 Détachez un groupe de 4 fils :
-* Branchez un fil entre la broche ***SCL*** de l'écran et la broche ***SCL*** de votre rampe I²C
-* Branchez un fil entre la broche ***SDA*** de l'écran et la broche ***SDA*** de votre rampe I²C
-* Branchez un fil entre la broche ***GND*** de l'écran et la broche ***GND*** de votre rampe I²C
-* Branchez un fil entre la broche ***VCC*** de l'écran et la broche ***5V*** de votre rampe I²C
+* Branchez un fil entre la broche **SCL** de l'écran et la broche **SCL** (D22) de votre rampe I²C
+* Branchez un fil entre la broche **SDA** de l'écran et la broche **SDA** (D21) de votre rampe I²C
+* Branchez un fil entre la broche **GND** de l'écran et la broche **GND** de votre rampe I²C
+* Branchez un fil entre la broche **VCC** de l'écran et la broche **VCC** de votre rampe I²C
 
 Téléversez le programme suivant :
 
@@ -592,6 +588,122 @@ void setup()
 
   float temp = ccs.calculateTemperature();
   ccs.setTempOffset(temp - 25.0);
+  
+=======
+
+## Récupérer la pression atmosphérique, l'altitude et la température
+
+Ce capteur un peu similaire au précédent permet d'obtenir des informations concernant la pression atmosphérique, l'altitude et la température.
+
+![BME280](https://ae01.alicdn.com/kf/H27728a1f54904ad38bd28f9e6ab87a40X/Capteur-num-rique-de-temp-rature-et-d-humidit-capteur-de-pression-barom-trique-module-de.jpg_Q90.jpg_.webp)
+
+Pour utiliser ce capteur, détachez un groupe de 4 fils pour les brancher sur la rampe I²C (en bas à droite de votre shield).
+
+* Branchez un fil entre la broche **SCL** de l'écran et la broche **SCL** (D22) de votre rampe I²C
+* Branchez un fil entre la broche **SDA** de l'écran et la broche **SDA** (D21) de votre rampe I²C
+* Branchez un fil entre la broche **GND** de l'écran et la broche **GND** de votre rampe I²C
+* Branchez un fil entre la broche **VCC** de l'écran et la broche **VCC** de votre rampe I²C
+
+```cpp
+#include <Arduino.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
+
+Adafruit_BME280 bme; // I2C
+
+void setup()
+{
+    // put your setup code here, to run once:
+    Serial.begin(115200);
+    int timeoutInitSerial = 100;
+    while (timeoutInitSerial-- > 0)
+    {
+        if (Serial)
+            break;
+        delay(10);
+    }
+    delay(1000);
+    Serial.println(F("BMP280 test"));
+
+    if (!bme.begin(0x76))
+    {
+        Serial.println("Could not find a valid BMP280 sensor, check wiring!");
+        while (1)
+            ;
+    }
+}
+
+void loop()
+{
+    Serial.print("Temperature = ");
+    Serial.print(bme.readTemperature());
+    Serial.println(" *C");
+
+    Serial.print("Pressure = ");
+    Serial.print(bme.readPressure());
+    Serial.println(" Pa");
+
+    Serial.print("Approx altitude = ");
+    Serial.print(bme.readAltitude(1013.25)); // this should be adjusted to your local forcase
+    Serial.println(" m");
+
+    Serial.println();
+    delay(2000);
+}
+```
+
+---
+
+## Mesurer la qualité de l'air (I²C)
+
+On va maintenant se servir d'un capteur CJMCU-811 pour avoir des informations sur la qualité de l'air dans la salle, notamment le taux de CO2 et la présence de composés organiques volatiles (TVOC).
+
+Afin de gérer ce composant vous aurez besoin d'une nouvelle bibliothèque, elle aussi déjà installée dans votre projet.
+
+![capteur co2](https://arduino.blaisepascal.fr/wp-content/uploads/2021/09/CCS811.png)
+
+Détachez un groupe de 5 fils :
+* Branchez un fil entre la broche ***WAK*** du capteur et la broche ***GND*** de votre rampe I²C (le bloc de 4*2 pins en bas à droite de votre shield)
+* Branchez un fil entre la broche ***GND*** du capteur et la broche ***GND*** de votre rampe I²C
+* Branchez un fil entre la broche ***VCC*** du capteur et la broche ***VCC*** de votre rampe I²C
+* Branchez un fil entre la broche ***SDA*** du capteur et la broche ***D21*** de votre rampe I²C
+* Branchez un fil entre la broche ***SCL*** du capteur et la broche ***D22*** de votre rampe I²C
+
+
+Téléversez le programme suivant :
+
+```C
+#include <Arduino.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_CCS811.h>
+
+Adafruit_CCS811 ccs;
+
+void setup()
+{
+  Serial.begin(115200);
+  
+  int timeoutInitSerial = 100;
+  while (timeoutInitSerial-- > 0)
+  {
+    if (Serial)
+      break;
+    delay(10);
+  }
+  delay(1000);
+
+  Serial.println("CCS811 test");
+
+  if (!ccs.begin())
+  {
+    Serial.println("Failed to start sensor! Please check your wiring.");
+  }
+
+  float temp = ccs.calculateTemperature();
+  ccs.setTempOffset(temp - 25.0);
 }
 
 void loop()
@@ -619,7 +731,6 @@ void loop()
 ```
 
 ---
-
 ## Afficher l'heure sur un écran 4*7 segments
 
 Un afficheur 4*7 segments permet d'afficher l'heure de façon claire (visible de loin).
