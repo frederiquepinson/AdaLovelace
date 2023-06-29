@@ -55,8 +55,8 @@ La DEL (ou LED en anglais) est un composant simple s'allumant quand elle reçoit
 
 Les DEL ont des tensions précises de fonctionnement mais les broches de l'Arduino fournissent du +5V, il faut donc réduire l'alimentation des DEL en utilisant une résistance. Les fils sont normalement déjà branchés sur la LED, voici comment les brancher sur la carte maintenant :
 
-* Branchez un fil entre la patte courte de la DEL et la broche **G** du port **D5** de l'ESP32
-* Branchez un fil entre la patte longue de la DEL et la broche **S** du port **D5** de l'ESP32
+* Branchez un fil entre la patte sans résistance de la DEL et la broche **G** du port **D5** de l'ESP32
+* Branchez un fil entre la patte avec résistance de la DEL et la broche **S** du port **D5** de l'ESP32
 
 Pour téléverser le programme suivant, il y a tout en bas de votre fenêtre une flèche vers la droite, cliquez dessus :
 
