@@ -544,6 +544,82 @@ Travail complémentaire : afficher sur l'écran LCD la température (sur la prem
 
 ---
 
+## Récupérer la qualité de l'air (I²C)
+
+On va maintenant se servir d'un capteur CJMCU-811 pour avoir des informations sur la qualité de l'air dans la salle, notamment le taux de CO2 et la présence de composés organiques volatiles (TVOC).
+
+Afin de gérer ce composant vous aurez besoin d'une nouvelle bibliothèque, elle aussi déjà installée dans votre projet.
+
+![capteur co2](https://arduino.blaisepascal.fr/wp-content/uploads/2021/09/CCS811.png)
+
+Détachez un groupe de 5 fils :
+* Branchez un fil entre la broche ***WAK*** du capteur et la broche ***GND*** de votre rampe I²C (le bloc de 4*2 pins en bas à droite de votre shield)
+* Branchez un fil entre la broche ***GND*** du capteur et la broche ***GND*** de votre rampe I²C
+* Branchez un fil entre la broche ***VCC*** du capteur et la broche ***VCC*** de votre rampe I²C
+* Branchez un fil entre la broche ***SDA*** du capteur et la broche ***D21*** de votre rampe I²C
+* Branchez un fil entre la broche ***SCL*** du capteur et la broche ***D22*** de votre rampe I²C
+
+
+Téléversez le programme suivant :
+
+```C
+#include <Arduino.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_CCS811.h>
+
+Adafruit_CCS811 ccs;
+
+void setup()
+{
+  Serial.begin(115200);
+  
+  int timeoutInitSerial = 100;
+  while (timeoutInitSerial-- > 0)
+  {
+    if (Serial)
+      break;
+    delay(10);
+  }
+  delay(1000);
+
+  Serial.println("CCS811 test");
+
+  if (!ccs.begin())
+  {
+    Serial.println("Failed to start sensor! Please check your wiring.");
+  }
+
+  float temp = ccs.calculateTemperature();
+  ccs.setTempOffset(temp - 25.0);
+}
+
+void loop()
+{
+  if (ccs.available())
+  {
+    float temp = ccs.calculateTemperature();
+
+    if (ccs.readData())
+    {
+      Serial.print("CO2: ");
+      Serial.print(ccs.geteCO2());
+      Serial.print("ppm, TVOC: ");
+      Serial.print(ccs.getTVOC());
+      Serial.print("ppb Temp:");
+      Serial.println(temp);
+    }
+    else
+    {
+      Serial.println("Error reading data!");
+    }
+  }
+  delay(500);
+}
+```
+
+---
+
 ## Afficher l'heure sur un écran 4*7 segments
 
 Un afficheur 4*7 segments permet d'afficher l'heure de façon claire (visible de loin).
