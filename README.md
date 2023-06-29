@@ -32,15 +32,15 @@ Ci-dessous une photo d'un ESP32 et de son support :
 
 ---
 
-## Ouverture du projet
+## Maintenant, un peu de programmation !
 
-Si ce n'est pas déjà fait, commencez par ouvrir le dossier `stage_ada` en haut à gauche sur le bureau du Mac, puis double-cliquez sur le fichier `.workspace` pour ouvrir votre éditeur Visual Studio Code configuré.
+Ouvrez le dossier `stage_ada` en haut à gauche sur le bureau du Mac, puis double-cliquez sur le fichier `.workspace` pour ouvrir votre éditeur Visual Studio Code préconfiguré.
 
-Cette documentation contient des mini-programmes pour chaque capteur présent dans votre bac. Si vous devez aller à un endroit précis, le site sur lequel est la documentation propose un sommaire : vous pouvez cliquer sur l'icône à gauche du nom "README.md" pour choisir la partie qui vous intéresse.
+Cette documentation contient des exemples de programmes pour chaque capteur présent dans votre bac. Si vous cherchez un capteur précis, consultez le sommaire : cliquez sur l'icône à gauche du nom "README.md" pour choisir la partie qui vous intéresse.
 
 Le projet `MonSuperProjet` dans lequel vous pouvez copier le code de la documentation est ouvert dans Visual Studio Code.
 
-Maintenant que la carte est correctement branchée, vous pouvez commencer à programmer dans le fichier `main.cpp` dans le dossier `src`. Vous trouverez tous les codes dans cette documentation, vous aurez juste à les copier-coller et les coller à la place du contenu du `main.cpp`.
+Vous pouvez commencer à programmer dans le fichier `main.cpp` dans le dossier `src`. Vous trouverez tous les codes dans cette documentation, vous aurez juste à les copier-coller et les coller à la place du contenu du `main.cpp`.
 
 ![main](./documentation/assets/mainCPP.jpg) 
 
