@@ -67,6 +67,8 @@ Jouez avec la valeur inscrite dans les fonctions `delay` pour la faire clignoter
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define LED1 5
 
@@ -95,6 +97,8 @@ Prenez le feu tricolore présent dans votre kit. Détachez un groupe de 4 fils :
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define GREEN_PIN 5
 #define YELLOW_PIN 4
@@ -180,6 +184,8 @@ Téléversez le code suivant :
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define trigPin 32
 #define echoPin 33
@@ -234,6 +240,8 @@ Téléversez le programme suivant et regardez le terminal (en bas de votre écra
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define BUTTON_CLICK 34
 
@@ -264,6 +272,8 @@ Téléversez le programme suivant :
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define BUTTON_LED 21
 #define BUTTON_CLICK 34
@@ -304,6 +314,8 @@ Téléversez le programme suivant et vérifiez que les valeurs s'affichent bien 
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define POTAR 34
 
@@ -385,6 +397,8 @@ Téléversez le programme suivant :
 #include <Arduino.h>
 #include <Wire.h>
 #include <Servo.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define SERVO 23
 
@@ -422,6 +436,9 @@ Travail complémentaire : Faire tourner le servomoteur à partir de la valeur d'
 #include <Arduino.h>
 #include <Wire.h>
 #include "Servo.h"
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
+
 #define SERVO 23
 #define POTAR 34
 
@@ -480,6 +497,8 @@ Téléversez le programme suivant :
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #include <LiquidCrystal_I2C.h>
 #define i2cDisplayPort 0x3F
@@ -534,6 +553,8 @@ Téléversez le programme suivant :
 #include <Arduino.h>
 #include <Wire.h>
 #include <DHT.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define DHT_PIN 18
 #define DHT_TYPE DHT22 //DHT11 si capteur bleu
@@ -649,6 +670,7 @@ Téléversez le programme suivant :
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_CCS811.h>
+#include <Adafruit_I2CDevice.h>
 
 Adafruit_CCS811 ccs;
 
@@ -721,6 +743,8 @@ Téléversez le programme suivant :
 #include <Arduino.h>
 #include <Wire.h>
 #include <TM1637Display.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define TM1637_CLK 26
 #define TM1637_DIO 27
@@ -753,6 +777,8 @@ En combinant ce code avec celui de l'horloge interne on peut afficher l'heure co
 #include <RTClib.h>
 #include <TM1637Display.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define TM1637_CLK 12
 #define TM1637_DIO 13
@@ -895,6 +921,8 @@ Téléversez le code suivant :
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define PIN_MATRICE     13
 #define NB_LIGNES       8
@@ -990,6 +1018,8 @@ Téléversez le code suivant :
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define PIN 12 // Broche où le Neopixel est branché
 
@@ -1036,6 +1066,8 @@ Téléversez le code suivant :
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define PIN_DETECT_MOUV 15
 
@@ -1071,6 +1103,8 @@ Téléversez le code suivant :
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define LDR 34
 
@@ -1093,6 +1127,10 @@ En combinant ce code avec celui de l'afficheur 4*7 segments, on peut faire un pr
 
 ```C
 #include <TM1637Display.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
+
 #define TM1637_CLK 12
 #define TM1637_DIO 13
 #define LDR A7
@@ -1133,6 +1171,8 @@ Téléversez le code suivant et admirez la LED qui va clignoter :
 ```C
 #include <Arduino.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define RED 2
 #define BLUE 5
@@ -1167,6 +1207,7 @@ Téléversez le code suivant, approchez un élément magnétique du gros carré 
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 int val = 0;
 
@@ -1197,6 +1238,7 @@ Téléversez le code ci-dessous et ajustez si besoin la valeur de la variable `t
 #include <Arduino.h>
 #include <Wire.h>
 #include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 int capacitiveValue = 100;
 int threshold = 66; // Seuil à ajuster
@@ -1246,6 +1288,8 @@ Branchez le câble du moteur pas-à-pas sur la carte de contrôle. Détachez un 
 #include <Arduino.h>
 #include <AccelStepper.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define motorPin1  19
 #define motorPin2  26
@@ -1276,6 +1320,8 @@ Dans le code précédent à chaque appel à la fonction **runToNewPosition** le 
 #include <Arduino.h>
 #include <AccelStepper.h>
 #include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
 
 #define motorPin1  19
 #define motorPin2  26
