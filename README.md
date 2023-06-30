@@ -327,11 +327,11 @@ Travail complémentaire : Faire varier le temps de clignotement d'une DEL avec l
 
 ### Récupérer le niveau d'eau
 
-Un capteur nous permet de récupérer le niveau de l'eau sur une échelle de 0 à 521 lorsque celui-ci est plongé dans un verre par exemple.
+Un capteur nous permet de récupérer le niveau de l'eau sur une échelle de 0 à 521 lorsque celui-ci est plongé dans un verre par exemple. Il peut aussi permettre de mesurer le niveau d'hydratation d'une plante !
 
 ![Water Level Sensor](https://m.media-amazon.com/images/I/51wOYMAkmML._AC_UF1000,1000_QL80_.jpg)
 
-Pour le connecter à l'esp, détachez un groupe de 3 fils : 
+Pour le connecter à l'ESP32, détachez un groupe de 3 fils : 
 * Branchez un cable entre la broche **OUT** du capteur et le pin **S** de la broche **VN** de l'ESP
 * Branchez un cable entre la broche **VCC** du capteur et le pin **VCC** de la broche **D17** de l'ESP
 * Branchez un cable entre la broche **GND** du capteur et le pin **GND** de la broche **D17** de l'ESP
