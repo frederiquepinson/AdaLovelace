@@ -18,7 +18,7 @@ void setup()
 {
   // Code exécuté une seule fois au démarrage
   Serial.begin(115200);
-  initWifi("codingRoom1", "abcd123456789");
+  initWifi("nomDeMaBox", "MotDePasse");
   Serial.print("Connectez vous à : ");
   Serial.println(getIpAdresse());
 }
@@ -81,7 +81,7 @@ void setup()
   // Code exécuté une seule fois au démarrage
   Serial.begin(115200);
   dht.begin();
-  if (initWifi("codingRoom1", "abcd123456789"))
+  if (initWifi("nomDeMaBox", "MotDePasse"))
   {
     Serial.print("Connectez vous a : ");
     Serial.println(getIpAdresse());
@@ -133,7 +133,7 @@ void setup()
 {
   // Code exécuté une seule fois au démarrage
   Serial.begin(115200);
-  if (initWifi("codingRoom1", "abcd123456789"))
+  if (initWifi("nomDeMaBox", "MotDePasse"))
   {
     Serial.print("Connectez vous à : ");
     Serial.println(getIpAdresse());
@@ -219,7 +219,7 @@ void setup()
 {
   // Code exécuté une seule fois au démarrage
   Serial.begin(115200);
-  if (initWifi("codingRoom1", "abcd123456789"))
+  if (initWifi("nomDeMaBox", "MotDePasse"))
   {
     Serial.print("Connectez vous à : ");
     Serial.println(getIpAdresse());
