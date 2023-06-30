@@ -820,10 +820,10 @@ void loop() {
 
 ## Détecter un son
 
-Le détecteur de som permet d'obtenir le niveau de son proche du capteur.
+Le détecteur de son permet d'obtenir le niveau d'un son proche du capteur.
 ![détecteur de son](https://arduino-france.site/wp-content/uploads/2021/05/son.jpg)
 
-Pour le connecter, détacher un lot de 3 fils:
+Pour le connecter, détachez un lot de 3 fils :
 * Branchez la broche **VCC** du capteur sur la broche **V** du pin D34
 * Branchez la broche **GND** du capteur sur la broche **G** du pin D34
 * Branchez la broche **OUT** du capteur sur la broche **S** du pin D34
