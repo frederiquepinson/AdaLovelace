@@ -1187,6 +1187,38 @@ void loop()
 
 ---
 
+### Détecteur de toucher
+
+Tout comme le capteur précédent, un détecteur de toucher est présent directement sur votre ESP32. Il faut simplement prendre un câble mâle-femelle (un trou d'un côté, le fil de l'autre côté) et le brancher sur la broche S des pins D2, D4 ou D15.
+
+Téléversez le code ci-dessous et ajustez si besoin la valeur de la variable `thresold`. Touchez ensuite le fil, et regardez votre terminal.
+
+```cpp
+#include <Arduino.h>
+#include <Wire.h>
+#include <SPI.h>
+
+int capacitiveValue = 100;
+int threshold = 66; // Seuil à ajuster
+
+void setup() {
+    Serial.begin(115200);
+    delay(1000);
+    Serial.println("ESP32 Touch Demo");
+}
+
+void loop() {
+    capacitiveValue = touchRead(4);
+    // Serial.println(capacitiveValue) // Pour déterminer le seuil : décommenter et ne pas toucher le fil, puis ajuster la variable threshold
+    if(capacitiveValue < threshold ){
+        Serial.println("Wire touched");
+        }
+    delay(500);
+}
+```
+
+---
+
 ### Moteur pas-à-pas 
 
 Vous n'aurez normalement pas besoin de ce composant pour votre projet, mais voici tout de même sa documentation si vous voulez l'utiliser plus tard.
