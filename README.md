@@ -325,6 +325,47 @@ Travail complémentaire : Faire varier le temps de clignotement d'une DEL avec l
 
 ---
 
+### Récupérer le niveau d'eau
+
+Un capteur nous permet de récupérer le niveau de l'eau sur une échelle de 0 à 521 lorsque celui-ci est plongé dans un verre par exemple.
+
+![Water Level Sensor](https://m.media-amazon.com/images/I/51wOYMAkmML._AC_UF1000,1000_QL80_.jpg)
+
+Pour le connecter à l'esp, détachez un groupe de 3 fils : 
+* Branchez un cable entre la broche **OUT** du capteur et le pin **S** de la broche **VN** de l'ESP
+* Branchez un cable entre la broche **VCC** du capteur et le pin **VCC** de la broche **D17** de l'ESP
+* Branchez un cable entre la broche **GND** du capteur et le pin **GND** de la broche **D17** de l'ESP
+
+Téléversez le code suivant sur la carte, le niveau de l'eau devrait s'afficher dans le terminal.
+```cpp
+#include <Arduino.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
+#include <Wire.h>
+
+#define POWER_PIN  17 // ESP32 pin GIOP17 connected to sensor's VCC pin
+#define SIGNAL_PIN 36 // ESP32 pin GIOP36 (ADC0) connected to sensor's signal pin
+
+int value = 0; // variable to store the sensor value
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(POWER_PIN, OUTPUT);   // configure pin as an OUTPUT
+  digitalWrite(POWER_PIN, LOW); // turn the sensor OFF
+}
+
+void loop() {
+  digitalWrite(POWER_PIN, HIGH);  // turn the sensor ON
+  delay(10);                      // wait 10 milliseconds
+  value = analogRead(SIGNAL_PIN); // read the analog value from sensor
+  digitalWrite(POWER_PIN, LOW);   // turn the sensor OFF
+
+  Serial.print("The water sensor value: ");
+  Serial.println(value);
+
+  delay(1000);
+}
+```
 ### Faire tourner un servomoteur
 
 Un servomoteur est un petit moteur pouvant tourner précisément sur 180°.
