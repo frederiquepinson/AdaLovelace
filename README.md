@@ -157,7 +157,9 @@ void loop() {
 
 ## Ouvrons la caverne d'AliBaba ...
 
-Voici la liste des composants Arduino avec lesquels vous pourrez construire votre projet, avec le code exemple à utiliser pour les faire fonctionner.
+Voici la liste des composants Arduino avec lesquels vous pourrez construire votre projet, avec le code exemple à utiliser pour les faire fonctionner :
+
+![liste-capteurs](documentation/assets/liste_capteurs.png)
 
 ### Mesurer une distance avec des ultrasons
 
