@@ -601,7 +601,6 @@ Pour utiliser ce capteur, détachez un groupe de 4 fils pour les brancher sur la
 #include <SPI.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
-#include <Adafruit_I2CDevice.h>
 
 Adafruit_BME280 bme; // I2C
 
