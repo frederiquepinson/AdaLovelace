@@ -19,7 +19,7 @@ void setup()
   // Code exécuté une seule fois au démarrage
   Serial.begin(115200);
   initWifi("codingRoom1", "abcd123456789");
-  Serial.print("Connectez vous a : ");
+  Serial.print("Connectez vous à : ");
   Serial.println(getIpAdresse());
 }
 
@@ -115,10 +115,10 @@ int localPositionServoMoteur;
 
 void tournerDroite()
 {
-  Serial.println("Je tourne l tête à droite");
+  Serial.println("Je tourne la tête à droite");
   localPositionServoMoteur -= 45;
   myservo.write(localPositionServoMoteur);
-  server.send(302, "text/plain", "");
+  server.send(200, "text/plain", "");
 }
 
 void tournerGauche()
@@ -126,7 +126,7 @@ void tournerGauche()
   Serial.println("Je tourne la tête à gauche");
   localPositionServoMoteur += 45;
   myservo.write(localPositionServoMoteur);
-  server.send(302, "text/plain", "");
+  server.send(200, "text/plain", "");
 }
 
 void setup()
@@ -144,6 +144,94 @@ void setup()
   myservo.write(localPositionServoMoteur);
   server.on("/tournerDroite", tournerDroite);
   server.on("/tournerGauche", tournerGauche);
+}
+
+void loop()
+{
+  // Code effectué en boucle
+  refreshWifi();
+}
+```
+
+Et si maintenant vous voulez coupler un servo moteur et un capteur de température DHT22 :
+
+```cpp
+`
+#include <Arduino.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
+#include <DHT.h>
+#include <Wire.h>
+#include <WiFi.h>
+#include <WebServer.h>
+#include <Servo.h>
+#include "../lib/wifiTools.cpp"
+
+#define SERVO 23
+
+Servo myservo;
+int localPositionServoMoteur;
+
+#define DHT_PIN 18
+#define DHT_TYPE DHT22
+
+DHT dht(DHT_PIN, DHT_TYPE);
+
+void recupererTemperature()
+{
+  if (isnan(dht.readTemperature()) == 0)
+  {
+    float temp = dht.readTemperature();
+    char temperature[10];
+    // On transforme la température (float) en chaine de caractères
+    sprintf(temperature, "%f°C", temp); 
+    Serial.println(temp);
+    server.send(200, "text/plain", temperature);
+  }
+  else
+  {
+    Serial.println("Erreur de lecture de la température");
+    server.send(200, "text/plain", "Erreur de lecture de la température");
+  }
+}
+
+void tournerDroite()
+{
+  Serial.println("Je tourne la tête à droite");
+  if(localPositionServoMoteur >= 45) {
+    localPositionServoMoteur -= 45;
+  }
+  myservo.write(localPositionServoMoteur);
+  server.send(200, "text/plain", "");
+}
+
+void tournerGauche()
+{
+  Serial.println("Je tourne la tête à gauche");
+  if(localPositionServoMoteur <= 135) {
+      localPositionServoMoteur += 45;
+  }
+  myservo.write(localPositionServoMoteur);
+  server.send(200, "text/plain", "");
+}
+
+void setup()
+{
+  // Code exécuté une seule fois au démarrage
+  Serial.begin(115200);
+  if (initWifi("codingRoom1", "abcd123456789"))
+  {
+    Serial.print("Connectez vous à : ");
+    Serial.println(getIpAdresse());
+  }
+
+  myservo.attach(SERVO);
+  localPositionServoMoteur = 0;
+  dht.begin();
+  myservo.write(localPositionServoMoteur);
+  server.on("/tournerDroite", tournerDroite);
+  server.on("/tournerGauche", tournerGauche);
+  server.on("/temperature", recupererTemperature);
 }
 
 void loop()
