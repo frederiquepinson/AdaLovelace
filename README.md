@@ -1049,6 +1049,8 @@ Il faut brancher les broches R,G et B de la DEL sur des ports PWM de l'Arduino (
 * Branchez un fil entre la broche **R** de la DEL sur la broche **S** du port D2
 * Branchez un fil entre la broche **-** de la DEL sur la broche **G** du port D2, D4 ou D5
 
+Téléversez le code suivant et admirez la LED qui va clignoter :
+
 ```C
 #include <Arduino.h>
 #include <Wire.h>
@@ -1071,6 +1073,36 @@ void loop() {
   analogWrite(GREEN,
               random(255));
   delay(500); 
+}
+```
+
+---
+
+### Détecteur de champs magnétiques
+
+L'ESP32 permet de capter des champs magnétiques, par exemple pour détecter la présence de magnets proches de votre microcontrôleur. Pour ce faire, pas besoin d'utiliser un capteur supplémentaire : l'ESP intègre déjà ce qu'on appelle un Hall sensor qui va agir comme un détecteur.
+
+Téléversez le code suivant, approchez un élément magnétique du gros carré gris de la carte (par exemple, une brosse de tableau blanc) et regardez le terminal : la valeur du champ magnétique passe du positif au négatif.
+
+```cpp
+#include <Arduino.h>
+#include <Wire.h>
+#include <SPI.h>
+
+int val = 0;
+
+void setup()
+{
+  Serial.begin(115200);
+}
+
+void loop()
+{
+  val = hallRead();
+  Serial.print("Capteur de champ magnétique : ");
+  Serial.println(val);
+
+  delay(500);
 }
 ```
 
