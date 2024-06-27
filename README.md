@@ -1373,6 +1373,8 @@ Maintenant, c'est à vous de choisir ce que vous voulez faire comme projet avec 
 
 Vous allez maintenant utiliser AppInventor afin de contrôler votre projet depuis une application mobile. Pour faire communiquer votre application mobile avec l'ESP32, vous vous référerez à la fiche [Créer un serveur web](./documentation/CreerUnServeurWeb.md)
 
+Il est également possible de communiquer via Bluetooth entre l'Arduino et l'application mobile : voir [Créer une interfacle Bluetooth](./documentation/CreerUneInterfaceBluetooth.md)
+
 Si vous voulez apprendre à créer un projet à partir de zéro avec un ESP32 et des capteurs, allez au document [Initialisation d'un projet](./documentation/VotrePremierProjetAvecPlatformIO.md).
 
 
