@@ -20,7 +20,7 @@ On peut étendre les capacités de l'Arduino en y branchant des composants, par 
 
 Chaque composant a besoin d'être alimenté : branché sur une source de tension (5V ou 3.3V) et une masse (GND) pour fonctionner. Pour renvoyer des informations (si c'est un capteur) ou en recevoir (par ex un servo-moteur), il faut aussi le brancher sur une (ou plusieurs) broche(s) de l'Arduino. Cela lui permet de communiquer avec ce dernier.
 
-Pour cet atelier, nous allons utiliser une carte ESP32, qui est une carte de type Arduino, et qui peut se connecter à un réseau wifi.
+Pour cet atelier, nous allons utiliser une carte ESP32, qui est une carte de type Arduino, et qui peut se connecter à un réseau wifi, et qui peut aussi communiquer via Bluetooth.
 
 Pour brancher beaucoup de composants à la fois, le plus simple est d'utiliser un support, permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. L'ESP32 est déjà mis sur ce support et branché sur votre ordinateur.
 
@@ -96,8 +96,6 @@ Prenez le feu tricolore présent dans votre kit. Détachez un groupe de 4 fils :
 
 ```C
 #include <Arduino.h>
-#include <Wire.h>
-#include <SPI.h>
 #include <Adafruit_I2CDevice.h>
 
 #define GREEN_PIN 5
@@ -134,7 +132,7 @@ Tous les programmes Arduino doivent respecter cette structure :
 
 ```C
 #include <Arduino.h> // ici, on déclare l'utilisation de la librairie Arduino
-
+#include <Adafruit_I2CDevice.h>
 // Vous pouvez déclarer les variables globales de votre script ici
 int entier = 0;
 void setup() {
@@ -165,6 +163,280 @@ Voici la liste des composants Arduino avec lesquels vous pourrez construire votr
 
 ![liste-capteurs](documentation/assets/liste_capteurs.png)
 
+
+### Mesurer une distance avec du laser
+
+On peut utiliser un capteur lidar (VL53L0X) pour mesurer une distance. Ce capteur émet un rayon laser (invisible) qui, s'il rencontre un obstacle, rebondit. Le capteur mesure le temps qui s'écoule entre l'émission et la réception, et en déduit la distance à l'obstacle.
+
+Comme il utilise un rayon laser assez étroit, son angle de détection est plus petit que celui d'un capteur à ultra son, mais il est plus précis, plus fiable, et plus petit.
+
+
+
+![lidar](https://cdn-learn.adafruit.com/assets/assets/000/093/495/medium640/adafruit_products_VL53L0X_top_angle.jpg?1595608415)
+
+Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
+
+Vous allez utiliser un cable Stemma Qt pour le connecter.
+
+![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
+
+* Branchez le fil jaune du cable sur la broche D22
+* Branchez le fil bleu du cable sur la broche D21
+* Branchez le fil rouge du cable sur la broche VCC 
+* Branchez le fil noir du cable  sur la broche GND
+
+Téléversez le code suivant :
+
+```C
+#include "Adafruit_VL53L0X.h"
+
+Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+
+void setup() {
+  Serial.begin(115200);
+
+  // wait until serial port opens for native USB devices
+  while (! Serial) {
+    delay(1);
+  }
+  
+  Serial.println("Adafruit VL53L0X test");
+  if (!lox.begin()) {
+    Serial.println(F("Failed to boot VL53L0X"));
+    while(1);
+  }
+  // power 
+  Serial.println(F("VL53L0X API Simple Ranging example\n\n")); 
+}
+
+
+void loop() {
+  VL53L0X_RangingMeasurementData_t measure;
+    
+  Serial.print("Reading a measurement... ");
+  lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
+
+  if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+    Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
+  } else {
+    Serial.println(" out of range ");
+  }
+    
+  delay(100);
+}
+```
+
+
+---
+### Utiliser un accéléromètre - gyromètre pour détecter ses mouvements, compter ses pas ou détecter une chute
+
+Un accéléromètre mesure une accélération selon une ou plusieurs directions (x, y, z) - et permet donc de détecter un déplacement.
+Un gyromètre mesure une rotation dans les 3 axes x,y,z.
+
+On peut utiliser un accéléromètre pour détecter un choc lors d'un déplacement (utilisé dans les airbags), ou une chute libre (lorque la mesure du z est proche de 0).
+ 
+
+Le LSM6DS3 comprend un accéléromètre combiné à un gyromètre, la librairie associée permet de compter des pas, ou de savoir dans quelle direction on se déplace.
+
+
+
+![LSM6DS3](https://cdn-learn.adafruit.com/assets/assets/000/123/017/large1024/adafruit_products_4503-16.jpg?1690380740)
+
+Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
+
+Vous allez utiliser un cable Stemma Qt pour le connecter.
+
+![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
+
+* Branchez le fil jaune du cable sur la broche D22
+* Branchez le fil bleu du cable sur la broche D21
+* Branchez le fil rouge du cable sur la broche VCC 
+* Branchez le fil noir du cable  sur la broche GND
+
+Téléversez le code suivant pour compter des pas:
+
+```C
+#include <Adafruit_LSM6DS33.h> 
+#include <Adafruit_LSM6DS3TRC.h> 
+
+Adafruit_LSM6DS3TRC lsm; // uncomment to use LSM6DS3TR-C
+
+void setup(void) {
+  Serial.begin(115200);
+  while (!Serial)
+    delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  Serial.println("Adafruit LSM6DS pedometer test!");
+
+  if (!lsm.begin_I2C()) {
+    Serial.println("Failed to find LSM6DS chip");
+    while (1) {
+      delay(10);
+    }
+  }
+
+  Serial.println("LSM6DS Found!");
+
+  // Set to 2G range and 26 Hz update rate
+  lsm.setAccelRange(LSM6DS_ACCEL_RANGE_2_G);
+  lsm.setGyroRange(LSM6DS_GYRO_RANGE_250_DPS);
+  lsm.setAccelDataRate(LSM6DS_RATE_26_HZ);
+  lsm.setGyroDataRate(LSM6DS_RATE_26_HZ);
+
+  // step detect output on INT1
+  lsm.configInt1(false, false, false, true);
+
+  // turn it on!
+  Serial.println("Enable ped");
+  lsm.enablePedometer(true);
+}
+
+void loop() {
+  Serial.print("Steps taken: "); Serial.println(lsm.readPedometer());
+  delay(100); 
+}
+```
+
+
+Téléversez le code suivant pour voir les valeurs de l'accéléromètre, gyromètre, et visualiser l'accélération z sur teleplot (extension vsCode)
+
+```C
+#// Demo for getting individual unified sensor data from the LSM6DS series
+
+// Can change this to be LSM6DSOX or whatever ya like
+#include <Adafruit_LSM6DS33.h>
+#include <Adafruit_LSM6DS3TRC.h> 
+
+Adafruit_LSM6DS3TRC lsm6ds; // uncomment to use LSM6DS3TR-C
+Adafruit_Sensor *lsm_temp, *lsm_accel, *lsm_gyro;
+
+void setup(void) {
+  Serial.begin(115200);
+  while (!Serial)
+    delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  Serial.println("Adafruit LSM6DS test!");
+
+  if (!lsm6ds.begin_I2C()) {
+    Serial.println("Failed to find LSM6DS chip");
+    while (1) {
+      delay(10);
+    }
+  }
+
+  Serial.println("LSM6DS Found!");
+  lsm_temp = lsm6ds.getTemperatureSensor();
+  lsm_temp->printSensorDetails();
+
+  lsm_accel = lsm6ds.getAccelerometerSensor();
+  lsm_accel->printSensorDetails();
+
+  lsm_gyro = lsm6ds.getGyroSensor();
+  lsm_gyro->printSensorDetails();
+}
+
+void loop() {
+  //  /* Get a new normalized sensor event */
+  sensors_event_t accel;
+  sensors_event_t gyro;
+  sensors_event_t temp;
+  lsm_temp->getEvent(&temp);
+  lsm_accel->getEvent(&accel);
+  lsm_gyro->getEvent(&gyro);
+
+  
+  Serial.print("\t\tTemperature ");
+  Serial.print(temp.temperature);
+  Serial.println(" deg C");
+
+  // Display the results (acceleration is measured in m/s^2) 
+  Serial.print("\t\tAccel X: ");
+  Serial.print(accel.acceleration.x);
+  Serial.print(" \tY: ");
+  Serial.print(accel.acceleration.y);
+  Serial.print(" \tZ: ");
+  Serial.print(accel.acceleration.z);
+  Serial.println(" m/s^2 ");
+
+  // Display the results (rotation is measured in rad/s) 
+  Serial.print("\t\tGyro X: ");
+  Serial.print(gyro.gyro.x);
+  Serial.print(" \tY: ");
+  Serial.print(gyro.gyro.y);
+  Serial.print(" \tZ: ");
+  Serial.print(gyro.gyro.z);
+  Serial.println(" radians/s ");
+  Serial.println();
+
+  delay(100); 
+
+  /*   serial plotter(teleplot) friendly format */
+  
+Serial.print(">accelZ:");
+Serial.println(accel.acceleration.z);
+
+  delay(10); 
+}
+```
+
+---
+### Piloter un petit moteur à vibration 
+
+Un Arduino ne peut piloter seul un petit moteur à vibration, il a besoin d'un composant électronique appelé 'Driver' pour ce faire.
+
+Vous allez utiliser un driver 2605L pour faire vibrer un petit moteur de type "pancake" (cylindre plat) raccordé via deux fils sur les bornes + et - .
+Ce driver permet de faire vibrer le moteur de plus de 120 manières différentes.
+
+
+![DRV2605L](https://cdn-shop.adafruit.com/970x728/2305-09.jpg)
+
+![pancake](https://cdn-shop.adafruit.com/970x728/1201-01.jpg)
+
+Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
+
+Vous allez utiliser un cable Stemma Qt pour le connecter.
+
+![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
+
+* Branchez le fil jaune du cable sur la broche D22
+* Branchez le fil bleu du cable sur la broche D21
+* Branchez le fil rouge du cable  sur la broche VCC 
+* Branchez le fil noir du cable sur la broche GND
+
+Téléversez le code suivant :
+
+```C
+#include <Wire.h>
+#include "Adafruit_DRV2605.h"
+
+Adafruit_DRV2605 drv; // déclaration du driver
+
+void setup() {
+  Serial.begin(115200);
+  if (! drv.begin()) { // initialisation du driver
+    Serial.println("impossible de trouver le  DRV2605");
+    while (1) delay(10);
+  }
+
+ // configuration du driver
+  drv.selectLibrary(1);
+  drv.setMode(DRV2605_MODE_INTTRIG); 
+}
+
+uint8_t effect = 27; // choix du type de vibration
+
+void loop() {
+  // transmissin du type de vibration au driver
+  drv.setWaveform(0, effect);  
+  drv.setWaveform(1, 0);       
+  // lancement de la vibration
+  drv.go();
+  // attendre un seconde
+  delay(1000);
+}
+```
+
+---
 ### Mesurer une distance avec des ultrasons
 
 On peut utiliser un capteur ultrason (HR-SR04) pour mesurer une distance. On envoie des ondes sonores (inaudibles) vers un obstacle et on mesure le temps qui s'écoule avant de les recapter. À partir de la mesure de ce temps écoulé on peut, grâce à la connaissance de la vitesse du son dans l'air, estimer la distance entre le capteur et l'objet devant lui.
