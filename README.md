@@ -170,7 +170,7 @@ On peut utiliser un capteur ultrason (HR-SR04) pour mesurer une distance. On env
 
 En théorie, le capteur peut capter les obstacles sur un angle de 15° environ et permet de faire des mesures de distance entre 2 centimètres et 4 mètres avec une précision de 3 millimètres.
 
-![ultrason](https://ae01.alicdn.com/kf/HTB1uVMfa6rguuRjy0Feq6xcbFXam/10-pi-ces-SAMIORE-ROBOT-Module-ultrasons-HC-SR04-Distance-mesure-capteur-capteur-chantillons-meilleurs-prix.jpg)
+![ultrason](https://arduino-france.site/wp-content/uploads/2021/07/hcsr-optimized.jpg)
 
 Détachez un groupe de 4 fils :
 * Branchez un fil entre la broche **Trig** du capteur et la broche **S** du port D32
