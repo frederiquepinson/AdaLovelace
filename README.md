@@ -163,279 +163,6 @@ Voici la liste des composants Arduino avec lesquels vous pourrez construire votr
 
 ![liste-capteurs](documentation/assets/liste_capteurs.png)
 
-
-### Mesurer une distance avec du laser
-
-On peut utiliser un capteur lidar (VL53L0X) pour mesurer une distance. Ce capteur émet un rayon laser (invisible) qui, s'il rencontre un obstacle, rebondit. Le capteur mesure le temps qui s'écoule entre l'émission et la réception, et en déduit la distance à l'obstacle.
-
-Comme il utilise un rayon laser assez étroit, son angle de détection est plus petit que celui d'un capteur à ultra son, mais il est plus précis, plus fiable, et plus petit.
-
-
-
-![lidar](https://cdn-learn.adafruit.com/assets/assets/000/093/495/medium640/adafruit_products_VL53L0X_top_angle.jpg?1595608415)
-
-Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
-
-Vous allez utiliser un cable Stemma Qt pour le connecter.
-
-![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
-
-* Branchez le fil jaune du cable sur la broche D22
-* Branchez le fil bleu du cable sur la broche D21
-* Branchez le fil rouge du cable sur la broche VCC 
-* Branchez le fil noir du cable  sur la broche GND
-
-Téléversez le code suivant :
-
-```C
-#include "Adafruit_VL53L0X.h"
-
-Adafruit_VL53L0X lox = Adafruit_VL53L0X();
-
-void setup() {
-  Serial.begin(115200);
-
-  // wait until serial port opens for native USB devices
-  while (! Serial) {
-    delay(1);
-  }
-  
-  Serial.println("Adafruit VL53L0X test");
-  if (!lox.begin()) {
-    Serial.println(F("Failed to boot VL53L0X"));
-    while(1);
-  }
-  // power 
-  Serial.println(F("VL53L0X API Simple Ranging example\n\n")); 
-}
-
-
-void loop() {
-  VL53L0X_RangingMeasurementData_t measure;
-    
-  Serial.print("Reading a measurement... ");
-  lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
-
-  if (measure.RangeStatus != 4) {  // phase failures have incorrect data
-    Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
-  } else {
-    Serial.println(" out of range ");
-  }
-    
-  delay(100);
-}
-```
-
-
----
-### Utiliser un accéléromètre - gyromètre pour détecter ses mouvements, compter ses pas ou détecter une chute
-
-Un accéléromètre mesure une accélération selon une ou plusieurs directions (x, y, z) - et permet donc de détecter un déplacement.
-Un gyromètre mesure une rotation dans les 3 axes x,y,z.
-
-On peut utiliser un accéléromètre pour détecter un choc lors d'un déplacement (utilisé dans les airbags), ou une chute libre (lorque la mesure du z est proche de 0).
- 
-
-Le LSM6DS3 comprend un accéléromètre combiné à un gyromètre, la librairie associée permet de compter des pas, ou de savoir dans quelle direction on se déplace.
-
-
-
-![LSM6DS3](https://cdn-learn.adafruit.com/assets/assets/000/123/017/large1024/adafruit_products_4503-16.jpg?1690380740)
-
-Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
-
-Vous allez utiliser un cable Stemma Qt pour le connecter.
-
-![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
-
-* Branchez le fil jaune du cable sur la broche D22
-* Branchez le fil bleu du cable sur la broche D21
-* Branchez le fil rouge du cable sur la broche VCC 
-* Branchez le fil noir du cable  sur la broche GND
-
-Téléversez le code suivant pour compter des pas:
-
-```C
-#include <Adafruit_LSM6DS33.h> 
-#include <Adafruit_LSM6DS3TRC.h> 
-
-Adafruit_LSM6DS3TRC lsm; // uncomment to use LSM6DS3TR-C
-
-void setup(void) {
-  Serial.begin(115200);
-  while (!Serial)
-    delay(10); // will pause Zero, Leonardo, etc until serial console opens
-
-  Serial.println("Adafruit LSM6DS pedometer test!");
-
-  if (!lsm.begin_I2C()) {
-    Serial.println("Failed to find LSM6DS chip");
-    while (1) {
-      delay(10);
-    }
-  }
-
-  Serial.println("LSM6DS Found!");
-
-  // Set to 2G range and 26 Hz update rate
-  lsm.setAccelRange(LSM6DS_ACCEL_RANGE_2_G);
-  lsm.setGyroRange(LSM6DS_GYRO_RANGE_250_DPS);
-  lsm.setAccelDataRate(LSM6DS_RATE_26_HZ);
-  lsm.setGyroDataRate(LSM6DS_RATE_26_HZ);
-
-  // step detect output on INT1
-  lsm.configInt1(false, false, false, true);
-
-  // turn it on!
-  Serial.println("Enable ped");
-  lsm.enablePedometer(true);
-}
-
-void loop() {
-  Serial.print("Steps taken: "); Serial.println(lsm.readPedometer());
-  delay(100); 
-}
-```
-
-
-Téléversez le code suivant pour voir les valeurs de l'accéléromètre, gyromètre, et visualiser l'accélération z sur teleplot (extension vsCode)
-
-```C
-#// Demo for getting individual unified sensor data from the LSM6DS series
-
-// Can change this to be LSM6DSOX or whatever ya like
-#include <Adafruit_LSM6DS33.h>
-#include <Adafruit_LSM6DS3TRC.h> 
-
-Adafruit_LSM6DS3TRC lsm6ds; // uncomment to use LSM6DS3TR-C
-Adafruit_Sensor *lsm_temp, *lsm_accel, *lsm_gyro;
-
-void setup(void) {
-  Serial.begin(115200);
-  while (!Serial)
-    delay(10); // will pause Zero, Leonardo, etc until serial console opens
-
-  Serial.println("Adafruit LSM6DS test!");
-
-  if (!lsm6ds.begin_I2C()) {
-    Serial.println("Failed to find LSM6DS chip");
-    while (1) {
-      delay(10);
-    }
-  }
-
-  Serial.println("LSM6DS Found!");
-  lsm_temp = lsm6ds.getTemperatureSensor();
-  lsm_temp->printSensorDetails();
-
-  lsm_accel = lsm6ds.getAccelerometerSensor();
-  lsm_accel->printSensorDetails();
-
-  lsm_gyro = lsm6ds.getGyroSensor();
-  lsm_gyro->printSensorDetails();
-}
-
-void loop() {
-  //  /* Get a new normalized sensor event */
-  sensors_event_t accel;
-  sensors_event_t gyro;
-  sensors_event_t temp;
-  lsm_temp->getEvent(&temp);
-  lsm_accel->getEvent(&accel);
-  lsm_gyro->getEvent(&gyro);
-
-  
-  Serial.print("\t\tTemperature ");
-  Serial.print(temp.temperature);
-  Serial.println(" deg C");
-
-  // Display the results (acceleration is measured in m/s^2) 
-  Serial.print("\t\tAccel X: ");
-  Serial.print(accel.acceleration.x);
-  Serial.print(" \tY: ");
-  Serial.print(accel.acceleration.y);
-  Serial.print(" \tZ: ");
-  Serial.print(accel.acceleration.z);
-  Serial.println(" m/s^2 ");
-
-  // Display the results (rotation is measured in rad/s) 
-  Serial.print("\t\tGyro X: ");
-  Serial.print(gyro.gyro.x);
-  Serial.print(" \tY: ");
-  Serial.print(gyro.gyro.y);
-  Serial.print(" \tZ: ");
-  Serial.print(gyro.gyro.z);
-  Serial.println(" radians/s ");
-  Serial.println();
-
-  delay(100); 
-
-  /*   serial plotter(teleplot) friendly format */
-  
-Serial.print(">accelZ:");
-Serial.println(accel.acceleration.z);
-
-  delay(10); 
-}
-```
-
----
-### Piloter un petit moteur à vibration 
-
-Un Arduino ne peut piloter seul un petit moteur à vibration, il a besoin d'un composant électronique appelé 'Driver' pour ce faire.
-
-Vous allez utiliser un driver 2605L pour faire vibrer un petit moteur de type "pancake" (cylindre plat) raccordé via deux fils sur les bornes + et - .
-Ce driver permet de faire vibrer le moteur de plus de 120 manières différentes.
-
-
-![DRV2605L](https://cdn-shop.adafruit.com/970x728/2305-09.jpg)
-
-![pancake](https://cdn-shop.adafruit.com/970x728/1201-01.jpg)
-
-Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
-
-Vous allez utiliser un cable Stemma Qt pour le connecter.
-
-![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
-
-* Branchez le fil jaune du cable sur la broche D22
-* Branchez le fil bleu du cable sur la broche D21
-* Branchez le fil rouge du cable  sur la broche VCC 
-* Branchez le fil noir du cable sur la broche GND
-
-Téléversez le code suivant :
-
-```C
-#include <Wire.h>
-#include "Adafruit_DRV2605.h"
-
-Adafruit_DRV2605 drv; // déclaration du driver
-
-void setup() {
-  Serial.begin(115200);
-  if (! drv.begin()) { // initialisation du driver
-    Serial.println("impossible de trouver le  DRV2605");
-    while (1) delay(10);
-  }
-
- // configuration du driver
-  drv.selectLibrary(1);
-  drv.setMode(DRV2605_MODE_INTTRIG); 
-}
-
-uint8_t effect = 27; // choix du type de vibration
-
-void loop() {
-  // transmissin du type de vibration au driver
-  drv.setWaveform(0, effect);  
-  drv.setWaveform(1, 0);       
-  // lancement de la vibration
-  drv.go();
-  // attendre un seconde
-  delay(1000);
-}
-```
-
 ---
 ### Mesurer une distance avec des ultrasons
 
@@ -618,7 +345,7 @@ Un capteur nous permet de récupérer le niveau de l'eau sur une échelle de 0 �
 ![Water Level Sensor](https://m.media-amazon.com/images/I/51wOYMAkmML._AC_UF1000,1000_QL80_.jpg)
 
 Pour le connecter à l'ESP32, détachez un groupe de 3 fils : 
-* Branchez un cable entre la broche **OUT** du capteur et le pin **S** de la broche **VN** de l'ESP
+* Branchez un cable entre la broche **OUT** du capteur et le pin **S** de la broche **VP** de l'ESP
 * Branchez un cable entre la broche **VCC** du capteur et le pin **VCC** de la broche **D17** de l'ESP
 * Branchez un cable entre la broche **GND** du capteur et le pin **GND** de la broche **D17** de l'ESP
 
@@ -762,7 +489,7 @@ Détachez un groupe de 4 fils :
 * Branchez un fil entre la broche **SCL** de l'écran et la broche **SCL** (D22) de votre rampe I²C
 * Branchez un fil entre la broche **SDA** de l'écran et la broche **SDA** (D21) de votre rampe I²C
 * Branchez un fil entre la broche **GND** de l'écran et la broche **GND** de votre rampe I²C
-* Branchez un fil entre la broche **VCC** de l'écran et la broche **VCC** de votre rampe I²C
+* Branchez un fil entre la broche **VCC** de l'écran et une broche **5V** de l'Arduino.
 
 Téléversez le programme suivant :
 
@@ -773,7 +500,7 @@ Téléversez le programme suivant :
 #include <Adafruit_I2CDevice.h>
 
 #include <LiquidCrystal_I2C.h>
-#define i2cDisplayPort 0x3F
+#define i2cDisplayPort 0x27 // ou 0x3F
 LiquidCrystal_I2C lcd(i2cDisplayPort,16,2);
 int increment = 0;
 
@@ -806,15 +533,15 @@ Vérifiez le contraste de l'écran : ce dernier doit s'allumer au démarrage. Si
 
 ---
 
-### Récupérer l'humidité et la température (I²C)
+### Récupérer l'humidité et la température
 
-On va utiliser un composant I²C DHT11 afin de récupérer des informations sur la température et l'humidité.
+On va utiliser un composant DHT11 afin de récupérer des informations sur la température et l'humidité.
 
 Afin de gérer ce composant vous aurez besoin d'une nouvelle bibliothèque, elle aussi déjà installée dans votre projet.
 
 ![bmc](https://ae01.alicdn.com/kf/Sf37a4d7f3bb24c0da6fbb12684680656c/KY-015-DHT-11-DHT11-Num-rique-Temp-rature-Et-Humidit-Relative-Capteur-Tech-PCB-pour.jpg_Q90.jpg_.webp)
 
-Détachez un groupe de 4 fils :
+Détachez un groupe de 3 fils :
 * Branchez un fil entre la broche **+** du capteur et la broche **V** du pin D18
 * Branchez un fil entre la broche **Out** du capteur et la broche **S** du pin D18
 * Branchez un fil entre la broche **-** du capteur et la broche **GND** du pin D18
@@ -829,7 +556,7 @@ Téléversez le programme suivant :
 #include <Adafruit_I2CDevice.h>
 
 #define DHT_PIN 18
-#define DHT_TYPE DHT22 //DHT11 si capteur bleu
+#define DHT_TYPE DHT11 //DHT22 si capteur blanc
 
 DHT dht(DHT_PIN, DHT_TYPE);
 
@@ -928,7 +655,7 @@ Afin de gérer ce composant vous aurez besoin d'une nouvelle bibliothèque, elle
 ![capteur co2](https://arduino.blaisepascal.fr/wp-content/uploads/2021/09/CCS811.png)
 
 Détachez un groupe de 5 fils :
-* Branchez un fil entre la broche **WAK** du capteur et la broche **GND** de votre rampe I²C (le bloc de 4*2 pins en bas à droite de votre shield)
+* Branchez un fil entre la broche **WAK(E)** du capteur et la broche **GND** de votre rampe I²C (le bloc de 4*2 pins en bas à droite de votre shield)
 * Branchez un fil entre la broche **GND** du capteur et la broche **GND** de votre rampe I²C
 * Branchez un fil entre la broche **VCC** du capteur et la broche **VCC** de votre rampe I²C
 * Branchez un fil entre la broche **SDA** du capteur et la broche **D21** de votre rampe I²C
@@ -946,48 +673,31 @@ Téléversez le programme suivant :
 
 Adafruit_CCS811 ccs;
 
-void setup()
-{
+void setup() {
   Serial.begin(115200);
-  
-  int timeoutInitSerial = 100;
-  while (timeoutInitSerial-- > 0)
-  {
-    if (Serial)
-      break;
-    delay(10);
-  }
-  delay(1000);
 
   Serial.println("CCS811 test");
 
-  if (!ccs.begin())
-  {
+  if(!ccs.begin()){
     Serial.println("Failed to start sensor! Please check your wiring.");
+    while(1);
   }
 
-  float temp = ccs.calculateTemperature();
-  ccs.setTempOffset(temp - 25.0);
+  // Wait for the sensor to be ready
+  while(!ccs.available());
 }
 
-void loop()
-{
-  if (ccs.available())
-  {
-    float temp = ccs.calculateTemperature();
-
-    if (ccs.readData())
-    {
+void loop() {
+  if(ccs.available()){
+    if(!ccs.readData()){
       Serial.print("CO2: ");
       Serial.print(ccs.geteCO2());
       Serial.print("ppm, TVOC: ");
-      Serial.print(ccs.getTVOC());
-      Serial.print("ppb Temp:");
-      Serial.println(temp);
+      Serial.println(ccs.getTVOC());
     }
-    else
-    {
-      Serial.println("Error reading data!");
+    else{
+      Serial.println("ERROR!");
+      while(1);
     }
   }
   delay(500);
@@ -1042,95 +752,46 @@ void loop() {
 }
 ```
 
-En combinant ce code avec celui de l'horloge interne on peut afficher l'heure courante :
+On peut aussi afficher l'heure courante (que l'on doit fournir au setup ... ou récupérer d'un smartphone via BT ou Wifi):
 
 ```C
 #include <Wire.h>
-#include <RTClib.h>
 #include <TM1637Display.h>
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_I2CDevice.h>
+#include <ESP32Time.h>
 
-#define TM1637_CLK 12
-#define TM1637_DIO 13
+#define TM1637_CLK 26
+#define TM1637_DIO 27
 
 TM1637Display display(TM1637_CLK, TM1637_DIO);
-RTC_DS3231 rtc;
 
-DateTime strToDateTime(String readString) {
-  int year = readString.substring(0, 4).toInt();
-  int month = readString.substring(4, 6).toInt();
-  int day = readString.substring(6, 8).toInt();
-  int hour = readString.substring(8, 10).toInt();
-  int minute = readString.substring(10, 12).toInt();
-  int second = readString.substring(12, 14).toInt();
-  return DateTime(year, month, day, hour, minute, second);
-}
-
-
-String getKey(String str) {
-  return str.substring(0, str.indexOf('='));
-}
-
-String getValue(String str) {
-  if (str.indexOf('=')) {
-    return str.substring(str.indexOf('=') + 1);
-  } else {
-    return "";
-  }
-}
+ESP32Time rtc(3600);  // offset in seconds GMT+1
 
 String line;
-
 void setup() {
-  Serial.begin(9600);
-  Wire.begin();
-  if (! rtc.begin()) {
-    Serial.println("Couldn't find RTC");
-    while (1);
-  }
-  if (rtc.lostPower()) {
-    Serial.println("RTC lost power, lets set the time!");
-    // les lignes suivantes permettent de configurer l'heure et la date quand l'horloge n'est pas encore configurée
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    // cela utilise l'heure et la date du PC
-  }
-  display.setBrightness(12);
-
+  Serial.begin(115200);
+  // mettre la date de lancement ici
+  // 29 Juin 2024 15:54:30 --> Sec, min, Heure,jour, mois, année
+  rtc.setTime(30, 54, 15, 29, 6, 2024);  
+  display.setBrightness(5);
 }
 
+int seconds=0;
+
 void loop() {
-  DateTime now = rtc.now();
-  Serial.print(now.day(), DEC);
-  Serial.print('/');
-  Serial.print(now.month(), DEC);
-  Serial.print('/');
-  Serial.print(now.year(), DEC);
-  Serial.print(' ');
-  Serial.print(now.hour(), DEC);
-  Serial.print(':');
-  Serial.print(now.minute(), DEC);
-  Serial.print(':');
-  Serial.print(now.second(), DEC);
-  Serial.println();
-  int sep = 0;
-  if (now.second() % 2 == 0) {
+ Serial.println(rtc.getDateTime(true)); 
+ int sep = 0;
+  if (seconds % 2 == 0) {
     // On n'affiche le séparateur ':' qu'une seconde sur deux
     sep = 64;
   }
-  display.showNumberDecEx(now.hour() * 100 + now.minute(), sep, true, 4, 0);
-
-  while (Serial.available()) {
-    line = Serial.readStringUntil('\n');// On lit une ligne depuis le port série
-    line.trim();
-    if (line.startsWith("horloge=")) {
-      Serial.println("reglage de l'horloge");
-      String heure = getValue(line);
-      rtc.adjust(strToDateTime(heure));
-    }
-  }
-  // attente de 1s pour ne pas afficher trop d'informations dans le terminal
+  display.showNumberDecEx(rtc.getHour(true) * 100 + rtc.getMinute(), sep, true, 4, 0);  
+  delay(1000);
+  display.showNumberDecEx(rtc.getDay() * 100 + rtc.getMonth(), sep, true, 4, 0); 
+  delay(1000);
+  display.showNumberDecEx(rtc.getYear(), 0, true, 4, 0); 
   delay(1000);
 }
 ```
@@ -1504,7 +1165,7 @@ void loop()
 
 Tout comme le capteur précédent, un détecteur de toucher est présent directement sur votre ESP32. Il faut simplement prendre un câble mâle-femelle (un trou d'un côté, le fil de l'autre côté) et le brancher sur la broche S des pins D2, D4 ou D15.
 
-Téléversez le code ci-dessous et ajustez si besoin la valeur de la variable `thresold`. Touchez ensuite le fil, et regardez votre terminal.
+Téléversez le code ci-dessous et ajustez si besoin la valeur de la variable `threshold`. Touchez ensuite le fil, et regardez votre terminal.
 
 ```cpp
 #include <Arduino.h>
@@ -1513,7 +1174,7 @@ Téléversez le code ci-dessous et ajustez si besoin la valeur de la variable `t
 #include <Adafruit_I2CDevice.h>
 
 int capacitiveValue = 100;
-int threshold = 66; // Seuil à ajuster
+int threshold = 50; // Seuil à ajuster
 
 void setup() {
     Serial.begin(115200);
@@ -1522,8 +1183,8 @@ void setup() {
 }
 
 void loop() {
-    capacitiveValue = touchRead(4);
-    // Serial.println(capacitiveValue) // Pour déterminer le seuil : décommenter et ne pas toucher le fil, puis ajuster la variable threshold
+    capacitiveValue = touchRead(15);
+     Serial.println(capacitiveValue); // Pour déterminer le seuil : décommenter et ne pas toucher le fil, puis ajuster la variable threshold
     if(capacitiveValue < threshold ){
         Serial.println("Wire touched");
         }
@@ -1631,6 +1292,280 @@ void loop() {
 }
 ```
 
+---
+## Capteurs  et drivers I2C (Bonus 2024 !)
+
+### Mesurer une distance avec du laser
+
+On peut utiliser un capteur lidar (VL53L0X) pour mesurer une distance. Ce capteur émet un rayon laser (invisible) qui, s'il rencontre un obstacle, rebondit. Le capteur mesure le temps qui s'écoule entre l'émission et la réception, et en déduit la distance à l'obstacle.
+
+Comme il utilise un rayon laser assez étroit, son angle de détection est plus petit que celui d'un capteur à ultra son, mais il est plus précis, plus fiable, et plus petit.
+
+
+
+![lidar](https://cdn-learn.adafruit.com/assets/assets/000/093/495/medium640/adafruit_products_VL53L0X_top_angle.jpg?1595608415)
+
+Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
+
+Vous allez utiliser un cable Stemma Qt pour le connecter.
+
+![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
+
+* Branchez le fil jaune du cable sur la broche D22
+* Branchez le fil bleu du cable sur la broche D21
+* Branchez le fil rouge du cable sur la broche VCC 
+* Branchez le fil noir du cable  sur la broche GND
+
+Téléversez le code suivant :
+
+```C
+#include "Adafruit_VL53L0X.h"
+
+Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+
+void setup() {
+  Serial.begin(115200);
+
+  // wait until serial port opens for native USB devices
+  while (! Serial) {
+    delay(1);
+  }
+  
+  Serial.println("Adafruit VL53L0X test");
+  if (!lox.begin()) {
+    Serial.println(F("Failed to boot VL53L0X"));
+    while(1);
+  }
+  // power 
+  Serial.println(F("VL53L0X API Simple Ranging example\n\n")); 
+}
+
+
+void loop() {
+  VL53L0X_RangingMeasurementData_t measure;
+    
+  Serial.print("Reading a measurement... ");
+  lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
+
+  if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+    Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
+  } else {
+    Serial.println(" out of range ");
+  }
+    
+  delay(100);
+}
+```
+
+
+---
+### Utiliser un accéléromètre - gyromètre pour détecter ses mouvements, compter ses pas ou détecter une chute
+
+Un accéléromètre mesure une accélération selon une ou plusieurs directions (x, y, z) - et permet donc de détecter un déplacement.
+Un gyromètre mesure une rotation dans les 3 axes x,y,z.
+
+On peut utiliser un accéléromètre pour détecter un choc lors d'un déplacement (utilisé dans les airbags), ou une chute libre (lorque la mesure du z est proche de 0).
+ 
+
+Le LSM6DS3 comprend un accéléromètre combiné à un gyromètre, la librairie associée permet de compter des pas, ou de savoir dans quelle direction on se déplace.
+
+
+
+![LSM6DS3](https://cdn-learn.adafruit.com/assets/assets/000/123/017/large1024/adafruit_products_4503-16.jpg?1690380740)
+
+Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
+
+Vous allez utiliser un cable Stemma Qt pour le connecter.
+
+![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
+
+* Branchez le fil jaune du cable sur la broche D22
+* Branchez le fil bleu du cable sur la broche D21
+* Branchez le fil rouge du cable sur la broche VCC 
+* Branchez le fil noir du cable  sur la broche GND
+
+Téléversez le code suivant pour compter des pas:
+
+```C
+#include <Adafruit_LSM6DS33.h> 
+#include <Adafruit_LSM6DS3TRC.h> 
+
+Adafruit_LSM6DS3TRC lsm; // uncomment to use LSM6DS3TR-C
+
+void setup(void) {
+  Serial.begin(115200);
+  while (!Serial)
+    delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  Serial.println("Adafruit LSM6DS pedometer test!");
+
+  if (!lsm.begin_I2C()) {
+    Serial.println("Failed to find LSM6DS chip");
+    while (1) {
+      delay(10);
+    }
+  }
+
+  Serial.println("LSM6DS Found!");
+
+  // Set to 2G range and 26 Hz update rate
+  lsm.setAccelRange(LSM6DS_ACCEL_RANGE_2_G);
+  lsm.setGyroRange(LSM6DS_GYRO_RANGE_250_DPS);
+  lsm.setAccelDataRate(LSM6DS_RATE_26_HZ);
+  lsm.setGyroDataRate(LSM6DS_RATE_26_HZ);
+
+  // step detect output on INT1
+  lsm.configInt1(false, false, false, true);
+
+  // turn it on!
+  Serial.println("Enable ped");
+  lsm.enablePedometer(true);
+}
+
+void loop() {
+  Serial.print("Steps taken: "); Serial.println(lsm.readPedometer());
+  delay(100); 
+}
+```
+
+
+Téléversez le code suivant pour voir les valeurs de l'accéléromètre, gyromètre, et visualiser l'accélération z sur teleplot (extension vsCode)
+
+```C
+#// Demo for getting individual unified sensor data from the LSM6DS series
+
+// Can change this to be LSM6DSOX or whatever ya like
+#include <Adafruit_LSM6DS33.h>
+#include <Adafruit_LSM6DS3TRC.h> 
+
+Adafruit_LSM6DS3TRC lsm6ds; // uncomment to use LSM6DS3TR-C
+Adafruit_Sensor *lsm_temp, *lsm_accel, *lsm_gyro;
+
+void setup(void) {
+  Serial.begin(115200);
+  while (!Serial)
+    delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  Serial.println("Adafruit LSM6DS test!");
+
+  if (!lsm6ds.begin_I2C()) {
+    Serial.println("Failed to find LSM6DS chip");
+    while (1) {
+      delay(10);
+    }
+  }
+
+  Serial.println("LSM6DS Found!");
+  lsm_temp = lsm6ds.getTemperatureSensor();
+  lsm_temp->printSensorDetails();
+
+  lsm_accel = lsm6ds.getAccelerometerSensor();
+  lsm_accel->printSensorDetails();
+
+  lsm_gyro = lsm6ds.getGyroSensor();
+  lsm_gyro->printSensorDetails();
+}
+
+void loop() {
+  //  /* Get a new normalized sensor event */
+  sensors_event_t accel;
+  sensors_event_t gyro;
+  sensors_event_t temp;
+  lsm_temp->getEvent(&temp);
+  lsm_accel->getEvent(&accel);
+  lsm_gyro->getEvent(&gyro);
+
+  
+  Serial.print("\t\tTemperature ");
+  Serial.print(temp.temperature);
+  Serial.println(" deg C");
+
+  // Display the results (acceleration is measured in m/s^2) 
+  Serial.print("\t\tAccel X: ");
+  Serial.print(accel.acceleration.x);
+  Serial.print(" \tY: ");
+  Serial.print(accel.acceleration.y);
+  Serial.print(" \tZ: ");
+  Serial.print(accel.acceleration.z);
+  Serial.println(" m/s^2 ");
+
+  // Display the results (rotation is measured in rad/s) 
+  Serial.print("\t\tGyro X: ");
+  Serial.print(gyro.gyro.x);
+  Serial.print(" \tY: ");
+  Serial.print(gyro.gyro.y);
+  Serial.print(" \tZ: ");
+  Serial.print(gyro.gyro.z);
+  Serial.println(" radians/s ");
+  Serial.println();
+
+  delay(100); 
+
+  /*   serial plotter(teleplot) friendly format */
+  
+Serial.print(">accelZ:");
+Serial.println(accel.acceleration.z);
+
+  delay(10); 
+}
+```
+
+---
+### Piloter un petit moteur à vibration 
+
+Un Arduino ne peut piloter seul un petit moteur à vibration, il a besoin d'un composant électronique appelé 'Driver' pour ce faire.
+
+Vous allez utiliser un driver 2605L pour faire vibrer un petit moteur de type "pancake" (cylindre plat) raccordé via deux fils sur les bornes + et - .
+Ce driver permet de faire vibrer le moteur de plus de 120 manières différentes.
+
+
+![DRV2605L](https://cdn-shop.adafruit.com/970x728/2305-09.jpg)
+
+![pancake](https://cdn-shop.adafruit.com/970x728/1201-01.jpg)
+
+Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
+
+Vous allez utiliser un cable Stemma Qt pour le connecter.
+
+![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
+
+* Branchez le fil jaune du cable sur la broche D22
+* Branchez le fil bleu du cable sur la broche D21
+* Branchez le fil rouge du cable  sur la broche VCC 
+* Branchez le fil noir du cable sur la broche GND
+
+Téléversez le code suivant :
+
+```C
+#include <Wire.h>
+#include "Adafruit_DRV2605.h"
+
+Adafruit_DRV2605 drv; // déclaration du driver
+
+void setup() {
+  Serial.begin(115200);
+  if (! drv.begin()) { // initialisation du driver
+    Serial.println("impossible de trouver le  DRV2605");
+    while (1) delay(10);
+  }
+
+ // configuration du driver
+  drv.selectLibrary(1);
+  drv.setMode(DRV2605_MODE_INTTRIG); 
+}
+
+uint8_t effect = 27; // choix du type de vibration
+
+void loop() {
+  // transmissin du type de vibration au driver
+  drv.setWaveform(0, effect);  
+  drv.setWaveform(1, 0);       
+  // lancement de la vibration
+  drv.go();
+  // attendre un seconde
+  delay(1000);
+}
+```
 ---
 
 ## Construire votre projet 
