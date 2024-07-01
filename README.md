@@ -298,15 +298,15 @@ Quand vous appuierez sur le bouton, la DEL devrait s'allumer.
 
 ### Utiliser un potentiomètre
 
-Ce composant permet d'avoir une valeur analogique comprise entre 0 et 1023 selon la position du curseur.
+Ce composant permet d'avoir une valeur comprise entre 0 et 4095 selon la position du curseur.
 
-![potentiometre](https://ae01.alicdn.com/kf/HTB1rNtVPVXXXXcvXVXXq6xXFXXXX/Potentiom-tre-de-position-coulissante-analogique-10KOhm.jpg_Q90.jpg_.webp)
+![potentiometre](https://mschoeffler.com/wp-content/uploads/2020/11/slide_pot.jpg)
 
 
 Détachez un groupe de 3 fils. On va brancher les fils du côté "A" :
-* Branchez un fil entre la broche OUT (à gauche) du potentiomètre et la broche **S** du port D34
-* Branchez un fil entre la broche du milieu du potentiomètre et la broche **G** du port D34
-* Branchez un fil entre la broche de droite du potentiomètre et la broche **V** du port D34
+* Branchez un fil entre la broche OTB (ou OUT) du potentiomètre et la broche **S** du port D34
+* Branchez un fil entre la broche VCC du potentiomètre et la broche **G** du port D34
+* Branchez un fil entre la broche GND du potentiomètre et la broche **V** du port D34
 
 Téléversez le programme suivant et vérifiez que les valeurs s'affichent bien sur le terminal :
 
@@ -327,7 +327,7 @@ void loop() {
   int val = analogRead(POTAR);
   Serial.print("val=");
   Serial.println(val);
-  int percent = map(val, 0, 1023, 0, 100);
+  int percent = map(val, 0, 4095, 0, 100); // permet de convertir la valeur en pourcentage
   Serial.print("percent=");
   Serial.println(percent);
   delay(400);
