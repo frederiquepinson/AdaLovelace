@@ -409,6 +409,7 @@ Téléversez le programme suivant :
 
 #define SERVO 23
 Pwm pwm = Pwm();
+
 void setup() {
   Serial.begin(115200);
   pwm.writeServo(SERVO, 0);
@@ -416,6 +417,7 @@ void setup() {
 
 int deg = 0;
 int inc = 1;
+
 void loop() {
   pwm.writeServo(SERVO, deg);
   deg = deg + inc;
@@ -431,37 +433,37 @@ void loop() {
 }
 ```
 
-La ligne `#include <Servo.h>` charge la bibliothèque permettant de piloter facilement un servomoteur. Cette bibliothèque est fournie dans votre fichier de configuration.
+La ligne `#include <pwmWrite.h>` charge la bibliothèque permettant de piloter facilement un servomoteur. Cette bibliothèque est fournie dans votre fichier de configuration.
 
 Ajoutez un des morceaux de plastique sur l'axe du servomoteur afin de bien visualiser les mouvements.
 
-Travail complémentaire : Faire tourner le servomoteur à partir de la valeur d'un potentiomètre (utilisation de la fonction [map](https://www.arduino.cc/reference/en/language/functions/math/map/) pour convertir les valeurs d'entrées du potentiomètre - de 0 à 1023 - en une valeur en degrés - de 0 à 180) :
+Travail complémentaire : Faire tourner le servomoteur à partir de la valeur d'un potentiomètre (utilisation de la fonction [map](https://www.arduino.cc/reference/en/language/functions/math/map/) pour convertir les valeurs d'entrées du potentiomètre - de 0 à 4095 - en une valeur en degrés - de 0 à 180) :
 
 ```C
 #include <Arduino.h>
 #include <Wire.h>
-#include "Servo.h"
+#include "pwmWrite.h"
 #include <SPI.h>
 #include <Adafruit_I2CDevice.h>
 
 #define SERVO 23
 #define POTAR 34
 
-Servo myservo;
+Pwm pwm = Pwm();
 
 void setup() {
   Serial.begin(115200);
   pinMode(POTAR, INPUT);
-  myservo.attach(SERVO);
-  myservo.write(0);
+
+  pwm.writeServo(SERVO, 0);
 }
 
 void loop() {
   int val = analogRead(POTAR);
   Serial.print("val=");
   Serial.println(val);
-  int deg = map(val, 0, 1023, 0, 180);
-  myservo.write(deg);
+  int deg = map(val, 0, 4095, 0, 180);
+  pwm.writeServo(SERVO, deg);
   delay(10);
 }
 ```
@@ -572,7 +574,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("temperature=");
+  Serial.print("température=");
   Serial.print(dht.readTemperature());
   Serial.println("°C");
   Serial.print("humidité=");
@@ -638,8 +640,8 @@ void loop()
     Serial.println(" *C");
 
     Serial.print("Pressure = ");
-    Serial.print(bme.readPressure());
-    Serial.println(" Pa");
+    Serial.print(bme.readPressure() / 100);
+    Serial.println(" hPa");
 
     Serial.print("Approx altitude = ");
     Serial.print(bme.readAltitude(1013.25)); // this should be adjusted to your local forcase
@@ -773,14 +775,14 @@ On peut aussi afficher l'heure courante (que l'on doit fournir au setup ... ou r
 
 TM1637Display display(TM1637_CLK, TM1637_DIO);
 
-ESP32Time rtc(3600);  // offset in seconds GMT+1
+ESP32Time rtc(0);  // offset (secondes) pour GMT - utiliser 3600 quand on récupère l'heure d'un téléphone 
 
 String line;
 void setup() {
   Serial.begin(115200);
   // mettre la date de lancement ici
-  // 29 Juin 2024 15:54:30 --> Sec, min, Heure,jour, mois, année
-  rtc.setTime(30, 54, 15, 29, 6, 2024);  
+  // 1er Juillet 2025 10:54:30 --> Sec, min, Heure,jour, mois, année
+  rtc.setTime(30, 54, 10, 1, 7, 2025);  
   display.setBrightness(5);
 }
 
@@ -795,7 +797,7 @@ void loop() {
   }
   display.showNumberDecEx(rtc.getHour(true) * 100 + rtc.getMinute(), sep, true, 4, 0);  
   delay(1000);
-  display.showNumberDecEx(rtc.getDay() * 100 + rtc.getMonth(), sep, true, 4, 0); 
+  display.showNumberDecEx(rtc.getDay() * 100 + rtc.getMonth() + 1, sep, true, 4, 0); 
   delay(1000);
   display.showNumberDecEx(rtc.getYear(), 0, true, 4, 0); 
   delay(1000);
