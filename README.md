@@ -994,7 +994,7 @@ void loop() {
 
 On peut détecter des mouvements grace au capteur suivant. 
 
-![capteur de mouvements](https://ae01.alicdn.com/kf/Hd4f8ef000f31489dbe359720dcebadfak/HC-SR501-soeur-IR-pyro-lectrique-infrarouge-PIR-d-tecteur-de-mouvement-Tech-pour-ardu37pour-raspberry.jpg_Q90.jpg_.webp)
+![capteur de mouvements](./documentation/assets/hc-sr04.jpg
 
 Commencez par brancher le capteur à l'ESP32, prenez 3 fils : 
 
@@ -1183,6 +1183,7 @@ Téléversez le code ci-dessous et ajustez si besoin la valeur de la variable `t
 
 int capacitiveValue = 100;
 int threshold = 50; // Seuil à ajuster
+int touchPin = 4;
 
 void setup() {
     Serial.begin(115200);
@@ -1191,8 +1192,7 @@ void setup() {
 }
 
 void loop() {
-    capacitiveValue = touchRead(15);
-     Serial.println(capacitiveValue); // Pour déterminer le seuil : décommenter et ne pas toucher le fil, puis ajuster la variable threshold
+  capacitiveValue = touchRead(touchPin);     Serial.println(capacitiveValue); // Pour déterminer le seuil : décommenter et ne pas toucher le fil, puis ajuster la variable threshold
     if(capacitiveValue < threshold ){
         Serial.println("Wire touched");
         }
@@ -1504,14 +1504,14 @@ void loop() {
   Serial.println(" radians/s ");
   Serial.println();
 
-  delay(100); 
+  delay(500); 
 
   /*   serial plotter(teleplot) friendly format */
   
 Serial.print(">accelZ:");
 Serial.println(accel.acceleration.z);
 
-  delay(10); 
+  delay(500); 
 }
 ```
 --- 
