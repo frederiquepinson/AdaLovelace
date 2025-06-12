@@ -403,23 +403,21 @@ Téléversez le programme suivant :
 ```C
 #include <Arduino.h>
 #include <Wire.h>
-#include <Servo.h>
 #include <SPI.h>
 #include <Adafruit_I2CDevice.h>
+#include <pwmWrite.h>
 
 #define SERVO 23
-
-Servo myservo;
+Pwm pwm = Pwm();
 void setup() {
   Serial.begin(115200);
-  myservo.attach(SERVO);
-  myservo.write(0);
+  pwm.writeServo(SERVO, 0);
 }
 
 int deg = 0;
 int inc = 1;
 void loop() {
-  myservo.write(deg);
+  pwm.writeServo(SERVO, deg);
   deg = deg + inc;
   if (deg > 180) {
     inc = -1;
