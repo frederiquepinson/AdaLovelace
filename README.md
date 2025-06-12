@@ -31,6 +31,13 @@ Ci-dessous une photo d'un ESP32 et de son support :
 ![esp32](https://ae01.alicdn.com/kf/Sf401d503cd394d9f8b72320b2bd43d94y/Carte-de-d-veloppement-ESP32-TYPE-C-USB-CH340C-WiFi-Bluetooth-ultra-faible-puissance-touristes-Core.jpg_640x640.jpg)
 
 ---
+### Comment brancher l'esp32 à votre ordinateur
+
+Prenez le cable USB fourni et branchez le sur `le port usb de l'esp32 et non pas celui du support`, puis branchez le sur l'ordinateur.
+
+Lorsque vous ajouterez des capteurs, il faudra débrancher l'esp32 (pour l'éteindre), faire les branchements, puis rebrancher l'esp32.
+
+---
 
 ## Maintenant, un peu de programmation !
 
