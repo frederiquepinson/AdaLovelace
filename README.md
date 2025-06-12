@@ -574,7 +574,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("temperature=");
+  Serial.print("température=");
   Serial.print(dht.readTemperature());
   Serial.println("°C");
   Serial.print("humidité=");
@@ -640,8 +640,8 @@ void loop()
     Serial.println(" *C");
 
     Serial.print("Pressure = ");
-    Serial.print(bme.readPressure());
-    Serial.println(" Pa");
+    Serial.print(bme.readPressure() / 100);
+    Serial.println(" hPa");
 
     Serial.print("Approx altitude = ");
     Serial.print(bme.readAltitude(1013.25)); // this should be adjusted to your local forcase
@@ -775,14 +775,14 @@ On peut aussi afficher l'heure courante (que l'on doit fournir au setup ... ou r
 
 TM1637Display display(TM1637_CLK, TM1637_DIO);
 
-ESP32Time rtc(3600);  // offset in seconds GMT+1
+ESP32Time rtc(0);  // offset (secondes) pour GMT - utiliser 3600 quand on récupère l'heure d'un téléphone 
 
 String line;
 void setup() {
   Serial.begin(115200);
   // mettre la date de lancement ici
-  // 29 Juin 2024 15:54:30 --> Sec, min, Heure,jour, mois, année
-  rtc.setTime(30, 54, 15, 29, 6, 2024);  
+  // 1er Juillet 2025 10:54:30 --> Sec, min, Heure,jour, mois, année
+  rtc.setTime(30, 54, 10, 1, 7, 2025);  
   display.setBrightness(5);
 }
 
@@ -797,7 +797,7 @@ void loop() {
   }
   display.showNumberDecEx(rtc.getHour(true) * 100 + rtc.getMinute(), sep, true, 4, 0);  
   delay(1000);
-  display.showNumberDecEx(rtc.getDay() * 100 + rtc.getMonth(), sep, true, 4, 0); 
+  display.showNumberDecEx(rtc.getDay() * 100 + rtc.getMonth() + 1, sep, true, 4, 0); 
   delay(1000);
   display.showNumberDecEx(rtc.getYear(), 0, true, 4, 0); 
   delay(1000);
