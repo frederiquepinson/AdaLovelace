@@ -1238,18 +1238,16 @@ Comme il utilise un rayon laser assez étroit, son angle de détection est plus 
 
 
 
-![lidar](https://cdn-learn.adafruit.com/assets/assets/000/093/495/medium640/adafruit_products_VL53L0X_top_angle.jpg?1595608415)
+![LIDAR](./documentation/assets/VL53L0XV2.jpg)
 
-Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
+Ce capteur utilise le protocole I2C pour communiquer avec l'ESP32.
 
-Vous allez utiliser un cable Stemma Qt pour le connecter.
 
-![stemmaQt](https://cdn-shop.adafruit.com/970x728/4397-02.jpg)
+* Branchez un fil entre la broche **GND** du capteur et la broche **GND** de votre rampe I²C
+* Branchez un fil entre la broche **VCC** du capteur et la broche **VCC** de votre rampe I²C
+* Branchez un fil entre la broche **SDA** du capteur et la broche **D21** de votre rampe I²C
+* Branchez un fil entre la broche **SCL** du capteur et la broche **D22** de votre rampe I²C
 
-* Branchez le fil jaune du cable sur la broche D22
-* Branchez le fil bleu du cable sur la broche D21
-* Branchez le fil rouge du cable sur la broche VCC 
-* Branchez le fil noir du cable  sur la broche GND
 
 Téléversez le code suivant :
 
