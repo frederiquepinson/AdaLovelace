@@ -231,3 +231,80 @@ Vous pouvez contrôler la lecture avec les commandes suivantes depuis le termina
 * [< or >] piste précédente/suivante
 
 ---
+
+### Utiliser un bouton
+
+On va utiliser ici un bouton un peu particulier :
+
+![bouton led](https://ae01.alicdn.com/kf/H06cb732ee0ca4c56a8931455be4378dce/5-pi-ces-R16-503-interrupteur-bouton-cl-avec-lumi-re-jog-reset-interrupteur-autobloquant-rond.jpg_Q90.jpg_.webp)
+
+Ce bouton intègre une DEL en plus d'un contact on/off. N'hésitez pas à démonter le bouton pour voir la DEL intégrée.
+
+Pour commencer on ne va utiliser que le bouton.
+
+Récupérer les 2 fils issus de la partie centrale du bouton (le bloc rouge et noir sur la photo précédente) :
+* Branchez le fil de la partie - la broche **V** du port 34
+* Branchez l'autre fil sur la broche **S** du port 34
+
+Téléversez le programme suivant et regardez le terminal (en bas de votre écran) :
+
+```C
+#include <Arduino.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
+
+#define BUTTON_CLICK 34
+
+void setup() {
+  pinMode(BUTTON_CLICK, INPUT_PULLUP);  
+  Serial.begin(115200);
+}
+
+void loop() {
+  if (digitalRead(BUTTON_CLICK)) {
+    Serial.println("bouton appuyé");
+
+  } else {
+    Serial.println("bouton relaché");
+  }
+  delay(400);
+}
+```
+
+Quand vous appuyez sur le bouton, vous devez voir apparaître sur le terminal l'état du bouton (appuyé ou relaché).
+
+Vous remarquerez ici que l'on déclare le "port" en "INPUT_PULLUP", cela veut dire que l'Arduino va connecter une de ses résistances internes entre la broche V du port (reliée au 5V) et sa broche d'entrée S.
+
+On va maintenant utiliser la DEL intégrée. Débranchez la DEL précédemment branchée sur le port 5 (et le feu tricolore). Branchez ensuite le fil venant du côté noir du bouton sur la broche **G** du port 21 puis le fil venant du côté rouge du bouton sur la broche **S** du port 21 
+
+Téléversez le programme suivant :
+
+```C
+#include <Arduino.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
+
+#define BUTTON_LED 21
+#define BUTTON_CLICK 34
+
+void setup() {
+  pinMode(BUTTON_LED, OUTPUT);
+  pinMode(BUTTON_CLICK, INPUT_PULLUP);
+}
+
+void loop() {
+  // On allume la DEL quand on clique sur le bouton
+  if (digitalRead(BUTTON_CLICK)) {
+    digitalWrite(BUTTON_LED, HIGH);
+  } else {
+    digitalWrite(BUTTON_LED, LOW);
+  }
+}
+```
+Quand vous appuierez sur le bouton, la DEL devrait s'allumer.
+
+
+---
+
