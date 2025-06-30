@@ -64,7 +64,7 @@ void recupererTemperature()
   {
     float temp = dht.readTemperature();
     char temperature[10];
-    // On transforme la température (float) en chaine de caractères
+    // On transforme la température (float) en chaîne de caractères
     sprintf(temperature, "%f°C", temp);
     Serial.println(temp);
     server.send(200, "text/plain", temperature);
@@ -183,7 +183,7 @@ void recupererTemperature()
   {
     float temp = dht.readTemperature();
     char temperature[10];
-    // On transforme la température (float) en chaine de caractères
+    // On transforme la température (float) en chaîne de caractères
     sprintf(temperature, "%f°C", temp);
     Serial.println(temp);
     server.send(200, "text/plain", temperature);
@@ -274,7 +274,7 @@ void recupererTemperature()
   {
     float temp = dht.readTemperature();
     char temperature[10];
-    // On transforme la température (float) en chaine de caractères
+    // On transforme la température (float) en chaîne de caractères
     sprintf(temperature, "%2.2f°C", temp);
     Serial.println(temp);
     server.send(200, "text/plain", temperature);
