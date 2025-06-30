@@ -14,13 +14,13 @@ Ce n'est pas un cours d'électronique : nous passons donc sous silence un grand 
 
 ## Présentation de l'ESP32
 
-L'Arduino est une carte construite autour d'un microcontrôleur qui peut être programmé pour analyser et produire des signaux électriques de manière à effectuer des tâches très diverses comme la domotique (le contrôle des appareils domestiques - éclairage, chauffage…), le pilotage d'un robot, de l'informatique embarquée, etc.
+L'ESP32 est une carte construite autour d'un microcontrôleur qui peut être programmé pour analyser et produire des signaux électriques de manière à effectuer des tâches très diverses comme la domotique (le contrôle des appareils domestiques - éclairage, chauffage…), le pilotage d'un robot, de l'informatique embarquée, etc.
 
-On peut étendre les capacités de l'Arduino en y branchant des composants, par exemple : des capteurs (de température, de son, de distance, etc.) ou encore des leds, des moteurs, etc. 
+On peut étendre les capacités de l'ESP32 en y branchant des composants, par exemple : des capteurs (de température, de son, de distance, etc.) ou encore des leds, des moteurs, etc. 
 
 Chaque composant a besoin d'être alimenté : branché sur une source de tension (5V ou 3.3V) et une masse (GND) pour fonctionner. Pour renvoyer des informations (si c'est un capteur) ou en recevoir (par ex un servo-moteur), il faut aussi le brancher sur une (ou plusieurs) broche(s) de l'Arduino. Cela lui permet de communiquer avec ce dernier.
 
-Pour cet atelier, nous allons utiliser une carte ESP32, qui est une carte de type Arduino, et qui peut se connecter à un réseau wifi, et qui peut aussi communiquer via Bluetooth.
+Pour cet atelier, nous allons utiliser une carte ESP32 qui peut se connecter à un réseau wifi, et qui peut aussi communiquer via Bluetooth.
 
 Pour brancher beaucoup de composants à la fois, le plus simple est d'utiliser un support, permettant d'avoir une alimentation (+5V, Ground) pour chaque broche afin de faciliter le câblage des composants. L'ESP32 est déjà mis sur ce support et branché sur votre ordinateur.
 
@@ -59,7 +59,7 @@ Pour commencer à s'amuser avec l'ESP32, prenons une DEL (par la suite nous util
 
 La DEL (ou LED en anglais) est un composant simple s'allumant quand elle reçoit du courant. Nous allons commencer par brancher une DEL sur notre Arduino. 
 
-Les DEL ont des tensions précises de fonctionnement mais les broches de l'Arduino fournissent du +5V, il faut donc réduire l'alimentation des DEL en utilisant une résistance. Les fils sont normalement déjà branchés sur la LED, voici comment les brancher sur la carte maintenant :
+Les DEL ont des tensions précises de fonctionnement mais les broches de l'ESP32 fournissent du +5V, il faut donc réduire l'alimentation des DEL en utilisant une résistance. Les fils sont normalement déjà branchés sur la LED, voici comment les brancher sur la carte maintenant :
 
 * Branchez un fil entre la patte sans résistance de la DEL et la broche **G** du port **D5** de l'ESP32
 * Branchez un fil entre la patte avec résistance de la DEL et la broche **S** du port **D5** de l'ESP32
@@ -144,10 +144,10 @@ Tous les programmes Arduino doivent respecter cette structure :
 // Vous pouvez déclarer les variables globales de votre script ici
 int entier = 0;
 void setup() {
-  // Cette fonction sera lancée une seule fois au démarrage de l'Arduino
-  // C'est ici que vous initialiserez les entrées et sorties de l'Arduino
+  // Cette fonction sera lancée une seule fois au démarrage de l'ESP32
+  // C'est ici que vous initialiserez les entrées et sorties de l'ESP32
   // Typiquement vous pouvez initialiser la liaison série
-  // entre l'Arduino et votre ordinateur :
+  // entre l'ESP32 et votre ordinateur :
   Serial.begin(115200);
 }
 
@@ -318,7 +318,7 @@ Un servomoteur est un petit moteur pouvant tourner précisément sur 180°.
 
 ![servo](https://www.electronicaembajadores.com/datos/fotos/articulos/grandes/mm/mmsv/mmsv002.jpg)
 
-Branchez directement la prise du servomoteur sur le port D23 de l'Arduino en faisant attention à ce que :
+Branchez directement la prise du servomoteur sur le port D23 de l'ESP32 en faisant attention à ce que :
 * le fil marron soit sur la broche **G** du port D23, 
 * le fil rouge sur la broche **V** du port D23,
 * le fil orange sur la broche **S** du port D23
@@ -397,7 +397,7 @@ void loop() {
 
 ### Le Bus I²C
 
-Le bus I²C permet de brancher plusieurs composants (esclaves) sur l'Arduino (maître). Vous trouverez plus d'informations sur  [la page Wikipédia sur le sujet](https://fr.wikipedia.org/wiki/I2C).
+Le bus I²C permet de brancher plusieurs composants (esclaves) sur l'ESP32 (maître). Vous trouverez plus d'informations sur  [la page Wikipédia sur le sujet](https://fr.wikipedia.org/wiki/I2C).
 
 Il va nous permettre ici de brancher plusieurs composants supportant la norme I²C. Sur un ESP32 les ports I²C utilisent les ports D21 et D22, il ne faut donc pas brancher d'autres composants sur ces ports.
 
@@ -422,7 +422,7 @@ Détachez un groupe de 4 fils :
 * Branchez un fil entre la broche **SCL** de l'écran et la broche **SCL** (D22) de votre rampe I²C
 * Branchez un fil entre la broche **SDA** de l'écran et la broche **SDA** (D21) de votre rampe I²C
 * Branchez un fil entre la broche **GND** de l'écran et la broche **GND** de votre rampe I²C
-* Branchez un fil entre la broche **VCC** de l'écran et une broche **5V** de l'Arduino.
+* Branchez un fil entre la broche **VCC** de l'écran et une broche **5V** de l'ESP32.
 
 Téléversez le programme suivant :
 
@@ -853,7 +853,7 @@ void setup() {
 
   Wire.begin();
   pixels.begin();
-  // Ne pas mettre trop fort (>50) les DEL au risque de "cramer" l'Arduino
+  // Ne pas mettre trop fort (>50) les DEL au risque de "cramer" l'ESP32
   pixels.setBrightness(30);
 }
 
@@ -1028,7 +1028,7 @@ Une DEL RVB (Rouge, Vert, Bleu ou RGB en anglais pour Red, Green, Blue) permet d
 
 ![rgb led](https://ae01.alicdn.com/kf/HTB1j1U4XhuaVKJjSZFjq6AjmpXar.jpg)
 
-Il faut brancher les broches R,G et B de la DEL sur des ports PWM de l'Arduino (typiquement les ports D2, D4, D5). Détachez un groupe de 4 fils :
+Il faut brancher les broches R,G et B de la DEL sur des ports PWM de l'ESP32 (typiquement les ports D2, D4, D5). Détachez un groupe de 4 fils :
 * Branchez un fil entre la broche **G** de la DEL sur la broche **S** du port D4
 * Branchez un fil entre la broche **B** de la DEL sur la broche **S** du port D5
 * Branchez un fil entre la broche **R** de la DEL sur la broche **S** du port D2
@@ -1142,12 +1142,12 @@ Un moteur pas-à-pas permet de gérer des rotations précises ([documentation](h
 Une nouvelle fois, une bibliothèque a été ajoutée à votre projet.
 
 Branchez le câble du moteur pas-à-pas sur la carte de contrôle. Détachez un groupe de 4 fils pour les broches **IN** et un groupe de 2 fils pour les broches **-** et **+**: 
-* Branchez un fil entre la broche **IN1** du contrôleur et la broche **S** du port **D19** de l'Arduino
-* Branchez un fil entre la broche **IN2** du contrôleur et la broche **S** du port **D26** de l'Arduino
-* Branchez un fil entre la broche **IN3** du contrôleur et la broche **S** du port **D25** de l'Arduino
-* Branchez un fil entre la broche **IN4** du contrôleur et la broche **S** du port **D12** de l'Arduino
-* Branchez un fil entre la broche **-** du contrôleur et la broche **GND** (à gauche du shield) de l'Arduino
-* Branchez un fil entre la broche **+** du contrôleur et la broche **5V** (à gauche du shield) de l'Arduino
+* Branchez un fil entre la broche **IN1** du contrôleur et la broche **S** du port **D19** de l'ESP32
+* Branchez un fil entre la broche **IN2** du contrôleur et la broche **S** du port **D26** de l'ESP32
+* Branchez un fil entre la broche **IN3** du contrôleur et la broche **S** du port **D25** de l'ESP32
+* Branchez un fil entre la broche **IN4** du contrôleur et la broche **S** du port **D12** de l'ESP32
+* Branchez un fil entre la broche **-** du contrôleur et la broche **GND** (à gauche du shield) de l'ESP32
+* Branchez un fil entre la broche **+** du contrôleur et la broche **5V** (à gauche du shield) de l'ESP32
 
 
 #### Mode bloquant
@@ -1496,13 +1496,248 @@ void loop() {
   delay(1000);
 }
 ```
+
+---
+### Utiliser un mini clavier à 5 boutons
+
+---
+### Utiliser un mini clavier à 5 boutons
+
+![clavier 5 boutons](https://www.diyelectronics.co.za/store/12403-thickbox_default/five-button-analog-keyboard-module-gravity-series.jpg)
+
+* Brancher le fil noir sur la broche **G** du port D35
+* Brancher le fil rouge sur la broche **V** du port D35
+* Brancher le fil bleu sur la broche **S** du port D35
+
+Téléversez le code suivant :
+```C
+#include <Arduino.h>
+
+#define KEYPAD 35
+
+void setup()
+{
+  Serial.begin(115200);
+  pinMode(KEYPAD, INPUT);
+}
+
+long lastButtonPressed = 0;
+void loop()
+{
+  int raw = analogRead(KEYPAD);
+  int val = map(raw, 0, 4095, 0, 30); // permet de convertir la valeur sur une plage plus petite
+
+  if (lastButtonPressed + 500 < millis() && val < 30)
+  {
+    Serial.println(val);
+    if (val == 21)
+    {
+      Serial.println("S4");
+    }
+    else if (val == 25)
+    {
+      Serial.println("S1");
+    }
+    else if (val == 28)
+    {
+      Serial.println("S5");
+    }
+    else if (val == 22)
+    {
+      Serial.println("S2");
+      
+    }
+    else if (val == 23)
+    {
+      Serial.println("S3");
+    }
+    lastButtonPressed = millis();
+  }
+}
+```
+
+
+
+---
+### Jouer des sons ou de la musique
+
+Vous pouvez faire jouer des sons ou de la musique avec le module max98357a.
+
+![max98357A](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc9-aH31VdtYon4TQn-8US3WSa2JmOcjnqbg&s)
+![enceinte](https://ae-pic-a1.aliexpress-media.com/kf/Sb92da94e8437424f80fdee1f35a801caf.jpg_960x960q75.jpg_.avif)
+
+Prenez un groupe de 7 fils et faites les branchement suivant : 
+* Branchez un fil entre la broche **S** du port D14 et la broche LRC du module
+* Branchez un fil entre la broche **S** du port D12 et la broche BCLK du module
+* Branchez un fil entre la broche **S** du port D13 et la broche DIN du module
+* Branchez un fil entre la broche **G** du port D13 et la broche GAIN du module
+* Branchez un fil entre la broche **G** du port D14 et la broche GND du module
+* Branchez un fil entre la broche **V** du port D14 et la broche VIN du module
+
+Téléversez le code suivant pour lancer la lecture de France Inter :
+
+```C
+#include <Arduino.h>
+#include "Audio.h"
+#include "WiFi.h"
+
+#define KEYPAD 35
+
+// I2S
+#define I2S_BCLK 12
+#define I2S_DOUT 13
+#define I2S_LRC 14
+
+String ssid = "xxxxx";
+String password = "yyyyy";
+
+Audio audio;
+
+void setup()
+{
+  pinMode(KEYPAD, INPUT);
+  Serial.begin(115200);
+
+  WiFi.disconnect();
+  WiFi.mode(WIFI_STA);
+  Serial.print("Try to connect to ");
+  Serial.print(ssid);
+  Serial.println(" ...");
+  WiFi.begin(ssid.c_str(), password.c_str());
+  while (WiFi.status() != WL_CONNECTED)
+    delay(1500);
+
+  Serial.println("connected to Wifi");
+  // Setup I2S
+  audio.setPinout(I2S_BCLK, I2S_LRC, I2S_DOUT);
+
+  // Le volume se règle de 0 à 20
+  audio.setVolume(3);
+  // On peut se connecter à des stations de radio sur Internet
+  audio.connecttohost("http://direct.franceinter.fr/live/franceinter-midfi.mp3"); // mp3  
+  // Mais on peut aussi juste lire des fichiers de son courts dans différent format
+  //  audio.connecttohost("https://github.com/schreibfaul1/ESP32-audioI2S/raw/master/additional_info/Testfiles/Pink-Panther.wav");        // wav
+  //  audio.connecttohost("https://github.com/schreibfaul1/ESP32-audioI2S/raw/master/additional_info/Testfiles/Santiano-Wellerman.flac"); // flac
+  //  audio.connecttohost("https://github.com/schreibfaul1/ESP32-audioI2S/raw/master/additional_info/Testfiles/Olsen-Banden.mp3");        // mp3
+  //  audio.connecttohost("https://github.com/schreibfaul1/ESP32-audioI2S/raw/master/additional_info/Testfiles/Miss-Marple.m4a");         // m4a (aac)
+  //  audio.connecttohost("https://github.com/schreibfaul1/ESP32-audioI2S/raw/master/additional_info/Testfiles/Collide.ogg");             // vorbis
+  //  audio.connecttohost("https://github.com/schreibfaul1/ESP32-audioI2S/raw/master/additional_info/Testfiles/sample.opus");             // opus
+
+}
+
+long lastButtonPressed = 0;
+void loop()
+{
+  int raw = analogRead(KEYPAD);
+  int val = map(raw, 0, 4095, 0, 30); // permet de convertir la valeur sur une plage plus petite
+
+  if (lastButtonPressed + 500 < millis() && val < 30)
+  {
+    Serial.println(val);
+    if (val == 21)
+    {
+      Serial.println("S4 : Augmentation du volume");
+      audio.setVolume(audio.getVolume() - 1);
+    }
+    else if (val == 25)
+    {
+      Serial.println("S1 : Diminution du volume");
+      audio.setVolume(audio.getVolume() + 1);
+    }
+    else if (val == 28)
+    {
+      Serial.println("S5 : Pause/Lecture");
+      audio.pauseResume();
+    }
+    else if (val == 22)
+    {
+      Serial.println("S2");
+      
+    }
+    else if (val == 23)
+    {
+      Serial.println("S3");
+    }
+    lastButtonPressed = millis();
+  }
+
+  audio.loop();
+  vTaskDelay(1);
+}
+
+// Les fonctions suivantes permettent de vérifier si le module fonctionne bien. Vous pouvez les enlever après avoir vérifié que tout fonctionne bien.
+void audio_info(const char *info)
+{
+  Serial.print("info        ");
+  Serial.println(info);
+}
+void audio_id3data(const char *info)
+{ // id3 metadata
+  Serial.print("id3data     ");
+  Serial.println(info);
+}
+void audio_eof_mp3(const char *info)
+{ // end of file
+  Serial.print("eof_mp3     ");
+  Serial.println(info);
+}
+void audio_showstation(const char *info)
+{
+  Serial.print("station     ");
+  Serial.println(info);
+}
+void audio_showstreamtitle(const char *info)
+{
+  Serial.print("streamtitle ");
+  Serial.println(info);
+}
+void audio_bitrate(const char *info)
+{
+  Serial.print("bitrate     ");
+  Serial.println(info);
+}
+void audio_commercial(const char *info)
+{ // duration in sec
+  Serial.print("commercial  ");
+  Serial.println(info);
+}
+void audio_icyurl(const char *info)
+{ // homepage
+  Serial.print("icyurl      ");
+  Serial.println(info);
+}
+void audio_lasthost(const char *info)
+{ // stream URL played
+  Serial.print("lasthost    ");
+  Serial.println(info);
+}
+void audio_eof_speech(const char *info)
+{
+  Serial.print("eof_speech  ");
+  Serial.println(info);
+}
+```
+
+Si vous branchez le clavier à 5 boutons vous pourrez diminuer le son avec le bouton S1, l'augmenter avec le bouton S4 et mettre en pause et reprendre la lecture avec le bouton S5.
+
+Comme vous pouvez le voir, on peut lire des fichiers disponibles sur Internet. Pour trouver des fichiers spécifiques vous pouvez utiliser la syntaxe suivante sur Google :
+```
+-inurl:html intitle:"index of" mp3 "Ce que vous chercher (en anglais)"
+```
+
+Par exemple pour trouver des [sons de sonnettes](https://www.google.com/search?q=-inurl%253Ahtml+intitle%253A%22index+of%22+mp3+%22ringtones%22) :
+```
+-inurl:html intitle:"index of" mp3 "ringtones"
+```
+
+
 ---
 
 ## Construire votre projet 
 
 Maintenant que vous avez appris à utiliser chacun des capteurs, vous allez pouvoir continuer à utiliser le projet `MonSuperProjet`. Nous vous recommandons de créer le code de chacque capteur dans un fichier propre à celui-ci et d'appeler les fonctions dans `main.cpp`, ceci rendra votre code plus clair. Vous trouverez un exemple d'architecture de code dans le projet `CodeDeReference`.
 
-Maintenant, c'est à vous de choisir ce que vous voulez faire comme projet avec le matériel précédemment présenté. 
+Maintenant, c'est à vous de choisir ce que vous voulez faire comme projet avec le matériel précédemment présenté. Votre mission, si vous l'acceptez, est de **créer un objet connecté fun pour les ados**.
 
 ---
 
@@ -1510,7 +1745,7 @@ Maintenant, c'est à vous de choisir ce que vous voulez faire comme projet avec 
 
 Vous allez maintenant utiliser AppInventor afin de contrôler votre projet depuis une application mobile. Pour faire communiquer votre application mobile avec l'ESP32, vous vous référerez à la fiche [Créer un serveur web](./documentation/CreerUnServeurWeb.md)
 
-Il est également possible de communiquer via Bluetooth entre l'Arduino et l'application mobile : voir [Créer une interfacle Bluetooth](./documentation/CreerUneInterfaceBluetooth.md)
+Il est également possible de communiquer via Bluetooth entre l'ESP32 et l'application mobile : voir [Créer une interfacle Bluetooth](./documentation/CreerUneInterfaceBluetooth.md)
 
 Si vous voulez apprendre à créer un projet à partir de zéro avec un ESP32 et des capteurs, allez au document [Initialisation d'un projet](./documentation/VotrePremierProjetAvecPlatformIO.md).
 
