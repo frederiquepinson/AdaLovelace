@@ -1228,14 +1228,13 @@ void loop() {
 ```
 
 ---
-## Capteurs  et drivers I2C (Bonus 2024 !)
+## Capteurs et drivers I2C
 
 ### Mesurer une distance avec du laser
 
 On peut utiliser un capteur lidar (VL53L0X) pour mesurer une distance. Ce capteur émet un rayon laser (invisible) qui, s'il rencontre un obstacle, rebondit. Le capteur mesure le temps qui s'écoule entre l'émission et la réception, et en déduit la distance à l'obstacle.
 
 Comme il utilise un rayon laser assez étroit, son angle de détection est plus petit que celui d'un capteur à ultra son, mais il est plus précis, plus fiable, et plus petit.
-
 
 
 ![LIDAR](./documentation/assets/VL53L0XV2.jpg)
@@ -1443,7 +1442,7 @@ Serial.println(accel.acceleration.z);
 
 ### Piloter un petit moteur à vibration 
 
-Un Arduino ne peut piloter seul un petit moteur à vibration, il a besoin d'un composant électronique appelé 'Driver' pour ce faire.
+Un ESP32 ne peut piloter seul un petit moteur à vibration, il a besoin d'un composant électronique appelé 'Driver' pour ce faire.
 
 Vous allez utiliser un driver 2605L pour faire vibrer un petit moteur de type "pancake" (cylindre plat) raccordé via deux fils sur les bornes + et - .
 Ce driver permet de faire vibrer le moteur de plus de 120 manières différentes.
@@ -1453,7 +1452,7 @@ Ce driver permet de faire vibrer le moteur de plus de 120 manières différentes
 
 ![pancake](https://cdn-shop.adafruit.com/970x728/1201-01.jpg)
 
-Ce capteur utilise le protocole I2C pour communiquer avec l'ESP. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
+Ce capteur utilise le protocole I2C pour communiquer avec l'ESP32. Il est fourni avec un connecteur Stemma Qt pour faciliter son branchement.
 
 Vous allez utiliser un cable Stemma Qt pour le connecter.
 
@@ -1461,7 +1460,7 @@ Vous allez utiliser un cable Stemma Qt pour le connecter.
 
 * Branchez le fil jaune du cable sur la broche D22
 * Branchez le fil bleu du cable sur la broche D21
-* Branchez le fil rouge du cable  sur la broche VCC 
+* Branchez le fil rouge du cable sur la broche VCC 
 * Branchez le fil noir du cable sur la broche GND
 
 Téléversez le code suivant :
@@ -1497,8 +1496,6 @@ void loop() {
 }
 ```
 
----
-### Utiliser un mini clavier à 5 boutons
 
 ---
 ### Utiliser un mini clavier à 5 boutons
@@ -1737,7 +1734,7 @@ Par exemple pour trouver des [sons de sonnettes](https://www.google.com/search?q
 
 Maintenant que vous avez appris à utiliser chacun des capteurs, vous allez pouvoir continuer à utiliser le projet `MonSuperProjet`. Nous vous recommandons de créer le code de chacque capteur dans un fichier propre à celui-ci et d'appeler les fonctions dans `main.cpp`, ceci rendra votre code plus clair. Vous trouverez un exemple d'architecture de code dans le projet `CodeDeReference`.
 
-Maintenant, c'est à vous de choisir ce que vous voulez faire comme projet avec le matériel précédemment présenté. Votre mission, si vous l'acceptez, est de **créer un objet connecté fun pour les ados**.
+Maintenant, c'est à vous de choisir ce que vous voulez faire comme projet avec le matériel précédemment présenté.
 
 ---
 
