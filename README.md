@@ -139,28 +139,44 @@ void loop() {
 Tous les programmes Arduino doivent respecter cette structure :
 
 ```C
-#include <Arduino.h> // ici, on déclare l'utilisation de la librairie Arduino
+#include "Arduino.h" // ici, on déclare l'utilisation de la librairie Arduino
 #include <Adafruit_I2CDevice.h>
+
 // Vous pouvez déclarer les variables globales de votre script ici
-int entier = 0;
+int LED = 2;
+
+/// Vous pouvez déclarer les fonctions ici
+int myFunction(int, int);
+
 void setup() {
   // Cette fonction sera lancée une seule fois au démarrage de l'ESP32
   // C'est ici que vous initialiserez les entrées et sorties de l'ESP32
   // Typiquement vous pouvez initialiser la liaison série
   // entre l'ESP32 et votre ordinateur :
   Serial.begin(115200);
+
+  pinMode(LED, OUTPUT); // la broche (pin) LED est mise en mode OUTPUT (sortie)
+  int result = myFunction(2, 3); // Appel de la fonction déclarée plus haut
+}
+
+void loop() {
+   // Cette fonction sera appelée continuellement après le setup
+   // Pour déboguer, la liaison série est pratique :
+  Serial.println("Test");
+
+  digitalWrite(LED, HIGH); // Allume la LED  (HIGH correspond au voltage qu'on envoie sur la broche LED)
+  Serial.println("Allume");
+  delay(1000);             // La fonction "delay(X)" permet de mettre en pause le programme pendant X ms
+
+  digitalWrite(LED, LOW);  // Eteint la LED  (LOW correspond au voltage bas (0))
+  Serial.println("Eteint");
+  delay(1000);             // Attend une seconde
 }
 
 
-void loop() {
-    // Cette fonction sera appelée continuellement après le setup
-    // Pour déboguer, la liaison série est pratique :
-
-    Serial.println("Test");
-
-    // La fonction "delay(X)" permet de mettre en pause le programme pendant X ms
-
-    delay(200);
+// Vous pouvez mettre le codes des fonctions déclarées ici
+int myFunction(int x, int y) {
+  return x + y;
 }
 ```
 ---
