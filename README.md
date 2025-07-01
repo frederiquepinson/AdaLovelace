@@ -1512,11 +1512,110 @@ void loop() {
 }
 ```
 
+---
+### Utiliser un mini clavier 16 boutons
+
+![clavier 16 boutons](https://user-images.githubusercontent.com/16662847/42823193-384c217c-89dd-11e8-95d6-90f48b636311.jpg)
+
+* Branchez un fil entre la broche **S** du port D34 et la broche OUT du clavier
+* Branchez un fil entre la broche **V** du port D34 et la broche VCC du clavier
+* Branchez un fil entre la broche **G** du port D34 et la broche GND du clavier
+
+Téléversez le code suivant :
+```C
+#include "Arduino.h"
+
+#define KEYPAD 34
+
+int b_index = 0;
+int DEBOUNCING_DELAY = 200;
+int READ_DELAY = 10;
+int lastButtonId = -1;
+unsigned long lastRawPressed = 0;
+unsigned long lastRead = 0;
+int maxRaw = 0;
+
+int boutonAppuye() {
+  int b = -1;
+  int retainedRaw = 0;
+
+  if (lastRead + READ_DELAY < millis()) {
+    int raw = analogRead(KEYPAD);
+    if (raw != 0) {
+      b_index++;
+      if (raw > maxRaw) {
+        maxRaw = raw;
+      }
+      if (b_index >= 6) {
+        // int sumRaw = 0;
+        retainedRaw = maxRaw;
+        b_index = 0;
+      }
+    } else {
+      maxRaw = 0;
+      lastButtonId = -1;
+      lastRawPressed = millis();
+    }
+    lastRead = millis();
+  }
+  if (retainedRaw != 0) {
+    //Serial.println(retainedRaw);
+    if (retainedRaw >= 4000) {
+      b = 1;
+    } else if (retainedRaw >= 3800 && retainedRaw <= 4100) {
+      b = 2;
+    } else  if (retainedRaw >= 3300 && retainedRaw <= 3500) {
+      b = 3;
+    } else if (retainedRaw >= 3000 && retainedRaw <= 3200) {
+      b = 4;
+    } else if (retainedRaw >= 2800 && retainedRaw <= 2900) {
+      b = 5;
+    } else if (retainedRaw >= 2600 && retainedRaw <= 2700) {
+      b = 6;
+    } else if (retainedRaw >= 2450 && retainedRaw <= 2550) {
+      b = 7;
+    } else if (retainedRaw >= 2300 && retainedRaw <= 2400) {
+      b = 8;
+    } else if (retainedRaw >= 2110 && retainedRaw <= 2250) {
+      b = 9;
+    } else if (retainedRaw >= 2000 && retainedRaw <= 2100) {
+      b = 10;
+    } else if (retainedRaw >= 1900 && retainedRaw <= 2050) {
+      b = 11;
+    } else if (retainedRaw >= 1700 && retainedRaw <= 1880) {
+      b = 12;
+    }
+    if (lastButtonId != b) {
+      lastRawPressed = millis();
+      lastButtonId = b;
+      return b;
+    }
+  }
+
+  return 0;
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(KEYPAD, INPUT);
+}
+
+void loop() {
+  int bouton = boutonAppuye();
+
+  if (bouton > 0) {
+    Serial.print("Bouton appuyé : ");
+    Serial.println(bouton);
+  }
+}
+```
+
+Vous pouvez placer des etiquettes sur les touches, pour découper des bouts de papier de 1cm sur 1cm puis insérez-les dans le clavier, pour cela sortez les touches (ça vient facilement en tirant dessus) puis enlevez la partie transparente (vous pouvez utiliser une paire de ciseaux pour faire levier), placez les découpes et remettez en place les touches.
 
 ---
 ### Utiliser un mini clavier à 5 boutons
 
-![clavier 5 boutons](https://www.diyelectronics.co.za/store/12403-thickbox_default/five-button-analog-keyboard-module-gravity-series.jpg)
+![clavier 5 boutons](https://www.diyelectronics.co.za/store/12404-thickbox_default/five-button-analog-keyboard-module-gravity-series.jpg)
 
 * Brancher le fil noir sur la broche **G** du port D35
 * Brancher le fil rouge sur la broche **V** du port D35
