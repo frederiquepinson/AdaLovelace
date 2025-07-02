@@ -793,9 +793,9 @@ Vous pouvez utiliser la matrice à DEL (8*8) pour afficher des messages ou des i
 Une nouvelle fois, une bibliothèque a été ajoutée à votre projet.
 
 Détachez un groupe de 3 fils  :
-* Branchez un fil entre la broche **DIN** de la matrice et la broche **S** du port D13
-* Branchez un fil entre la broche **5V** de la matrice et la broche **V** du port D13
-* Branchez un fil entre la broche **GND** de la matrice et la broche **G** du port D13
+* Branchez un fil entre la broche **DIN** de la matrice et la broche **S** du port D23
+* Branchez un fil entre la broche **5V** de la matrice et la broche **V** du port D23
+* Branchez un fil entre la broche **GND** de la matrice et la broche **G** du port D23
 
 Téléversez le code suivant :
 
@@ -804,80 +804,153 @@ Téléversez le code suivant :
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
 #include <SPI.h>
-#include <Adafruit_I2CDevice.h>
 
-#define PIN_MATRICE     13
-#define NB_LIGNES       8
-#define NB_COLONNES     8
+#define PIN_MATRICE     23
 
-#define HEADER_PIXEL(data,pixel) {\
-    pixel[0] = ((((data)[0] - 33) << 2) | ((data[1] - 33) >> 4)); \
-    pixel[1] = ((((data[1] - 33) & 0xF) << 4) | ((data[2] - 33) >> 2)); \
-    pixel[2] = ((((data[2] - 33) & 0x3) << 6) | ((data[3] - 33))); \
-    data += 4; \
-  }
+uint32_t coeur[64] = {
+0x000000, 0xff004d, 0xff004d, 0x000000, 0x000000, 0xff004d, 0xff004d, 0x000000, 
+0xfff1e8, 0xfff1e8, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 
+0xfff1e8, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 
+0xff77a8, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 
+0x000000, 0xff77a8, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0x000000, 
+0x000000, 0x000000, 0xff004d, 0xff004d, 0xff004d, 0xff004d, 0x000000, 0x000000, 
+0x000000, 0x000000, 0x000000, 0xff004d, 0xff004d, 0x000000, 0x000000, 0x000000, 
+0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 
+};
 
 
-const char pluie[] PROGMEM = "!!!!!!!!!!!!QM0(QM0(QM0(!!!!!!!!!!!!!!!!QM0(QM0(QM0(QM0(QM0(!!!!!!!!!!!!QM0(QM0(QM0(QM0(QM0(!!!!QM0(QM0(QM0(QM0(QM0(QM0(QM0(QM0(!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!+;X`!!!!!!!!+;X`!!!!!!!!+;X`!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!+;X`!!!!!!!!+;X`!!!!!!!!+;X`";
-const char soleil[] PROGMEM = "`[-!`[-!!!!!`[-!`[-!!!!!`[-!`[-!`[-!!!!!``]H``]H``]H``]H!!!!`[-!!!!!``]H``]H``]H``]H``]H``]H!!!!`[-!``]H``]H``]H``]H``]H``]H`[-!`[-!``]H``]H``]H``]H``]H``]H`[-!!!!!``]H``]H``]H``]H``]H``]H!!!!`[-!!!!!``]H``]H``]H``]H!!!!`[-!`[-!`[-!!!!!`[-!`[-!!!!!`[-!`[-!";
-const char nuit[] PROGMEM = "!!!!!!!!QM0(``(I``(I``(I!!!!!!!!!!!!QM0(``(IQM0(!!!!!!!!QM0(!!!!QM0(``(I``(I!!!!!!!!!!!!!!!!!!!!``(I``(I``(I!!!!!!!!!!!!!!!!!!!!``(I``(I``(I!!!!!!!!!!!!!!!!!!!!QM0(``(I``(IQM0(!!!!!!!!!!!!QM0(!!!!QM0(``(I``(I``(I``(IQM0(!!!!!!!!!!!!QM0(QM0(QM0(QM0(!!!!!!!!";
-const char coeur[] PROGMEM = "!!!!`Q\".`Q\".!!!!!!!!`Q\".`Q\".!!!!``(I``(I`Q\".`Q\".`Q\".`Q\".`Q\".`Q\".``(I`Q\".`Q\".`Q\".`Q\".`Q\".`Q\".`Q\".`X?I`Q\".`Q\".`Q\".`Q\".`Q\".`Q\".`Q\".!!!!`X?I`Q\".`Q\".`Q\".`Q\".`Q\".!!!!!!!!!!!!`Q\".`Q\".`Q\".`Q\".!!!!!!!!!!!!!!!!!!!!`Q\".`Q\".!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
-const char smiley[] PROGMEM = "!!!!!!!!``]H``]H``]H``]H!!!!!!!!!!!!``]H``]H``]H``]H``]H``]H!!!!``]H!!!!``]H``]H``]H``]H!!!!``]H``]H!!!!``]H``]H``]H``]H!!!!``]H``]H``]H``]H``]H``]H``]H``]H``]H``]H!!!!``]H``]H``]H``]H!!!!``]H!!!!``]H!!!!!!!!!!!!!!!!``]H!!!!!!!!!!!!``]H``]H``]H``]H!!!!!!!!";
-const char nuage[] PROGMEM = "!!!!!!!!`[-!`[-!`[-!!!!!!!!!!!!!!!!!`[-!``]H``]H``]H`[-!!!!!!!!!`[-!``]H``]H``]HAX;=AX;=AX;=!!!!`[-!``]H``]HAX;=QM0(QM0(QM0(AX;=`[-!``]H``]HAX;=QM0(QM0(QM0(QM0(!!!!`[-!AX;=QM0(QM0(QM0(QM0(QM0(AX;=AX;=QM0(QM0(QM0(QM0(QM0(QM0(`[-!`[-!!!!!`[-!`[-!!!!!`[-!`[-!";
+uint32_t soleil[64] = {
+0xffa300, 0xffa300, 0x000000, 0xffa300, 0xffa300, 0x000000, 0xffa300, 0xffa300, 
+0xffa300, 0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 0xffa300, 
+0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 
+0xffa300, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffa300, 
+0xffa300, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffa300, 
+0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 
+0xffa300, 0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 0xffa300, 
+0xffa300, 0xffa300, 0x000000, 0xffa300, 0xffa300, 0x000000, 0xffa300, 0xffa300, 
+};
+
+
+uint32_t nuit[64] = {
+0x000000, 0x000000, 0xc2c3c7, 0xfff1e8, 0xfff1e8, 0xfff1e8, 0x000000, 0x000000, 
+0x000000, 0xc2c3c7, 0xfff1e8, 0xc2c3c7, 0x000000, 0x000000, 0xc2c3c7, 0x000000, 
+0xc2c3c7, 0xfff1e8, 0xfff1e8, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 
+0xfff1e8, 0xfff1e8, 0xfff1e8, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 
+0xfff1e8, 0xfff1e8, 0xfff1e8, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 
+0xc2c3c7, 0xfff1e8, 0xfff1e8, 0xc2c3c7, 0x000000, 0x000000, 0x000000, 0xc2c3c7, 
+0x000000, 0xc2c3c7, 0xfff1e8, 0xfff1e8, 0xfff1e8, 0xfff1e8, 0xc2c3c7, 0x000000, 
+0x000000, 0x000000, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0x000000, 0x000000, 
+};
+
+uint32_t pluie[64] = {
+0x000000, 0x000000, 0x000000, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0x000000, 0x000000, 
+0x000000, 0x000000, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0x000000, 
+0x000000, 0x000000, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0x000000, 
+0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 0xc2c3c7, 
+0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 
+0x29adff, 0x000000, 0x000000, 0x29adff, 0x000000, 0x000000, 0x29adff, 0x000000, 
+0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 
+0x000000, 0x29adff, 0x000000, 0x000000, 0x29adff, 0x000000, 0x000000, 0x29adff, 
+};
+
+uint32_t orage[64] = {
+0x000000, 0x000000, 0xffa300, 0xffff27, 0xffff27, 0xffa300, 0x000000, 0x000000, 
+0x000000, 0x000000, 0xffff27, 0xffff27, 0xffa300, 0x000000, 0x000000, 0x000000, 
+0x000000, 0xffa300, 0xffff27, 0xffa300, 0x000000, 0x000000, 0x000000, 0x000000, 
+0x000000, 0xffff27, 0xffff27, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 
+0xffa300, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffa300, 0x000000, 
+0x000000, 0x000000, 0x000000, 0x000000, 0xffff27, 0xffa300, 0x000000, 0x000000, 
+0x000000, 0x000000, 0x000000, 0xffff27, 0xffa300, 0x000000, 0x000000, 0x000000, 
+0x000000, 0x000000, 0x000000, 0xffa300, 0x000000, 0x000000, 0x000000, 0x000000, 
+};
+
+
+uint32_t terre[64] = {
+0x000000, 0x000000, 0xfff1e8, 0xfff1e8, 0x29adff, 0x29adff, 0x000000, 0x000000, 
+0x000000, 0x008751, 0x29adff, 0x008751, 0x29adff, 0x29adff, 0xfff1e8, 0x000000, 
+0x008751, 0x008751, 0x008751, 0x008751, 0x008751, 0x29adff, 0x29adff, 0xfff1e8, 
+0x008751, 0x008751, 0x008751, 0x008751, 0x29adff, 0x29adff, 0x29adff, 0x29adff, 
+0x29adff, 0x008751, 0x29adff, 0x29adff, 0x29adff, 0x29adff, 0x29adff, 0x29adff, 
+0x29adff, 0x29adff, 0x008751, 0x29adff, 0x008751, 0x008751, 0x008751, 0x29adff, 
+0x000000, 0x29adff, 0x29adff, 0x29adff, 0x008751, 0x008751, 0x008751, 0x000000, 
+0x000000, 0x000000, 0x29adff, 0x29adff, 0x29adff, 0x008751, 0x000000, 0x000000, 
+};
+
+uint32_t smiley[64] = {
+0x000000, 0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 0x000000, 
+0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 
+0xffff27, 0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 0xffff27, 
+0xffff27, 0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 0xffff27, 
+0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 
+0xffff27, 0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 0xffff27, 
+0x000000, 0xffff27, 0x000000, 0x000000, 0x000000, 0x000000, 0xffff27, 0x000000, 
+0x000000, 0x000000, 0xffff27, 0xffff27, 0xffff27, 0xffff27, 0x000000, 0x000000, 
+};
+
 
 Adafruit_NeoPixel pixels(64, PIN_MATRICE, NEO_GRB + NEO_KHZ800);
 
-String getKey(String str) {
-  return str.substring(0, str.indexOf('='));
-}
-
-String getValue(String str) {
-  if (str.indexOf('=')) {
-    return str.substring(str.indexOf('=') + 1);
-  } else {
-    return "";
-  }
-}
-
-void displayImage(String imageName) {
-  int p[3];
-  char buffer[260];
-  if (imageName == "pluie") {
-    strcpy_P(buffer, pluie);
-  } else if (imageName == "soleil") {
-    strcpy_P(buffer, soleil);
-  } else if (imageName == "nuit") {
-    strcpy_P(buffer, nuit);
-  } else if (imageName == "coeur") {
-    strcpy_P(buffer, coeur);
-  } else if (imageName == "smiley") {
-    strcpy_P(buffer, smiley);
-  } else if (imageName == "nuage") {
-    strcpy_P(buffer, nuage);
-  }
-  char* buf = buffer;
-  for (int i = 0; i < 8 * 8; i++)  {
-    HEADER_PIXEL(buf, p);
-    pixels.setPixelColor(i, pixels.Color(p[0], p[1], p[2]));
-  }
-
-  pixels.show();
-}
-
 void setup() {
   Serial.begin(115200);
-
   Wire.begin();
   pixels.begin();
   // Ne pas mettre trop fort (>50) les DEL au risque de "cramer" l'ESP32
-  pixels.setBrightness(30);
+  pixels.setBrightness(20);
 }
-
 
 void loop() {
-  displayImage("coeur");
+  pixels.clear();
+  for (int i = 0; i < 64; i++) {
+    pixels.setPixelColor(i, coeur[i]);
+  }
+  pixels.show();
+  delay(1000);
+
+  pixels.clear();
+  for (int i = 0; i < 64; i++) {
+    pixels.setPixelColor(i, soleil[i]);
+  }
+  pixels.show();
+  delay(1000);
+
+  pixels.clear();
+  for (int i = 0; i < 64; i++) {
+    pixels.setPixelColor(i, nuit[i]);
+  }
+  pixels.show();
+  delay(1000);
+
+  pixels.clear();
+  for (int i = 0; i < 64; i++) {
+    pixels.setPixelColor(i, pluie[i]);
+  }
+  pixels.show();
+  delay(1000);
+
+  pixels.clear();
+  for (int i = 0; i < 64; i++) {
+    pixels.setPixelColor(i, orage[i]);
+  }
+  pixels.show();
+  delay(1000);
+
+  pixels.clear();
+  for (int i = 0; i < 64; i++) {
+    pixels.setPixelColor(i, terre[i]);
+  }
+  pixels.show();
+  delay(1000);
+
+  pixels.clear();
+  for (int i = 0; i < 64; i++) {
+    pixels.setPixelColor(i, smiley[i]);
+  }
+  pixels.show();
+  delay(1000);
 }
 ```
+
+Vous pouvez créer vos propres logos sur [cette page](https://app.datasync.orange.com/demo-webcom/icon.html)
 
 ---
 
