@@ -950,7 +950,7 @@ void loop() {
 }
 ```
 
-Vous pouvez créer vos propres logos sur [cette page](https://app.datasync.orange.com/demo-webcom/icon.html)
+Vous pouvez créer vos propres logos sur [cette page](https://ada.app.datasync.orange.com/icon.html)
 
 ---
 
