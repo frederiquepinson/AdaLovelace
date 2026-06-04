@@ -81,6 +81,7 @@ Jouez avec la valeur inscrite dans les fonctions `delay` pour la faire clignoter
 #define LED1 5
 
 void setup() {
+  Serial.begin(115200);
   pinMode(LED1, OUTPUT);
 }
 void loop() {
@@ -111,6 +112,7 @@ Prenez le feu tricolore présent dans votre kit. Détachez un groupe de 4 fils :
 #define RED_PIN 2
 
 void setup() {
+  Serial.begin(115200);
   pinMode(GREEN_PIN, OUTPUT);
   pinMode(YELLOW_PIN, OUTPUT);
   pinMode(RED_PIN, OUTPUT);
@@ -454,6 +456,7 @@ LiquidCrystal_I2C lcd(i2cDisplayPort,16,2);
 int increment = 0;
 
 void setup() {
+  Serial.begin(115200);
   lcd.init();
   lcd.setBacklight(HIGH); 
 }
@@ -986,6 +989,7 @@ Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 #define DELAYVAL 500 // Pause entre l'allumage des pixels
 
 void setup() {
+  Serial.begin(115200);
   pixels.begin();
 }
 
@@ -1035,9 +1039,9 @@ void setup() {
 
 void loop() {
   bool status = (digitalRead(PIN_DETECT_MOUV) == HIGH);
-    if (status) {
-        Serial.println("mouvement detecté");
-    }
+  if (status) {
+      Serial.println("mouvement detecté");
+  }
 }
 ```
 
@@ -1136,6 +1140,7 @@ Téléversez le code suivant et admirez la LED qui va clignoter :
 #define GREEN 4
 
 void setup() {
+  Serial.begin(115200);
   pinMode(RED, OUTPUT);
   pinMode(BLUE, OUTPUT);
   pinMode(GREEN, OUTPUT);
@@ -1208,7 +1213,8 @@ void setup() {
 }
 
 void loop() {
-  capacitiveValue = touchRead(touchPin);     Serial.println(capacitiveValue); // Pour déterminer le seuil : décommenter et ne pas toucher le fil, puis ajuster la variable threshold
+  capacitiveValue = touchRead(touchPin);     
+  Serial.println(capacitiveValue); // Pour déterminer le seuil : décommenter et ne pas toucher le fil, puis ajuster la variable threshold
     if(capacitiveValue < threshold ){
         Serial.println("Wire touched");
         }
@@ -1258,6 +1264,7 @@ AccelStepper stepper(
     motorPin2, motorPin4);
 
 void setup() {
+  Serial.begin(115200);
   stepper.setMaxSpeed(1000);
   stepper.setAcceleration(100.0);
   stepper.enableOutputs();
