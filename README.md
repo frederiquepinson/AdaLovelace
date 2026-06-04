@@ -253,9 +253,9 @@ Ce composant permet d'avoir une valeur comprise entre 0 et 4095 selon la positio
 
 
 Détachez un groupe de 3 fils. On va brancher les fils du côté "A" :
-* Branchez un fil entre la broche OTB (ou OUT) du potentiomètre et la broche **S** du port D34
-* Branchez un fil entre la broche VCC du potentiomètre et la broche **G** du port D34
-* Branchez un fil entre la broche GND du potentiomètre et la broche **V** du port D34
+* Branchez un fil entre la broche OTA (ou OUT) du potentiomètre et la broche **S** du port D34
+* Branchez un fil entre la broche VCC du potentiomètre et la broche **V** du port D34
+* Branchez un fil entre la broche GND du potentiomètre et la broche **G** du port D34
 
 Téléversez le programme suivant et vérifiez que les valeurs s'affichent bien sur le terminal :
 
