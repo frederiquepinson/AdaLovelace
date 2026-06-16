@@ -750,6 +750,126 @@ void loop() {
 
 ---
 
+### Lire un tag RFID avec un module RFID RC522
+
+Le module RFID RC522 est un lecteur de carte à puce qui, permet entre autre, d’activer un mécanisme lorsque la bonne carte est présentée au lecteur. 
+
+
+![tags RFID co2](./documentation/assets/TagsRFID.png)
+![module MFRC522](./documentation/assets/ModuleMFRC522.png)
+
+
+Détachez un groupe de 7 fils :
+* Branchez un fil entre la broche **SDA** du module et la broche **S** du port D5
+* Branchez un fil entre la broche **SCK** du module et  la broche **S** du port D18
+* Branchez un fil entre la broche **MOSI** du module et la broche **S** du port D23
+* Branchez un fil entre la broche **MISO** du module et la broche **S** du port D19
+* Branchez un fil entre la broche **GND** du module et la broche **G** du port D23
+* Branchez un fil entre la broche **RST** du module et la broche **S** du port D2
+* Branchez un fil entre la broche **3.3V** du module et une broche **3.3V** de l'ESP32
+
+
+Branchez un écran LCD I²C sur les broches I2C comme précisé plus haut.
+
+Téléversez le programme suivant :
+```
+#include <Arduino.h>
+#include <Adafruit_I2CDevice.h>
+#include <MFRC522.h> //https://github.com/miguelbalboa/rfid
+#include <SPI.h>     //https://www.arduino.cc/en/reference/SPI
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+// Ecran I2C-----------------------
+#define i2cDisplayPort 0x27 // ou 0x3F
+LiquidCrystal_I2C lcd(i2cDisplayPort, 16, 2);
+
+// RFID---------------------------
+String readRFID(void);
+
+// Constantes
+#define SS_PIN 5
+#define RST_PIN 2
+const int ipaddress[4] = {103, 97, 67, 25};
+const String monTag = "6d 93 69 50";
+
+// Variables
+MFRC522 rfid = MFRC522(SS_PIN, RST_PIN);
+String uidString = "";
+
+//// Méthode qui lit et renvoie l'identifiant d'un tag RFID
+String readRFID(void)
+{
+  // vérifie si on détecte un tag à proximité, et commence la communication avec lui
+  if (!rfid.PICC_IsNewCardPresent())
+    return "";
+
+  // vérifie qu'on arrive à lire son identifiant unique (UID)
+  if (!rfid.PICC_ReadCardSerial())
+    return "";
+
+  uidString = "";
+  // Stocke l'identifiant du tag dans la chaîne de caractères
+  for (byte i = 0; i < rfid.uid.size; i++)
+  {
+    if (i > 0)
+    {
+      uidString += " ";
+    }
+    if (rfid.uid.uidByte[i] < 0x10)
+    {
+      uidString += "0";
+    }
+    uidString += String(rfid.uid.uidByte[i], HEX);
+  }
+  // Arrête la communication avec le tag
+  rfid.PICC_HaltA();
+  rfid.PCD_StopCrypto1();
+
+  // renvoie l'uid sous forme de chaîne de caractères
+  return uidString;
+}
+
+void setup()
+{
+  Serial.begin(115200);
+  while (!Serial)
+    ;
+
+  SPI.begin();
+  lcd.init();
+  lcd.setBacklight(HIGH);
+  rfid.PCD_Init();
+}
+
+void loop()
+{
+  String result = readRFID();
+  if (result.length() > 0)
+  {
+    // compare l'identifiant du tag détecté à celui du bon tag
+    if (result == monTag)
+    {
+      lcd.clear();
+      lcd.print("c'est le bon tag: ");
+      Serial.print("c'est le bon tag: ");
+      Serial.println(result);
+      lcd.setCursor(0, 1);
+    }
+    else
+    {
+      lcd.clear();
+      lcd.print("pas le bon tag");
+      Serial.print("pas le bon tag: ");
+      Serial.println(result);
+    }
+    Serial.println();
+  }
+}
+```
+
+---
+
 ## Détecter un son
 
 Le détecteur de son permet d'obtenir le niveau d'un son proche du capteur.
