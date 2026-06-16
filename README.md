@@ -755,8 +755,8 @@ void loop() {
 Le module RFID RC522 est un lecteur de carte à puce qui, permet entre autre, d’activer un mécanisme lorsque la bonne carte est présentée au lecteur. 
 
 
-![tags RFID co2](./documentation/assets/TagsRFID.png)
-![module MFRC522](./documentation/assets/ModuleMFRC522.png)
+![tags RFID](./documentation/assets/TagsRFID.png)
+![module MFRC522](./documentation/assets/moduleMFRC522.png)
 
 
 Détachez un groupe de 7 fils :
