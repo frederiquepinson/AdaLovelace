@@ -440,7 +440,7 @@ Détachez un groupe de 4 fils :
 * Branchez un fil entre la broche **SCL** de l'écran et la broche **SCL** (D22) de votre rampe I²C
 * Branchez un fil entre la broche **SDA** de l'écran et la broche **SDA** (D21) de votre rampe I²C
 * Branchez un fil entre la broche **GND** de l'écran et la broche **GND** de votre rampe I²C
-* Branchez un fil entre la broche **VCC** de l'écran et une broche **5V** de l'ESP32.
+* Branchez un fil entre la broche **VCC** de l'écran et une broche **3.3V** de l'ESP32.
 
 Téléversez le programme suivant :
 
