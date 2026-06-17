@@ -440,7 +440,7 @@ Détachez un groupe de 4 fils :
 * Branchez un fil entre la broche **SCL** de l'écran et la broche **SCL** (D22) de votre rampe I²C
 * Branchez un fil entre la broche **SDA** de l'écran et la broche **SDA** (D21) de votre rampe I²C
 * Branchez un fil entre la broche **GND** de l'écran et la broche **GND** de votre rampe I²C
-* Branchez un fil entre la broche **VCC** de l'écran et une broche **3.3V** de l'ESP32.
+* Branchez un fil entre la broche **VCC** de l'écran et la broche **VCC** de votre rampe I²C
 
 Téléversez le programme suivant :
 
@@ -1718,7 +1718,7 @@ void loop() {
 ![clavier 16 boutons](https://user-images.githubusercontent.com/16662847/42823193-384c217c-89dd-11e8-95d6-90f48b636311.jpg)
 
 * Branchez un fil entre la broche **S** du port D34 et la broche OUT du clavier
-* Branchez un fil entre la broche **V** du port D34 et la broche VCC du clavier
+* Branchez un fil entre une broche **3.3V** de l'ESP32 et la broche VCC du clavier
 * Branchez un fil entre la broche **G** du port D34 et la broche GND du clavier
 
 Téléversez le code suivant :
