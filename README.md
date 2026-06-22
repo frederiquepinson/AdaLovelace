@@ -222,23 +222,20 @@ void setup() {
 }
 
 void loop() {
-  // Envoi une impulsion de 10 micro seconde sur la broche "trigger"
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-
+// On allume le signal pour 0.5 secondes
   digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10);
+  delay(500);
 
+// On éteind le signal
   digitalWrite(trigPin, LOW);
-  // Attend que la broche Echo passe au niveau HAUT
-  // retourne la durée
+
+// On démarre le chrono et on l'arrête quand l'écho du signal s'arrête
   int duration = pulseIn(echoPin, HIGH);
 
-  //Calculer la distance (en cm, basée sur la vitesse du son).
+//On calcule la distance (en cm, basée sur la vitesse du son).
   int distance = duration / 58.2;
   Serial.print("distance=");
   Serial.println(distance);
-  delay(500);
 }
 ```
 
