@@ -226,7 +226,7 @@ void loop() {
   digitalWrite(trigPin, HIGH);
   delay(500);
 
-// On éteind le signal
+// On éteint le signal
   digitalWrite(trigPin, LOW);
 
 // On démarre le chrono et on l'arrête quand l'écho du signal s'arrête
