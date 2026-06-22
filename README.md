@@ -1074,6 +1074,105 @@ Vous pouvez créer vos propres logos sur [cette page](https://ada.app.datasync.o
 
 ---
 
+### Autre type de matrice de DELs
+
+
+Cette matrice est plus petite et propose des DELS rondes.
+Vous pouvez utiliser la matrice à DEL (8*8) pour afficher des messages ou des icônes.
+
+
+![neopixel](./documentation/assets/maxMatrix.png)
+
+Une nouvelle fois, une bibliothèque a été ajoutée à votre projet.
+
+Détachez un groupe de 3 fils  :
+* Branchez un fil entre la broche **CS** de la matrice et la broche **S** du port D12
+* Branchez un fil entre la broche **SDI** de la matrice et la broche **S** du port D13
+* Branchez un fil entre la broche **SCL** de la matrice et la broche **S** du port D14
+
+Téléversez le code suivant :
+
+```cpp
+#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_NeoPixel.h>
+#include <SPI.h>
+#include <Adafruit_I2CDevice.h>
+
+extern "C" {
+  #include "MaxMatrix.h"
+}
+
+  byte smile[8] = {  // haut vers le droit, donc tournez l'image à droite pour remplir
+B00111100,
+B01000010,
+B10010101,
+B10100001,
+B10100001,
+B10010101,
+B01000010,
+B00111100
+};
+
+  byte smile2[8] = {  // haut vers le droit, donc tournez l'image à droite pour remplir
+B00010000,
+B00110110,
+B01100110,
+B01100000,
+B01100000,
+B01100110,
+B00110110,
+B00010000
+};
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("Start debug !");
+  initMatrix();
+  setIntensityMatrix(8);
+  clearMatrix();
+}
+
+void loop() {
+  displaySymbolMatrix(smile, 4, 500);
+  displaySymbolMatrix(smile2, 14, 500);
+  displaySymbolMatrix(smile, 4, 500);
+  displaySymbolMatrix(smile2, 14, 500);
+  for(byte c=0; c < 8; c++) 
+  {
+    for(byte r=0; r < 8; r+=1) 
+    {
+      setDotMatrix(c, r, 1);
+      delay(30);
+      Serial.printf("1 c=%d r=%d\n", c, r);
+      setDotMatrix(c, r, 0);
+    }
+    c++;
+    for(byte ri=8; ri > 0; ri--) 
+    { //attention, pour byte il n'y pas de -1, donc r>=0 ne marche pas!! on ajoute 1 donc
+      byte r = ri-1;
+      setDotMatrix(c, r, 1);
+      delay(30);
+      Serial.printf("2 c=%d r=%d\n", c, r);
+      setDotMatrix(c, r, 0);
+    }
+  }
+  byte r = 0;
+  for(byte ci=8; ci > 0; ci--) 
+  {
+    byte c = ci-1;
+    setDotMatrix(c, r, 1);
+    delay(30);
+    Serial.printf("3 c=%d r=%d\n", c, r);
+    setDotMatrix(c, r, 0);
+  }
+}
+
+
+```
+
+---
+
 ### Utiliser des LEDs Neopixel
 
 En dehors de la matrice, vous aurez aussi à disposition un afficheur circulaire ainsi qu'une barre de LEDs. Les deux afficheurs fonctionnent avec le même code, la seule différence est le nombre de LEDs qui est à changer dans la variable `NUMPIXELS`.
